@@ -9,7 +9,6 @@ import { OuterWrapper, PageWrapper } from '../../components/Style/stepDisplaySty
 import DelayedLoad from '../../components/Widgets/DelayedLoad';
 import historyPush from '../../utils/historyPush';
 import { renderLog } from '../../utils/logging';
-import CompleteYourProfileModalController from '../../components/Settings/CompleteYourProfileModalController';
 import AppObservableStore, { messageService } from '../../stores/AppObservableStore';
 import CampaignStartStore from '../../stores/CampaignStartStore';
 import VoterStore from '../../../stores/VoterStore';
@@ -98,7 +97,22 @@ class CampaignStartPreview extends Component {
     const { voterFirstName, voterLastName, voterSignedInWithEmail } = this.state;
     if (!voterFirstName || !voterLastName || !voterSignedInWithEmail) {
       // Open complete your profile modal
-      AppObservableStore.setShowCompleteYourProfileModal(true);
+      const modalDictionary = { // TODO
+        becomeMember: false,
+        campaignXWeVoteId: '',
+        challengeWeVoteId: '',
+        clickSource: 'CAMPAIGN_START_PREVIEW_MISSING_EMAIL ',
+        isOppose: false,
+        isStopOpposing: false,
+        isStopSupporting: false,
+        isSupport: false,
+        politicianWeVoteId: '',
+        showModal: false,
+        startCampaign: true,
+        supportCampaign: false,
+        supportPolitician: false,
+      };
+      AppObservableStore.setShowCompleteYourProfileModalDict(modalDictionary);
     } else {
       // Mark the campaign as published
       const campaignWeVoteId = '';
@@ -250,10 +264,10 @@ class CampaignStartPreview extends Component {
             </InnerWrapper>
           </OuterWrapper>
         </PageWrapper>
-        <CompleteYourProfileModalController
-          functionToUseWhenProfileComplete={this.functionToUseWhenProfileComplete}
-          startCampaign
-        />
+        {/* <CompleteYourProfileModalController */}
+        {/*  functionToUseWhenProfileComplete={this.functionToUseWhenProfileComplete} */}
+        {/*  startCampaign */}
+        {/* /> */}
       </div>
     );
   }

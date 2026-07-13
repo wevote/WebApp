@@ -136,7 +136,22 @@ class ChallengeStartPreview extends Component {
       const challengeBasePath = `/++/${challengeWeVoteId}`;
       // console.log('ChallengeStartPreview, functionToUseWhenOutOfDraft challengeBasePath: ', challengeBasePath, ', challengeWeVoteId: ', challengeWeVoteId);
       ChallengeParticipantActions.challengeParticipantSave(challengeWeVoteId);
-      AppObservableStore.setShowCompleteYourProfileModal(false);
+      const modalDictionary = {
+        becomeMember: false,
+        campaignXWeVoteId: '',
+        challengeWeVoteId: '',
+        clickSource: 'CAMPAIGN_START_PREVIEW_OUT_OF_DRAFT ',
+        isOppose: false,
+        isStopOpposing: false,
+        isStopSupporting: false,
+        isSupport: false,
+        politicianWeVoteId: '',
+        showModal: false,
+        startCampaign: false,
+        supportCampaign: true,
+        supportPolitician: false,
+      };
+      AppObservableStore.setShowCompleteYourProfileModalDict(modalDictionary);
       AppObservableStore.setShowSignInModal(false);
       // ChallengeStartActions.inDraftModeSave(challengeWeVoteId, false);
       // console.log('goToNextPage challengeBasePath before setTimeout: ', challengeBasePath);

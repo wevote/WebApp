@@ -68,6 +68,7 @@ class CompleteYourProfileModal extends Component {
       supportPolitician,
     } = this.props;
 
+    // console.log('CompleteYourProfileModal supportCampaign:', supportCampaign, ', supportPolitician:', supportPolitician);
     const { voter } = this.state;
     if (!voter) {
       // console.log('CompleteYourProfileModal render voter NOT found');
@@ -79,8 +80,12 @@ class CompleteYourProfileModal extends Component {
       completeProfileTitle = <span>becomeMember</span>;
     } else if (startCampaign) {
       completeProfileTitle = <span>Complete your profile</span>;
-    } else if (supportCampaign || supportPolitician) {
+    } else if (supportCampaign) {
       completeProfileTitle = <span>Complete your support</span>;
+    } else if (supportPolitician) {
+      completeProfileTitle = <span>Complete your profile</span>;
+    } else {
+      completeProfileTitle = <span>Complete your profile</span>;
     }
     return (
       <Dialog
@@ -114,6 +119,7 @@ class CompleteYourProfileModal extends Component {
               functionToUseWhenProfileComplete={this.props.functionToUseWhenProfileComplete}
               startCampaign={startCampaign}
               supportCampaign={supportCampaign}
+              supportPolitician={supportPolitician}
             />
           </section>
         </DialogContent>

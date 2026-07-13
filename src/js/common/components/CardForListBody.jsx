@@ -39,11 +39,13 @@ function CardForListBody (props) {
     hideItemActionBar, isClaimedProfile, limitCardWidth, linkedCampaignXWeVoteId, officeName,
     photoLargeUrl, politicalParty, politicianBasePath,
     politicianDescription, politicianWeVoteId, profileImageBackgroundColor,
-    searchText, showPoliticianOpenInNewWindow, stateCode, tagIdBaseName,
+    searchText, showPoliticianOpenInNewWindow, stateCode,
+    supportPolitician, tagIdBaseName,
     ultimateElectionDate,
     useCampaignSupportThermometer, useOfficeHeld,
     usePoliticianWeVoteIdForBallotItem, useVerticalCard,
   } = props;
+  // console.log('CardForListBody supportPolitician: ', supportPolitician, ', useCampaignSupportThermometer:', useCampaignSupportThermometer);
 
   // const supportersCountNextGoal = supportersCountNextGoalRaw || 0;
   // let supportersCountNextGoalWithFloor = supportersCountNextGoal || CampaignStore.getCampaignXSupportersCountNextGoalDefault();
@@ -136,11 +138,16 @@ function CardForListBody (props) {
               <YearAndHeartDiv>
                 <ElectionYear largeDisplay={!useCampaignSupportThermometer}>
                   {!!(electionDateYear) && (
-                    <>{electionDateYear}</>
+                    <>
+                      {electionDateYear}
+                    </>
                   )}
                 </ElectionYear>
                 {!useCampaignSupportThermometer && (
-                  <HeartFavoriteToggleLoader campaignXWeVoteId={linkedCampaignXWeVoteId} />
+                  <>
+                    {/* {source} */}
+                    <HeartFavoriteToggleLoader campaignXWeVoteId={linkedCampaignXWeVoteId} supportPolitician={supportPolitician} />
+                  </>
                 )}
               </YearAndHeartDiv>
               <SpaceBeforeThermometer />
@@ -160,6 +167,7 @@ function CardForListBody (props) {
                   <CampaignSupportThermometer
                     campaignXWeVoteId={linkedCampaignXWeVoteId}
                     finalElectionDateInPast={finalElectionDateInPast}
+                    supportPolitician={supportPolitician}
                   />
                 </Suspense>
               )}
@@ -484,6 +492,7 @@ function CardForListBody (props) {
   );
 }
 CardForListBody.propTypes = {
+  source: PropTypes.string,
   ballotItemDisplayName: PropTypes.string.isRequired, // Changed to be required due to error where this shows as undefined [WV-379] when fetching from PoliticianStore 7/18/2024
   candidateWeVoteId: PropTypes.string,
   classes: PropTypes.object,
@@ -504,6 +513,7 @@ CardForListBody.propTypes = {
   searchText: PropTypes.string,
   showPoliticianOpenInNewWindow: PropTypes.bool,
   stateCode: PropTypes.string,
+  supportPolitician: PropTypes.bool,
   // supportersCount: PropTypes.number.isRequired,
   // supportersCountNextGoalRaw: PropTypes.number,
   tagIdBaseName: PropTypes.string,

@@ -76,7 +76,22 @@ class SupportButton extends Component {
       console.log('SupportButton submitSupportButtonDesktop: missing campaignXWeVoteId:', campaignXWeVoteId);
     } else if (!voterFirstName || !voterLastName || !voterSignedInWithEmail) {
       // Open complete your profile modal
-      AppObservableStore.setShowCompleteYourProfileModal(true);
+      const modalDictionary = {
+        becomeMember: false,
+        campaignXWeVoteId,
+        challengeWeVoteId: '',
+        clickSource: 'SUPPORT_BUTTON ',
+        isOppose: false,
+        isStopOpposing: false,
+        isStopSupporting: false,
+        isSupport: true,
+        politicianWeVoteId: '',
+        showModal: true,
+        startCampaign: false,
+        supportCampaign: true,
+        supportPolitician: false,
+      };
+      AppObservableStore.setShowCompleteYourProfileModalDict(modalDictionary);
     } else {
       // Mark that voter supports this campaign
       AppObservableStore.setBlockCampaignXRedirectOnSignIn(false);

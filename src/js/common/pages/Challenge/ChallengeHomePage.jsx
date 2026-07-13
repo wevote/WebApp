@@ -21,7 +21,6 @@ import ChallengeInviteeListRoot from '../../components/ChallengeInviteeListRoot/
 import ChallengeParticipantListRoot from '../../components/ChallengeParticipantListRoot/ChallengeParticipantListRoot';
 import ChallengeHeaderSimple from '../../components/Navigation/ChallengeHeaderSimple';
 import ChallengeInviteFriendsTopNavigation from '../../components/Navigation/ChallengeInviteFriendsTopNavigation';
-import CompleteYourProfileModalController from '../../components/Settings/CompleteYourProfileModalController';
 import { CampaignDescriptionDesktop, CampaignDescriptionDesktopWrapper, CampaignDescriptionWrapper, CampaignSubSectionSeeAll, CampaignSubSectionTitle, CampaignSubSectionTitleWrapper, CommentsListWrapper, DetailsSectionDesktopTablet, DetailsSectionMobile, SupportButtonFooterWrapperAboveFooterButtons, SupportButtonPanel } from '../../components/Style/CampaignDetailsStyles';
 import { EditIndicator, IndicatorButtonWrapper, IndicatorRow } from '../../components/Style/CampaignIndicatorStyles';
 import { ChallengeDescription } from '../../components/Style/ChallengeCardStyles';
@@ -37,10 +36,8 @@ import apiCalming from '../../utils/apiCalming';
 import { getChallengeValuesFromIdentifiers, retrieveChallengeFromIdentifiersIfNeeded } from '../../utils/challengeUtils';
 import historyPush from '../../utils/historyPush';
 import { isWebApp } from '../../utils/isCordovaOrWebApp';
-import keepHelpingDestination from '../../utils/keepHelpingDestination';
 import { renderLog } from '../../utils/logging';
 import returnFirstXWords from '../../utils/returnFirstXWords';
-import saveCampaignSupportAndGoToNextPage from '../../utils/saveCampaignSupportAndGoToNextPage';
 
 const ChallengeCardForList = React.lazy(() => import(/* webpackChunkName: 'ChallengeCardForList' */ '../../components/ChallengeListRoot/ChallengeCardForList'));
 // const ChallengeCommentsList = React.lazy(() => import(/* webpackChunkName: 'ChallengeCommentsList' */ '../../components/Challenge/ChallengeCommentsList'));
@@ -109,7 +106,6 @@ class ChallengeHomePage extends Component {
     this.onChallengeStoreChange();
     this.challengeStoreListener = ChallengeStore.addListener(this.onChallengeStoreChange.bind(this));
     this.onVoterStoreChange();
-    this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
     let challengeSEOFriendlyPathFromObject;
     let triggerSEOPathRedirect = false;
     if (challengeSEOFriendlyPathFromUrl) {
@@ -430,35 +426,26 @@ class ChallengeHomePage extends Component {
     return challengeBasePath;
   };
 
-  functionToUseToKeepHelping = () => {
-    const { finalElectionDateInPast, payToPromoteStepCompleted, payToPromoteStepTurnedOn, sharingStepCompleted, step2Completed } = this.state;
-    // console.log('functionToUseToKeepHelping sharingStepCompleted:', sharingStepCompleted, ', payToPromoteStepCompleted:', payToPromoteStepCompleted, ', step2Completed:', step2Completed);
-    const keepHelpingDestinationString = keepHelpingDestination(step2Completed, payToPromoteStepCompleted, payToPromoteStepTurnedOn, sharingStepCompleted, finalElectionDateInPast);
-    historyPush(`${this.getChallengeBasePath()}${keepHelpingDestinationString}`);
-  };
+  // functionToUseToKeepHelping = () => {
+  //   const { finalElectionDateInPast, payToPromoteStepCompleted, payToPromoteStepTurnedOn, sharingStepCompleted, step2Completed } = this.state;
+  //   // console.log('functionToUseToKeepHelping sharingStepCompleted:', sharingStepCompleted, ', payToPromoteStepCompleted:', payToPromoteStepCompleted, ', step2Completed:', step2Completed);
+  //   const keepHelpingDestinationString = keepHelpingDestination(step2Completed, payToPromoteStepCompleted, payToPromoteStepTurnedOn, sharingStepCompleted, finalElectionDateInPast);
+  //   historyPush(`${this.getChallengeBasePath()}${keepHelpingDestinationString}`);
+  // };
 
-  functionToUseWhenProfileComplete = () => {
-    const { challengeWeVoteId } = this.state;
-    if (challengeWeVoteId) {
-      // const challengeBasePath = this.getChallengeBasePath();
-      // console.log('ChallengeHomePage functionToUseWhenProfileComplete challengeBasePath (IGNORED):', challengeBasePath);
-      saveCampaignSupportAndGoToNextPage(challengeWeVoteId);  // challengeBasePath
-    } else {
-      console.log('ChallengeHomePage functionToUseWhenProfileComplete challengeWeVoteId not found');
-    }
-  };
-
-  goToBallot = () => {
-    historyPush('/ballot');
-  };
+  // functionToUseWhenProfileComplete = () => {
+  //   const { challengeWeVoteId } = this.state;
+  //   if (challengeWeVoteId) {
+  //     // const challengeBasePath = this.getChallengeBasePath();
+  //     // console.log('ChallengeHomePage functionToUseWhenProfileComplete challengeBasePath (IGNORED):', challengeBasePath);
+  //     saveCampaignSupportAndGoToNextPage(challengeWeVoteId);  // challengeBasePath
+  //   } else {
+  //     console.log('ChallengeHomePage functionToUseWhenProfileComplete challengeWeVoteId not found');
+  //   }
+  // };
 
   onChallengeCampaignEditClick = () => {
     historyPush(`${this.getChallengeBasePath()}edit`);
-    return null;
-  };
-
-  onChallengeCampaignShareClick = () => {
-    historyPush(`${this.getChallengeBasePath()}share-challenge`);
     return null;
   };
 
@@ -752,11 +739,11 @@ class ChallengeHomePage extends Component {
             </CenteredDiv>
           </SupportButtonPanel>
         </SupportButtonFooterWrapperAboveFooterButtons>
-        <CompleteYourProfileModalController
-          politicianWeVoteId={challengeWeVoteId}
-          functionToUseWhenProfileComplete={this.functionToUseWhenProfileComplete}
-          supportPolitician
-        />
+        {/* <CompleteYourProfileModalController */}
+        {/*  politicianWeVoteId={challengeWeVoteId} */}
+        {/*  functionToUseWhenProfileComplete={this.functionToUseWhenProfileComplete} */}
+        {/*  supportPolitician */}
+        {/* /> */}
       </PageContentContainer>
     );
   }

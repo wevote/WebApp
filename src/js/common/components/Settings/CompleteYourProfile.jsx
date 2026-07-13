@@ -293,6 +293,7 @@ class CompleteYourProfile extends Component {
       );
     }
 
+    // console.log('CompleteYourProfile supportCampaign:', supportCampaign, ', supportCampaignOnCampaignHome: ', supportCampaignOnCampaignHome);
     // console.log('CompleteYourProfile render voter found');
     let buttonText = 'Continue';
     let introductionText = null;

@@ -12,7 +12,6 @@ import { avatarGeneric } from '../../../utils/applicationUtils';
 import CampaignSupporterActions from '../../actions/CampaignSupporterActions';
 import LazyImage from '../../components/LazyImage';
 import CampaignNewsItemPublishSteps from '../../components/Navigation/CampaignNewsItemPublishSteps';
-import CompleteYourProfileModalController from '../../components/Settings/CompleteYourProfileModalController';
 import { CampaignDescription, CampaignDescriptionDesktop, CampaignDescriptionDesktopWrapper, CampaignDescriptionWrapper, CampaignImage, CampaignImageDesktop, CampaignImageDesktopWrapper, CampaignImageMobileWrapper, CampaignImagePlaceholder, CampaignImagePlaceholderText, CampaignPoliticianImageDesktop, CampaignSubSectionSeeAll, CampaignSubSectionTitle, CampaignSubSectionTitleWrapper, CampaignTitleAndScoreBar, CampaignTitleDesktop, CampaignTitleMobile, CommentsListWrapper, DetailsSectionDesktopTablet, DetailsSectionMobile, SpeakerAndPhotoOuterWrapper, SpeakerName, SpeakerVoterPhotoWrapper, SupportButtonFooterWrapper, SupportButtonPanel } from '../../components/Style/CampaignDetailsStyles';
 import { BlockedIndicator, BlockedReason, DraftModeIndicator, EditIndicator, ElectionInPast, IndicatorButtonWrapper, IndicatorRow } from '../../components/Style/CampaignIndicatorStyles';
 import { PageWrapper } from '../../components/Style/stepDisplayStyles';
@@ -509,7 +508,7 @@ class CampaignNewsItemDetailsPage extends Component {
             </CampaignImageMobileWrapper>
             <CampaignTitleAndScoreBar>
               <Suspense fallback={<span>&nbsp;</span>}>
-                <CampaignSupportThermometer campaignXWeVoteId={campaignXWeVoteId} />
+                <CampaignSupportThermometer campaignXWeVoteId={campaignXWeVoteId} supportCampaign />
               </Suspense>
             </CampaignTitleAndScoreBar>
             <CampaignDescriptionWrapper>
@@ -712,7 +711,7 @@ class CampaignNewsItemDetailsPage extends Component {
               </ColumnTwoThirds>
               <ColumnOneThird>
                 <Suspense fallback={<span>&nbsp;</span>}>
-                  <CampaignSupportThermometer campaignXWeVoteId={campaignXWeVoteId} finalElectionDateInPast={finalElectionDateInPast} />
+                  <CampaignSupportThermometer campaignXWeVoteId={campaignXWeVoteId} finalElectionDateInPast={finalElectionDateInPast} supportCampaign />
                 </Suspense>
                 <Suspense fallback={<span>&nbsp;</span>}>
                   <CampaignDetailsActionSideBox
@@ -723,6 +722,7 @@ class CampaignNewsItemDetailsPage extends Component {
                     functionToUseWhenProfileComplete={this.functionToUseWhenProfileComplete}
                     inDraftMode={inDraftMode}
                     politicianName={campaignTitle}
+                    supportCampaign  // Related to CompleteYourProfileModal
                   />
                 </Suspense>
               </ColumnOneThird>
@@ -738,17 +738,18 @@ class CampaignNewsItemDetailsPage extends Component {
                     campaignXWeVoteId={campaignXWeVoteId}
                     functionToUseToKeepHelping={this.functionToUseToKeepHelping}
                     functionToUseWhenProfileComplete={this.functionToUseWhenProfileComplete}
+                    supportCampaign  // Related to CompleteYourProfileModal
                   />
                 </Suspense>
               </SupportButtonPanel>
             )}
           </SupportButtonFooterWrapper>
         )}
-        <CompleteYourProfileModalController
-          campaignXWeVoteId={campaignXWeVoteId}
-          functionToUseWhenProfileComplete={this.functionToUseWhenProfileComplete}
-          supportCampaign
-        />
+        {/* <CompleteYourProfileModalController */}
+        {/*  campaignXWeVoteId={campaignXWeVoteId} */}
+        {/*  functionToUseWhenProfileComplete={this.functionToUseWhenProfileComplete} */}
+        {/*  supportCampaign */}
+        {/* /> */}
       </PageContentContainer>
     );
   }

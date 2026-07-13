@@ -381,7 +381,7 @@ class Candidate extends Component {
                 </CandidateShareWrapper>
               )}
               <Suspense fallback={<span>&nbsp;</span>}>
-                <CampaignSupportThermometer campaignXWeVoteId="" />
+                <CampaignSupportThermometer campaignXWeVoteId="" supportPolitician />
               </Suspense>
               {candidate.ballotpedia_candidate_url && (
                 <ViewOnBallotpedia externalLinkUrl={candidate.ballotpedia_candidate_url} />

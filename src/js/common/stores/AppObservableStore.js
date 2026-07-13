@@ -74,7 +74,7 @@ const nonFluxState = {
   editPositionModalVisibilityOnly: false,
   showClaimProfileWithOtherWaysModal: false,
   functionToCallAfterProfileComplete: null,
-  showCompleteYourProfileModal: false,
+  showCompleteYourProfileModalDict: {},
   showNotificationBannerAboveHeader: false,
   showOfficeBannerAboveHeader: false,
   showEditAddressButton: false,
@@ -739,6 +739,27 @@ export default {
     messageService.sendMessage('state updated showCompleteYourProfileModal');
   },
 
+  setShowCompleteYourProfileModalDict (modalDictionary) {
+    // Expected:
+    // modalDictionary = {
+    //   becomeMember,
+    //   campaignXWeVoteId,
+    //   clickSource,
+    //   isOppose,
+    //   isStopOpposing,
+    //   isStopSupporting,
+    //   isSupport,
+    //   politicianWeVoteId,
+    //   showModal,
+    //   startCampaign,
+    //   supportCampaign,
+    //   supportPolitician,
+    // }
+    // console.log('AppObservableStore setShowCompleteYourProfileModalDict modalDictionary:', modalDictionary);
+    nonFluxState.showCompleteYourProfileModalDict = modalDictionary;
+    messageService.sendMessage('state updated showCompleteYourProfileModalDict');
+  },
+
   setShowEditAddressButton (show) {
     nonFluxState.showEditAddressButton = show;
     messageService.sendMessage('state updated showEditAddressButton');
@@ -922,8 +943,8 @@ export default {
     return nonFluxState.showChooseOrOpposeSignInModal;
   },
 
-  showCompleteYourProfileModal () {
-    return nonFluxState.showCompleteYourProfileModal;
+  showCompleteYourProfileModalDict () {
+    return nonFluxState.showCompleteYourProfileModalDict;
   },
 
   // showEditAddressButton () {
