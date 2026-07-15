@@ -304,7 +304,7 @@ function measureFooterContainer () {
     const { $ } = window;
     const footerContainer = $('div[id*=\'footer-container\']');
     const rect = footerContainer[0].getBoundingClientRect();
-    // console.log('rect = ', rect, rect.height);
+    // console.log('measureFooterContainer rect = ', rect, rect.height);
     return rect.height;
   } catch (error) {
     console.log('measureFooterContainer returned default 66 due to try/catch error: ', error);

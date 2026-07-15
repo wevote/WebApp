@@ -1,34 +1,29 @@
-import withStyles from '@mui/styles/withStyles';
 import { Button } from '@mui/material';
+import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import styled from 'styled-components';
-import FriendActions from '../../actions/FriendActions';
 import BallotActions from '../../actions/BallotActions';
+import FriendActions from '../../actions/FriendActions';
 import VoterActions from '../../actions/VoterActions';
 import { publicFigureQuotes } from '../../common/constants/whyVoteQuotes';
+import AppObservableStore from '../../common/stores/AppObservableStore';
 import apiCalming from '../../common/utils/apiCalming';
-import { isCordovaWide } from '../../common/utils/cordovaUtils';
 import historyPush from '../../common/utils/historyPush';
-import { isWebApp } from '../../common/utils/isCordovaOrWebApp';
+import { isAndroid, isCordova, isWebApp } from '../../common/utils/isCordovaOrWebApp';
+import { getDesktopBreakpointValue } from '../../common/utils/isMobileScreenSize';
 import { renderLog } from '../../common/utils/logging';
 import normalizedImagePath from '../../common/utils/normalizedImagePath';
-import DownloadAppsButtons from './DownloadAppsButtons';
-import WhyVoteQuote from './WhyVoteQuote';
-import Reassurance from '../SetUpAccount/Reassurance';
-import { reassuranceTextRemindContacts } from './reassuranceTextRemindContacts';
-import NextStepButtons from '../FriendIntro/NextStepButtons';
-import AppObservableStore from '../../common/stores/AppObservableStore';
 import VoterStore from '../../stores/VoterStore';
-import {
-  DesktopNextButtonsInnerWrapper, DesktopNextButtonsOuterWrapperUShowDesktopTablet,
-} from '../Style/NextButtonStyles';
-import { RemindContactsImportText, RemindMainImageImg } from '../Style/RemindStyles';
-import {
-  SetUpAccountContactsTextWrapper,
-  SetUpAccountTitle,
-} from '../Style/SetUpAccountStyles';
+import NextStepButtons from '../FriendIntro/NextStepButtons';
 import SuggestedContactListWithController from '../Friends/SuggestedContactListWithController';
+import Reassurance from '../SetUpAccount/Reassurance';
+import { DesktopNextButtonsInnerWrapper, DesktopNextButtonsOuterWrapperUShowDesktopTablet, } from '../Style/NextButtonStyles';
+import { RemindContactsImportText, RemindMainImageImg } from '../Style/RemindStyles';
+import { SetUpAccountContactsTextWrapper, SetUpAccountTitle, } from '../Style/SetUpAccountStyles';
+import DownloadAppsButtons from './DownloadAppsButtons';
+import { reassuranceTextRemindContacts } from './reassuranceTextRemindContacts';
+import WhyVoteQuote from './WhyVoteQuote';
 
 const AddContactsFromGoogleButton = React.lazy(() => import(/* webpackChunkName: 'AddContactsFromGoogleButton' */ '../SetUpAccount/AddContactsFromGoogleButton'));
 const MessageToFriendInputField = React.lazy(() => import(/* webpackChunkName: 'MessageToFriendInputField' */ '../Friends/MessageToFriendInputField'));
@@ -95,13 +90,16 @@ class RemindContactsStart extends Component {
     const { voterContactEmailListCount } = this.state;
     const addressBookSVGSrc = normalizedImagePath(addressBookSVG);
 
-    const desktopInlineButtonsOnInMobile = true;
-    let desktopInlineButtonsOnBreakValue;
-    if (desktopInlineButtonsOnInMobile) {
-      desktopInlineButtonsOnBreakValue = 1;
-    } else {
-      desktopInlineButtonsOnBreakValue = isCordovaWide() ? 1000 : 'sm';
-    }
+    // This code has been copied 6 times!
+    // const desktopInlineButtonsOnInMobile = true;
+    // let desktopInlineButtonsOnBreakValue;
+    // if (desktopInlineButtonsOnInMobile) {
+    //   desktopInlineButtonsOnBreakValue = 1;
+    // } else {
+    //   desktopInlineButtonsOnBreakValue = isCordovaWide() ? 1000 : 'sm';
+    // }
+
+    const desktopInlineButtonsOnBreakValue = getDesktopBreakpointValue();  // Should display Desktop if > 740 wide
     const pigsCanFly = false;
     const startWithImportContacts = true;
     const testQuotes = false;
@@ -140,7 +138,7 @@ class RemindContactsStart extends Component {
                     </span>
                   </RemindContactsImportText>
                 </SetUpAccountContactsTextWrapper>
-                <DesktopNextButtonsOuterWrapperUShowDesktopTablet>
+                <DesktopNextButtonsOuterWrapperUShowDesktopTablet breakValue={desktopInlineButtonsOnBreakValue}>
                   <DesktopNextButtonsInnerWrapper>
                     <NextStepButtons
                       classes={classes}
@@ -163,7 +161,7 @@ class RemindContactsStart extends Component {
                     ))}
                   </WhyVoteQuoteBlock>
                 </WhyVoteQuoteBlockOuterWrapper>
-                <DesktopNextButtonsOuterWrapperUShowDesktopTablet>
+                <DesktopNextButtonsOuterWrapperUShowDesktopTablet breakValue={desktopInlineButtonsOnBreakValue}>
                   <DesktopNextButtonsInnerWrapper>
                     <NextStepButtons
                       classes={classes}
@@ -210,17 +208,25 @@ class RemindContactsStart extends Component {
                       </MainImageWrapper>
                     </ImageOuterWrapper>
                     <div>
-                      <Suspense fallback={<></>}>
-                        <AddContactsFromGoogleButton darkButton />
-                      </Suspense>
+                      {!isAndroid && (
+                        <Suspense fallback={<></>}>
+                          <AddContactsFromGoogleButton darkButton />
+                        </Suspense>
+                      )}
                     </div>
                     <DesktopNextButtonsOuterWrapperUShowDesktopTablet breakValue={desktopInlineButtonsOnBreakValue}>
                       <DesktopNextButtonsInnerWrapper>
                         <Button
-                          classes={{ root: classes.addContactsManuallyLink }}
+                          classes={isAndroid() ? {root: classes.addContactsManuallyLinkAndroid} : {root: classes.addContactsManuallyLink }}
                           onClick={this.goToEditMessage}
+                          id="RemindContactsStartCopy"
                         >
-                          Or add contacts manually
+                          {!isAndroid ? (
+                            "Or add contacts manually"
+                            ) : (
+                            "Invite some friends"
+                            )
+                          }
                         </Button>
                       </DesktopNextButtonsInnerWrapper>
                     </DesktopNextButtonsOuterWrapperUShowDesktopTablet>
@@ -236,7 +242,7 @@ class RemindContactsStart extends Component {
                         <MessageToFriendInputField messageToFriendType="remindContacts" />
                       </Suspense>
                     </MessageToSendWrapper>
-                    <DesktopNextButtonsOuterWrapperUShowDesktopTablet>
+                    <DesktopNextButtonsOuterWrapperUShowDesktopTablet breakValue={desktopInlineButtonsOnBreakValue}>
                       <DesktopNextButtonsInnerWrapper>
                         <NextStepButtons
                           classes={classes}
@@ -248,6 +254,22 @@ class RemindContactsStart extends Component {
                       </DesktopNextButtonsInnerWrapper>
                     </DesktopNextButtonsOuterWrapperUShowDesktopTablet>
                   </>
+                )}
+                {isCordova() && (
+                  <MobileInviteSomeFriends>
+                    <Button
+                      classes={isAndroid() ? {root: classes.addContactsManuallyLinkAndroid} : {root: classes.addContactsManuallyLink }}
+                      onClick={this.goToEditMessage}
+                      id="RemindContactsStartCopy"
+                    >
+                      {!isAndroid ? (
+                        "Or add contacts manually"
+                      ) : (
+                        "Invite some friends"
+                      )
+                      }
+                    </Button>
+                    </MobileInviteSomeFriends>
                 )}
               </RemindContactsStartWrapper>
             )}
@@ -269,6 +291,19 @@ const styles = () => ({
     padding: '0 20px',
     textTransform: 'none',
     width: 250,
+    '&:hover': {
+      color: '#4371cc',
+      textDecoration: 'underline',
+    },
+  },
+  addContactsManuallyLinkAndroid: {
+    boxShadow: 'none !important',
+    color: '#065FD4',
+    marginTop: 10,
+    padding: '0 20px',
+    textTransform: 'none',
+    width: 500,
+    fontSize: '22px',
     '&:hover': {
       color: '#4371cc',
       textDecoration: 'underline',
@@ -313,6 +348,12 @@ const WhyVoteQuoteBlockOuterWrapper = styled('div')`
   margin-bottom: 48px;
   margin-top: 36px;
   width: 100%;
+`;
+
+const MobileInviteSomeFriends = styled('div')`
+  display: flex;
+  justify-content: center; /* Horizontally centers the button */
+  padding: 20px;
 `;
 
 export default withStyles(styles)(RemindContactsStart);

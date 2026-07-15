@@ -64,7 +64,7 @@ function GoogleAutoComplete (props) {
         lon = position.coords.longitude;
       },
       (error) => {
-        console.log('ERROR handleAddressChangeCordova', JSON.stringify(error));
+        console.log('ERROR handleAddressChangeCordova geolocation error ', JSON.stringify(error));
       },
       { timeout: 5000 },
     );

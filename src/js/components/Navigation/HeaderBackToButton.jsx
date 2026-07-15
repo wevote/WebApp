@@ -6,7 +6,7 @@ import React, { Component } from 'react';
 import TagManager from 'react-gtm-module';
 import styled from 'styled-components';
 import historyPush from '../../common/utils/historyPush';
-import { isCordova } from '../../common/utils/isCordovaOrWebApp';
+import { isCordova, isWebApp } from '../../common/utils/isCordovaOrWebApp';
 import { renderLog } from '../../common/utils/logging';
 import shortenText from '../../common/utils/shortenText';
 import lookupPageNameAndPageTypeDict, { getPageDetails } from '../../utils/lookupPageNameAndPageTypeDict';
@@ -35,7 +35,7 @@ class HeaderBackToButton extends Component {
     TagManager.dataLayer({ dataLayer: dataLayerObject });
 
     // Navigate after tracking
-    historyPush(backToLink);
+    historyPush(isWebApp() ? backToLink : '/');
   };
 
   render () {

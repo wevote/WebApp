@@ -419,7 +419,7 @@ export function heightOfCordovaSpacer (asString = false) {
         // console.log('heightOfCordovaSpacer window.androidNotchCutout: ', window.androidNotchCutout, window.androidNotchInset);
         // console.log('heightOfCordovaSpacer device: ', device);
         // console.log('heightOfCordovaSpacer device.model: ', device.model);
-        height = window.androidNotchCutout ? window.androidNotchInset : 0;
+        height = 0; // Removed 7/13/26 window.androidNotchCutout ? window.androidNotchInset : 0;
       } else {
         height = androidSpacer;
       }
