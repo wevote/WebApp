@@ -1,8 +1,8 @@
-import { Groups, Home, HowToVote, Info, MoreHoriz, People, QuestionAnswer, VerifiedUser } from '@mui/icons-material';
+import { Article, CalendarMonth, Groups, Home, HowToVote, Info, MoreHoriz, People, QuestionAnswer, VerifiedUser } from '@mui/icons-material';
 import { Badge, BottomNavigation, BottomNavigationAction, ClickAwayListener } from '@mui/material';
 import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
-import React from 'react';
+import React, { Suspense } from 'react';
 import styled from 'styled-components';
 import DesignTokenColors from '../../common/components/Style/DesignTokenColors';
 import DelayedLoad from '../../common/components/Widgets/DelayedLoad';
@@ -11,7 +11,7 @@ import AppObservableStore, { messageService } from '../../common/stores/AppObser
 import { isIOS } from '../../common/utils/cordovaUtils';
 import historyPush from '../../common/utils/historyPush';
 import { normalizedHref } from '../../common/utils/hrefUtils';
-import { isAndroid, isCordova } from '../../common/utils/isCordovaOrWebApp';
+import { isAndroid, isCordova, isWebApp } from '../../common/utils/isCordovaOrWebApp';
 import { renderLog } from '../../common/utils/logging';
 import normalizedImagePath from '../../common/utils/normalizedImagePath';
 import stringContains from '../../common/utils/stringContains';
@@ -23,14 +23,21 @@ import ShareButtonFooter from '../Share/ShareButtonFooter';
 
 const nextReleaseFeaturesEnabled = webAppConfig.ENABLE_NEXT_RELEASE_FEATURES === undefined ? false : webAppConfig.ENABLE_NEXT_RELEASE_FEATURES;
 
+const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ '../../common/components/Widgets/OpenExternalWebSite'));
+
 // It's not ideal to have two images, but this is a complex svg, and I couldn't figure out how to change the fill color with a variable
 const capitalBuilding = '/img/global/svg-icons/capital-building.svg';
 const capitalBuildingSelected = '/img/global/svg-icons/capital-building-selected.svg';
+const weVoteIcon = '/img/global/svg-icons/we-vote-icon-square-color-grey.svg';
+const weVoteIconSelected = '/img/global/svg-icons/we-vote-icon-square-color-dark.svg';
+
 
 function MoreMenuOverlay ({ anchorRef, classes, friendInvitationsSentToMeCount, onClose }) {
   const pathname = normalizedHref();
+  const isAbout = pathname.includes('/more/faq');
   const isChallenges = pathname.includes('/challenges');
   const isDiscuss = pathname.includes('/news');
+  const isElectionFinder = pathname.includes('/election-finder');
   const isFriends = pathname.includes('/friends');
   const isManage = pathname.includes('/manage') || pathname.includes('/no-candidates-claimed');
 
@@ -43,9 +50,33 @@ function MoreMenuOverlay ({ anchorRef, classes, friendInvitationsSentToMeCount, 
   return (
     <ClickAwayListener disableReactTree onClickAway={handleClickAway}>
       <Overlay>
+        <MenuItem id="FooterBarAbout" $active={isAbout} onClick={() => { onClose(); historyPush('/more/faq'); }}>
+          <img
+            alt=""
+            src={isAbout ? normalizedImagePath(weVoteIconSelected) : normalizedImagePath(weVoteIcon)}
+            style={{ width: 40, height: 40, marginBottom: 6 }}
+          />
+          About &amp; FAQ
+        </MenuItem>
         <MenuItem id="FooterBarHowItWorks" onClick={() => { AppObservableStore.setShowHowItWorksModal(true); }}>
           <Info />
           How it works
+        </MenuItem>
+        {nextReleaseFeaturesEnabled && (
+          <MenuItem id="FooterBarCandidatesManaging" $active={isManage} onClick={() => { onClose(); historyPush('/no-candidates-claimed'); }}>
+            <img
+              alt=""
+              src={isManage ? '/img/global/svg-icons/capital-building-selected.svg' : '/img/global/svg-icons/capital-building.svg'}
+              style={{ width: 40, height: 40, marginBottom: 6 }}
+            />
+            Candidates
+            <br />
+            I&apos;m managing
+          </MenuItem>
+        )}
+        <MenuItem id="FooterBarElectionFinder" $active={isElectionFinder} onClick={() => { onClose(); historyPush('/election-finder'); }}>
+          <CalendarMonth />
+          Election Finder
         </MenuItem>
         <MenuItem id="FooterBarFriends" $active={isFriends} onClick={() => { onClose(); historyPush('/friends'); }}>
           {friendInvitationsSentToMeCount > 0 ? (
@@ -69,29 +100,30 @@ function MoreMenuOverlay ({ anchorRef, classes, friendInvitationsSentToMeCount, 
           )}
           Friends
         </MenuItem>
-        {nextReleaseFeaturesEnabled && (
-          <MenuItem id="FooterBarDiscuss" $active={isDiscuss} onClick={() => { onClose(); historyPush('/news'); }}>
-            <QuestionAnswer />
-            Discuss
-          </MenuItem>
-        )}
-        {nextReleaseFeaturesEnabled && (
-          <MenuItem id="FooterBarCandidatesManaging" $active={isManage} onClick={() => { onClose(); historyPush('/no-candidates-claimed'); }}>
-            <img
-              alt=""
-              src={isManage ? '/img/global/svg-icons/capital-building-selected.svg' : '/img/global/svg-icons/capital-building.svg'}
-              style={{ width: 40, height: 40, marginBottom: 6 }}
-            />
-            Candidates
-            <br />
-            I&apos;m managing
-          </MenuItem>
-        )}
+        <MenuItem id="FooterBarDiscuss" $active={isDiscuss} onClick={() => { onClose(); historyPush('/news'); }}>
+          <QuestionAnswer />
+          Discuss
+        </MenuItem>
         {nextReleaseFeaturesEnabled && (
           <MenuItem id="FooterBarChallenges" $active={isChallenges} onClick={() => { onClose(); historyPush('/challenges'); }}>
             <Groups />
             Challenges
           </MenuItem>
+        )}
+        {isWebApp() && (
+          <Suspense fallback={<></>}>
+            <OpenExternalWebSite
+              linkIdAttribute="footerLinkBlog"
+              url="https://blog.wevote.us/"
+              target="_blank"
+              body={(
+                <MenuItem id="FooterBarBlog">
+                  <Article />
+                  Blog
+                </MenuItem>
+              )}
+            />
+          </Suspense>
         )}
       </Overlay>
     </ClickAwayListener>
