@@ -291,7 +291,7 @@ class FooterBar extends React.Component {
     }
 
     return (
-      <FooterBarWrapper>
+      <FooterBarWrapperFooterBar>
         {showShareButtonFooter && (
           <DelayedLoad waitBeforeShow={3000}>
             <ShareButtonFooter />
@@ -390,7 +390,7 @@ class FooterBar extends React.Component {
             />
           )}
         </FooterContainer>
-      </FooterBarWrapper>
+      </FooterBarWrapperFooterBar>
     );
   }
 }
@@ -420,7 +420,7 @@ const BadgeCountWrapper = styled('span')(({ theme }) => (`
   }
 `));
 
-const FooterBarWrapper = styled('div')`
+const FooterBarWrapperFooterBar = styled('div')`
   @media print{
     display: none;
   }

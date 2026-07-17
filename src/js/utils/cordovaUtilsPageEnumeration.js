@@ -99,7 +99,7 @@ export function pageEnumeration () {
     return CordovaPageConstants.candidate;
   } else if (path.endsWith('/cs/') || path.includes('/start-a-campaign')) {  // /candidate/ == one candidate vs. /cs/ == candidates by state
     return CordovaPageConstants.values; // Use /value setting
-  } else if (path.startsWith('/friends/current') || path.startsWith('/friends/all')) {
+  } else if (path.startsWith('/friends/current') || path.startsWith('/friends/all') || path.startsWith('/friends/remind')) {
     return CordovaPageConstants.friendsCurrent;
   } else if (path.startsWith('/friends/sent-requests') || path.startsWith('/friends/requests')) {
     return CordovaPageConstants.friendsSentRequest;

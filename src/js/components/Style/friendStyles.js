@@ -89,6 +89,9 @@ export const FriendDisplayOuterWrapper = styled('div', {
   margin: 12px 0 18px 0;
   position: relative;
   width: 100%;
+  ${theme.breakpoints.down('md')} {
+    padding-bottom: 30px
+  }
   ${inSideColumn ? '' : (`
     ${theme.breakpoints.up('sm')} {
       align-items: flex-start;

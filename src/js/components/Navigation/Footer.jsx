@@ -138,11 +138,11 @@ class Footer extends Component {
           </FooterMainWrapper>
         )}
         {showFooterBar && (
-          <FooterBarWrapper className={isWebApp() ? 'footroom-wrapper' : 'footroom-wrapper-cordova'}>
+          <FooterBarWrapperFooter className={isWebApp() ? 'footroom-wrapper' : 'footroom-wrapper-cordova'}>
             <Suspense fallback={<span>&nbsp;</span>}>
               <FooterBar />
             </Suspense>
-          </FooterBarWrapper>
+          </FooterBarWrapperFooter>
         )}
       </FooterWrapper>
     );
@@ -152,7 +152,7 @@ class Footer extends Component {
 const styles = () => ({
 });
 
-const FooterBarWrapper = styled('div')`
+const FooterBarWrapperFooter = styled('div')`
 `;
 
 const FooterMainWrapper = styled('div')`

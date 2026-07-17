@@ -305,7 +305,7 @@ class FriendInvitationOnboarding extends Component {
             />
           </span>
           {slideHtmlContent}
-          <FooterBarWrapper style={{ height: `${cordovaFooterHeight()}` }}>
+          <FooterBarWrapperFriendsInvitation style={{ height: `${cordovaFooterHeight()}` }}>
             <StepsOuterWrapper>
               <StepsWrapper width={personalizedScoreIntroCompleted ? 86 : 210}>
                 <StepsChips onSelectStep={this.goToSpecificSlide} selected={currentSlideIndex} chips={stepLabels} mobile />
@@ -338,7 +338,7 @@ class FriendInvitationOnboarding extends Component {
                 </Button>
               </NextButtonWrapper>
             </TwoButtonsWrapper>
-          </FooterBarWrapper>
+          </FooterBarWrapperFriendsInvitation>
         </div>
       </div>
     );
@@ -375,7 +375,7 @@ const BackButtonWrapper = styled('div')`
   }
 `;
 
-const FooterBarWrapper = styled('div')`
+const FooterBarWrapperFriendsInvitation = styled('div')`
   background: #fff;
   border-top: 1px solid #eee;
   bottom: 0;

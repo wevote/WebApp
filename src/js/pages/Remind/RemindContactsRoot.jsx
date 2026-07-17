@@ -11,7 +11,7 @@ import apiCalming from '../../common/utils/apiCalming';
 import { isCordovaWide } from '../../common/utils/cordovaUtils';
 import daysUntil from '../../common/utils/daysUntil';
 import historyPush from '../../common/utils/historyPush';
-import { isWebApp } from '../../common/utils/isCordovaOrWebApp';
+import { isAndroid, isWebApp } from '../../common/utils/isCordovaOrWebApp';
 import { renderLog } from '../../common/utils/logging';
 import normalizedImagePath from '../../common/utils/normalizedImagePath';
 import stringContains from '../../common/utils/stringContains';
@@ -893,12 +893,14 @@ class RemindContactsRoot extends React.Component {
             */}
             <ImportContactsOuterWrapperUShowDesktopTablet breakValue={desktopInlineButtonsOnBreakValue}>
               <DesktopNextButtonsInnerWrapper>
-                <Button
-                  classes={{ root: classes.addContactsManuallyLink }}
-                  onClick={this.goToImportContacts}
-                >
-                  Or import contacts from Gmail
-                </Button>
+                {!isAndroid() && (
+                  <Button
+                    classes={{ root: classes.addContactsManuallyLink }}
+                    onClick={this.goToImportContacts}
+                  >
+                    Or import contacts from Gmail
+                  </Button>
+                )}
               </DesktopNextButtonsInnerWrapper>
             </ImportContactsOuterWrapperUShowDesktopTablet>
             {isWebApp() && (
@@ -971,6 +973,7 @@ class RemindContactsRoot extends React.Component {
                   <Button
                     classes={{ root: classes.addContactsManuallyLink }}
                     onClick={this.goToAddEditMessage}
+                    id="RemindContactsRoot"
                   >
                     Or add contacts manually
                   </Button>

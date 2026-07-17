@@ -36,7 +36,7 @@ class RemindEditMessage extends React.Component {
     return (
       <StepCenteredWrapper>
         <SetUpAccountTop>
-          <SetUpAccountTitle>
+          <SetUpAccountTitle  id="RemindAddContacts">
             Remind 3 of your friends to vote today
           </SetUpAccountTitle>
           <SetUpAccountContactsTextWrapper>

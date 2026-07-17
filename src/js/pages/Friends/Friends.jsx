@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
 import { Helmet } from 'react-helmet-async';
 import styled from 'styled-components';
+import { isAndroid } from '../../common/utils/isCordovaOrWebApp';
 import isMobileScreenSize from '../../common/utils/isMobileScreenSize';
 import FriendsCurrent from './FriendsCurrent';
 import FriendInvitationsSentByMe from './FriendInvitationsSentByMe';
@@ -302,20 +303,22 @@ class Friends extends Component {
                   <FirstAndLastNameRequiredAlert />
                 </Suspense>
                 )}
-                <FindYourContactsWrapper>
-                  <SectionTitle>
-                    Find Your Friends on WeVote
-                  </SectionTitle>
-                  <SectionDescription>
-                    Importing your contacts helps you find your friends on We
-                    Vote. You can delete your contact information at any time.
-                  </SectionDescription>
-                  <div>
-                    <Suspense fallback={<></>}>
-                      <AddContactsFromGoogleButton darkButton />
-                    </Suspense>
-                  </div>
-                </FindYourContactsWrapper>
+                {!isAndroid() && (
+                  <FindYourContactsWrapper>
+                    <SectionTitle>
+                      Find Your Friends on WeVote
+                    </SectionTitle>
+                    <SectionDescription>
+                      Importing your contacts helps you find your friends on We
+                      Vote. You can delete your contact information at any time.
+                    </SectionDescription>
+                    <div>
+                      <Suspense fallback={<></>}>
+                        <AddContactsFromGoogleButton darkButton />
+                      </Suspense>
+                    </div>
+                  </FindYourContactsWrapper>
+                )}
                 <InviteByEmail />
               </div>
               <div className="col-sm-12 col-md-4">
@@ -346,20 +349,22 @@ class Friends extends Component {
                   <FirstAndLastNameRequiredAlert />
                 </Suspense>
               )}
-              <FindYourContactsWrapper>
-                <SectionTitle>
-                  Find Your Friends on WeVote
-                </SectionTitle>
-                <SectionDescription>
-                  Importing your contacts helps you find your friends on We
-                  Vote. You can delete your contact information at any time.
-                </SectionDescription>
-                <div>
-                  <Suspense fallback={<></>}>
-                    <AddContactsFromGoogleButton darkButton />
-                  </Suspense>
-                </div>
-              </FindYourContactsWrapper>
+              {!isAndroid() && (
+                <FindYourContactsWrapper>
+                  <SectionTitle>
+                    Find Your Friends on WeVote
+                  </SectionTitle>
+                  <SectionDescription>
+                    Importing your contacts helps you find your friends on We
+                    Vote. You can delete your contact information at any time.
+                  </SectionDescription>
+                  <div>
+                    <Suspense fallback={<></>}>
+                      <AddContactsFromGoogleButton darkButton />
+                    </Suspense>
+                  </div>
+                </FindYourContactsWrapper>
+              )}
               <InviteByEmail />
               <SignInOptionsWrapper>
                 {(twitterEnabled && !voter.signed_in_twitter) && (

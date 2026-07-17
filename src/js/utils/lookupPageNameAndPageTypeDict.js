@@ -1,6 +1,7 @@
 // lookupPageNameAndPageTypeDict.js
-import { isChallengeSEOFriendlyURL, isPoliticianSEOFriendlyURL } from '../common/utils/isSEOFriendlyURL';
 import { isWeVoteMarketingSite } from '../common/utils/hrefUtils';
+import { isCordova } from '../common/utils/isCordovaOrWebApp';
+import { isChallengeSEOFriendlyURL, isPoliticianSEOFriendlyURL } from '../common/utils/isSEOFriendlyURL';
 
 // If there is a static path for a page, enter it here. If the path includes dynamic elements,
 //  you'll need to generate the pageName and pageType dynamically in calculatePageNameAndPageTypeDict below.
@@ -108,7 +109,7 @@ function calculatePageNameAndPageTypeDict (path) {
   // console.log("gtmPageNameAndType, path:", path);
   let settingsPageName = 'notSet'; // Per our naming convention for pageName, this would normally be 'NotSet' but I think the value of having settingsPageName being identical to settingsPageType will save us grief in the future.
   let settingsPageType = 'notSet';
-
+  const { location: { hash } } = window;
   if (isPoliticianSEOFriendlyURL(path)) {
     // We need this more complex logic here because there are many paths in /src/App.jsx that use "/-/" in the path
     settingsPageName = 'PoliticianDetailsPage';
@@ -156,6 +157,9 @@ function calculatePageNameAndPageTypeDict (path) {
   } else if (path.startsWith('/value/')) {
     settingsPageName = 'IssuePage';
     settingsPageType = 'issue';
+  } else if (path.includes('/remind/message') || (isCordova() && hash.includes('/remind/message'))) {
+    settingsPageName = 'RemindFriends';
+    settingsPageType = 'friends';
   } else if (/^\/[^/\s]+$/.test(path)) {
     settingsPageName = 'OrganizationVoterGuide';
     settingsPageType = 'endorser';

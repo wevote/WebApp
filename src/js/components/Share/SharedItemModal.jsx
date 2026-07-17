@@ -535,7 +535,7 @@ class SharedItemModal extends Component {
             </ModalContentInnerWrapper>
           </ModalContent>
         </ContentWrapper>
-        <FooterBarWrapper style={{ height: `${cordovaFooterHeight()}` }}>
+        <FooterBarWrapperSharedItemModal style={{ height: `${cordovaFooterHeight()}` }}>
           <StepsOuterWrapper>
             <StepsWrapper width={personalizedScoreIntroCompleted ? 86 : 210}>
               <StepsChips onSelectStep={this.goToSpecificSlide} selected={currentSlideIndex} chips={stepLabels} mobile />
@@ -577,7 +577,7 @@ class SharedItemModal extends Component {
               </Button>
             </NextButtonWrapper>
           </SharedItemTwoButtonsWrapper>
-        </FooterBarWrapper>
+        </FooterBarWrapperSharedItemModal>
       </Dialog>
     );
   }
@@ -691,7 +691,7 @@ const ElectionCountdownText = styled('h3')(({ theme }) => (`
   }
 `));
 
-const FooterBarWrapper = styled('div')(({ theme }) => (`
+const FooterBarWrapperSharedItemModal = styled('div')(({ theme }) => (`
   background: #fff;
   border-top: 1px solid #eee;
   bottom: 0;
