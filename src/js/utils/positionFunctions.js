@@ -253,6 +253,7 @@ export function sortCandidateList (newCandidateList) {
   let candidateModified;
   let numberOfOpposePositionsForScore = 0;
   let numberOfSupportPositionsForScore = 0;
+  let voterOpposesBallotItem;
   let voterSupportsBallotItem;
 
   // Prepare an array of candidate names that are supported by voter
@@ -260,10 +261,11 @@ export function sortCandidateList (newCandidateList) {
     ballotItemStatSheet = SupportStore.getBallotItemStatSheet(candidate.we_vote_id, candidate.politician_we_vote_id);
     // console.log('ballotItemStatSheet:', ballotItemStatSheet);
     if (ballotItemStatSheet) {
-      ({ numberOfOpposePositionsForScore, numberOfSupportPositionsForScore, voterSupportsBallotItem } = ballotItemStatSheet);
+      ({ numberOfOpposePositionsForScore, numberOfSupportPositionsForScore, voterOpposesBallotItem, voterSupportsBallotItem } = ballotItemStatSheet);
       // voterIssuesScoreForCandidate = IssueStore.getIssuesScoreByBallotItemWeVoteId(candidate.we_vote_id);
       candidateModified = { ...candidate };
       candidateModified.voterNetworkScoreForCandidate = Math.abs(numberOfSupportPositionsForScore - numberOfOpposePositionsForScore);
+      candidateModified.voterOpposesBallotItem = voterOpposesBallotItem;
       candidateModified.voterSupportsBallotItem = voterSupportsBallotItem;
       // console.log('candidateModified:', candidateModified);
       unsortedCandidateListModified.push(candidateModified);
@@ -275,8 +277,12 @@ export function sortCandidateList (newCandidateList) {
   sortedCandidateList = unsortedCandidateListModified;
   // Start by ordering by twitter_followers_count
   sortedCandidateList.sort((optionA, optionB) => optionB.twitter_followers_count - optionA.twitter_followers_count);
+  // Move candidates with the highest supporters count to the top of the list
+  sortedCandidateList.sort((optionA, optionB) => optionB.supporters_count - optionA.supporters_count);
   // Move candidates with the highest personalized score to the top of the list
   sortedCandidateList.sort((optionA, optionB) => optionB.voterNetworkScoreForCandidate - optionA.voterNetworkScoreForCandidate);
+  // Move candidates opposed by the voter to the top of list
+  sortedCandidateList.sort((optionA, optionB) => (optionB.voterOpposesBallotItem ? 1 : 0) - (optionA.voterOpposesBallotItem ? 1 : 0));
   // Move candidates supported by the voter to the top of list
   sortedCandidateList.sort((optionA, optionB) => (optionB.voterSupportsBallotItem ? 1 : 0) - (optionA.voterSupportsBallotItem ? 1 : 0));
   // Move withdrawn candidates to the bottom of list

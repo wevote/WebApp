@@ -20,7 +20,7 @@ import OfficeHeaderTripleDotMenu from '../BallotItem/OfficeHeaderTripleDotMenu';
 
 const ShowMoreButtons = React.lazy(() => import(/* webpackChunkName: 'ShowMoreButtons' */ '../Widgets/ShowMoreButtons'));
 const OfficeInfoModal = React.lazy(() => import(/* webpackChunkName: 'OfficeInfoModal' */ './OfficeInfoModal'));
-const NUMBER_OF_CANDIDATES_TO_DISPLAY = 5;
+const NUMBER_OF_CANDIDATES_TO_DISPLAY = 4;
 
 // This is related to components/VoterGuide/VoterGuideOfficeItemCompressed
 class OfficeItemCompressed extends Component {
@@ -30,7 +30,6 @@ class OfficeItemCompressed extends Component {
     super(props);
     this.state = {
       candidateListLength: 0,
-      candidateListForDisplay: [],
       showAllCandidates: false,
       totalNumberOfCandidates: 0,
       officeInfoModalOpen: false,
@@ -63,11 +62,9 @@ class OfficeItemCompressed extends Component {
   }
 
   onCandidateStoreChange () {
-    const { candidateList, officeWeVoteId } = this.props;
+    const { officeWeVoteId } = this.props;
     const totalNumberOfCandidates = officeWeVoteId ? CandidateStore.getNumberOfCandidatesRetrievedByOffice(officeWeVoteId) : 0;
-    // const sortedCandidateList = sortCandidateList(candidateList || []);
     this.setState({
-      // candidateListForDisplay: sortedCandidateList,
       totalNumberOfCandidates,
     });
   }
@@ -80,8 +77,39 @@ class OfficeItemCompressed extends Component {
     if (showAllCandidates || disableAutoRollUp) {
       return sortedCandidateList;
     }
-    return sortedCandidateList.slice(0, NUMBER_OF_CANDIDATES_TO_DISPLAY);
+    const numberOfCandidatesToRender = this.getCandidatesToRenderCount();
+    // console.log('numberOfCandidatesToRender: ', numberOfCandidatesToRender);
+    return sortedCandidateList.slice(0, numberOfCandidatesToRender);
   }
+
+  getCandidatesToRenderCount = () => {
+    // How many candidates should we render? If voter has chosen or opposed 1+ candidates, only show those
+    const { candidateList, disableAutoRollUp } = this.props;
+    if (!candidateList || candidateList.length === 0) {
+      return 0;
+    }
+    // Dale 2026-07-18 I want to leave candidatesToShowForSearchResults in place for the next year in case we need it again.
+    // let { candidatesToShowForSearchResults } = this.props;
+    // candidatesToShowForSearchResults = candidatesToShowForSearchResults || [];
+    const candidatesToShowForSearchResults = [];
+    const { showAllCandidates } = this.state;
+    const supportedCandidatesList = candidateList.filter((candidate) => candidatesToShowForSearchResults.includes(candidate.we_vote_id) || (SupportStore.getVoterSupportsByBallotItemWeVoteId(candidate.we_vote_id) && !candidate.withdrawn_from_election));
+    const opposedCandidatesList = candidateList.filter((candidate) => candidatesToShowForSearchResults.includes(candidate.we_vote_id) || (SupportStore.getVoterOpposesByBallotItemWeVoteId(candidate.we_vote_id) && !candidate.withdrawn_from_election));
+    const supportedAndOpposedCandidatesList = supportedCandidatesList.concat(opposedCandidatesList);
+    // console.log('OfficeItemCompressed getCandidatesToRenderCount showAllCandidates: ', showAllCandidates, ', disableAutoRollUp:', disableAutoRollUp, ', supportedAndOpposedCandidatesList:', supportedAndOpposedCandidatesList, ', candidateList:', candidateList);
+    if (showAllCandidates) {
+      return candidateList.length;
+    } else if (disableAutoRollUp) {
+      return NUMBER_OF_CANDIDATES_TO_DISPLAY;
+    } else if (supportedCandidatesList && supportedCandidatesList.length > 0) {
+      // Used to be:
+      // if (supportedAndOpposedCandidatesList && supportedAndOpposedCandidatesList.length > 0)
+      // But we don't want to roll-up until an option has been chosen/supported
+      return supportedAndOpposedCandidatesList.length;
+    } else {
+      return NUMBER_OF_CANDIDATES_TO_DISPLAY;
+    }
+  };
 
   showAllCandidates = () => {
     this.setState({ showAllCandidates: true });
@@ -125,7 +153,8 @@ class OfficeItemCompressed extends Component {
     const { hideOfficeHeader, isFirstBallotItem, officeWeVoteId, primaryParty, useHelpDefeatOrHelpWin } = this.props;
     const { candidateListLength, showAllCandidates, totalNumberOfCandidates, moreInfoIconHovered } = this.state;
     ballotItemDisplayName = toTitleCase(ballotItemDisplayName).replace('(Unexpired)', '(Remainder)');
-    const moreCandidatesToDisplay = candidateListLength > NUMBER_OF_CANDIDATES_TO_DISPLAY;
+    const candidatesToRenderCount = this.getCandidatesToRenderCount();
+    const moreCandidatesToDisplay = candidatesToRenderCount < totalNumberOfCandidates;
     const officeExplanationExists = false; // TODO: Add logic to check if officeExplanation exists
 
     return (
@@ -177,7 +206,7 @@ class OfficeItemCompressed extends Component {
           goToCandidateLink={(candidateWeVoteId) => this.goToCandidateLink(candidateWeVoteId)}
           useHelpDefeatOrHelpWin={useHelpDefeatOrHelpWin}
         />
-        {moreCandidatesToDisplay && (
+        {(moreCandidatesToDisplay) ? (
           <Suspense fallback={<></>}>
             <ShowMoreButtons
               showMoreId={`officeItemCompressedShowMoreFooter-${officeWeVoteId}`}
@@ -186,6 +215,19 @@ class OfficeItemCompressed extends Component {
               officeWeVoteId={officeWeVoteId}
             />
           </Suspense>
+        ) : (
+          <>
+            {(showAllCandidates && candidateListLength >= totalNumberOfCandidates) && (
+              <Suspense fallback={<></>}>
+                <ShowMoreButtons
+                  showMoreId={`officeItemCompressedShowLessFooter-${officeWeVoteId}`}
+                  showMoreButtonsLink={() => this.showLessCandidates()}
+                  showMoreButtonWasClicked
+                  showLessCustomText="show fewer candidates"
+                />
+              </Suspense>
+            )}
+          </>
         )}
         {this.state.officeInfoModalOpen && (
           <Suspense fallback={<div>Loading...</div>}>
