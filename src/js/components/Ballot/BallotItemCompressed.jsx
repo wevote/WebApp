@@ -25,7 +25,7 @@ export default class BallotItemCompressed extends PureComponent {
             ballotItemDisplayName={ballotItemDisplayName}
             candidateList={candidateList}
             candidatesToShowForSearchResults={candidatesToShowForSearchResults}
-            disableAutoRollUp
+            // disableAutoRollUp
             foundInSearchWords={foundInSearchWords}
             isFirstBallotItem={isFirstBallotItem}
             officeWeVoteId={weVoteId}
