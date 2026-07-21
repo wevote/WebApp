@@ -32,11 +32,6 @@ export function isSmallTablet () {
   return innerWidth > tabMin && innerWidth < tabMdMin;
 }
 
-export function isMedOrLgTablet () {
-  const { innerWidth, muiThemeGlobal: { breakpoints: { values: { tabMdMin, tabMax } } } } = window;
-  return innerWidth > tabMdMin && innerWidth < tabMax;
-}
-
 export function isSmallerThanTablet () {
   const { innerWidth, muiThemeGlobal: { breakpoints: { values: { tabMin } } } } = window;
   return innerWidth < tabMin;
@@ -80,11 +75,12 @@ was .u-show-desktop then this function was uShowDesktop
  */
 
 export function getDesktopBreakpointValue () {
-  const { innerWidth, muiThemeGlobal: { breakpoints: { values: { tabMax } } } } = window;
-  return tabMax
+  const { muiThemeGlobal: { breakpoints: { values: { tabMax } } } } = window;
+  return tabMax;
 }
 
 export function displayNoneIfSmallerThanDesktop () {
+  const { innerWidth } = window;
   const tabMax = getDesktopBreakpointValue;
   if ((isWebApp() && innerWidth < 991) || (!isWebApp() && innerWidth < tabMax)) {
     return 'display: none !important;';

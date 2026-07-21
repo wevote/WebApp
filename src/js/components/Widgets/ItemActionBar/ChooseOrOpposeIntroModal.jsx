@@ -6,13 +6,8 @@ import styled, { createGlobalStyle } from 'styled-components';
 import AppObservableStore from '../../../common/stores/AppObservableStore';
 import VoterStore from '../../../stores/VoterStore';
 import PositionPublicToggle from '../../PositionItem/PositionPublicToggle';
-import webAppConfig from '../../../config';
+import ByContinuingNotice from '../ByContinuingNotice';
 import ModalDisplayTemplateB from '../ModalDisplayTemplateB';
-
-const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ '../../../common/components/Widgets/OpenExternalWebSite'));
-
-const termsOfServiceURL = `${webAppConfig.WE_VOTE_URL_PROTOCOL + webAppConfig.WE_VOTE_HOSTNAME}/more/terms`;
-const privacyPolicyURL = `${webAppConfig.WE_VOTE_URL_PROTOCOL + webAppConfig.WE_VOTE_HOSTNAME}/privacy`;
 
 
 class ChooseOrOpposeIntroModal extends Component {
@@ -151,41 +146,9 @@ class ChooseOrOpposeIntroModal extends Component {
             <HelperText>
               Signing in is optional. Takes about 30 seconds. Free forever.
             </HelperText>
-            <TermsWrapper id="terms_Wrapper">
-              By continuing, you accept WeVote.US’s
-              <br />
-              {' '}
-              <Suspense fallback={<></>}>
-                <OpenExternalWebSite
-                  className="open-web-site"
-                  body={(
-                    <span>
-                      Terms of Service
-                    </span>
-                  )}
-                  linkIdAttribute="openTermsOfService"
-                  target="_blank"
-                  url={termsOfServiceURL}
-                />
-              </Suspense>
-              {' '}
-              and
-              {' '}
-              <Suspense fallback={<></>}>
-                <OpenExternalWebSite
-                  linkIdAttribute="openPrivacyPolicy"
-                  url={privacyPolicyURL}
-                  target="_blank"
-                  className="open-web-site open-web-site__no-right-padding"
-                  body={(
-                    <span>
-                      Privacy Policy
-                    </span>
-                  )}
-                />
-              </Suspense>
-              .
-            </TermsWrapper>
+            <TermsWrapperChooseOrOppose id="terms_Wrapper">
+              <ByContinuingNotice cordovaClose={this.props.onClose} />
+            </TermsWrapperChooseOrOppose>
           </>
         </Suspense>
       );
@@ -394,7 +357,7 @@ const SubTitleText = styled('div')`
   color: #4B4B4B;
 `;
 
-const TermsWrapper = styled('div')(({ theme }) => (`
+const TermsWrapperChooseOrOppose = styled('div')(({ theme }) => (`
   margin-top: 30px;
   font-size: 13px;
   font-weight: 400;
