@@ -8,6 +8,8 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import AnalyticsActions from '../../actions/AnalyticsActions';
 import LoadingWheel from '../../common/components/Widgets/LoadingWheel';
+import AppObservableStore from '../../common/stores/AppObservableStore';
+import { isCordova } from '../../common/utils/isCordovaOrWebApp';
 import { renderLog } from '../../common/utils/logging';
 import VoterStore from '../../stores/VoterStore';
 import { HeaderContentContainer } from '../Style/pageLayoutStyles';
@@ -17,7 +19,6 @@ import SettingsWidgetAccountType from './SettingsWidgetAccountType';
 import SettingsWidgetFirstLastName from './SettingsWidgetFirstLastName';
 import SettingsWidgetOrganizationDescription from './SettingsWidgetOrganizationDescription';
 import SettingsWidgetOrganizationWebsite from './SettingsWidgetOrganizationWebsite';
-import AppObservableStore from '../../common/stores/AppObservableStore';
 
 class SettingsProfile extends Component {
   constructor (props) {
@@ -62,7 +63,7 @@ class SettingsProfile extends Component {
       <HeaderContentContainer>
         <Helmet title="Name & Photo - WeVote" />
         <BrowserPushMessage incomingProps={this.props} />
-        <div className="card u-padding-bottom--lg">
+        <SettingsCardContainer>
           <div className="card-main">
             <HeaderContainer>
               <IdIcon />
@@ -88,7 +89,7 @@ class SettingsProfile extends Component {
               />
             </div>
           </div>
-        </div>
+        </SettingsCardContainer>
       </HeaderContentContainer>
     );
   }
@@ -123,5 +124,10 @@ const IdIcon = styled(AccountBoxIcon)`
   width: 23px;
   margin: 8px 8px 0 -2px;
 `;
+
+const SettingsCardContainer = styled('div')`
+  padding-bottom: ${isCordova() ? '66px' : '8px'};
+`;
+
 
 export default withStyles(styles)(SettingsProfile);
