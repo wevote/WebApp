@@ -224,6 +224,7 @@ class SettingsVerifySecretCode extends Component {
     const secretCodeVerificationStatus = VoterStore.getSecretCodeVerificationStatus();
     const { incorrectSecretCodeEntered, numberOfTriesRemaining, secretCodeVerified, voterMustRequestNewCode, voterSecretCodeRequestsLocked } = secretCodeVerificationStatus;
     // console.log(`onVoterStoreChange secretCodeVerified: ${secretCodeVerified}`);
+    // console.log(`onVoterStoreChange secretCodeVerificationStatus: ${JSON.stringify(secretCodeVerificationStatus)}`);
     if (secretCodeVerified) {
       // console.log('SettingsVerifySecretCode -- onVoterStoreChange secretCodeVerified: yes');
       this.closeSignInModalLocal();
@@ -244,6 +245,7 @@ class SettingsVerifySecretCode extends Component {
         errorToDisplay = true;
         errorMessageToDisplay = 'You\'ve reached the maximum number of tries.';
       } else if (incorrectSecretCodeEntered || numberOfTriesRemaining <= 4) {
+        // console.log('onVoterStoreChange DISPLAYING Incorrect code entered.');
         errorToDisplay = true;
         errorMessageToDisplay = 'Incorrect code entered.';
       }

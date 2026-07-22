@@ -1,8 +1,8 @@
 import { Facebook, X as Twitter } from '@mui/icons-material';
 import PropTypes from 'prop-types';
-import React, { Component, Suspense } from 'react';
-import TagManager from 'react-gtm-module';
+import React, { Component } from 'react';
 import Button from 'react-bootstrap/Button';
+import TagManager from 'react-gtm-module';
 import styled from 'styled-components';
 import AnalyticsActions from '../../../actions/AnalyticsActions';
 import TwitterActions from '../../../actions/TwitterActions';
@@ -14,11 +14,13 @@ import VoterEmailAddressEntry from '../../../components/Settings/VoterEmailAddre
 import VoterPhoneVerificationEntry from '../../../components/Settings/VoterPhoneVerificationEntry';
 import TwitterSignIn from '../../../components/Twitter/TwitterSignIn';
 import BrowserPushMessage from '../../../components/Widgets/BrowserPushMessage';
+import ByContinuingNotice from '../../../components/Widgets/ByContinuingNotice.jsx';
 import webAppConfig from '../../../config';
 import FacebookStore from '../../../stores/FacebookStore';
 import VoterStore from '../../../stores/VoterStore';
 import initializeAppleSDK from '../../../utils/initializeAppleSDK';
 import initializeFacebookSDK from '../../../utils/initializeFacebookSDK';
+import lookupPageNameAndPageTypeDict, { getPageDetails } from '../../../utils/lookupPageNameAndPageTypeDict';
 import AppObservableStore, { messageService } from '../../stores/AppObservableStore';
 import { isIPhone4in, isIPhone4p7in, restoreStylesAfterCordovaKeyboard } from '../../utils/cordovaUtils';
 import { normalizedHref } from '../../utils/hrefUtils';
@@ -29,9 +31,7 @@ import stringContains from '../../utils/stringContains';
 import LoadingWheel from '../Widgets/LoadingWheel';
 import signInModalGlobalState from '../Widgets/signInModalGlobalState';
 import SnackNotifier, { openSnackbar } from '../Widgets/SnackNotifier';
-import lookupPageNameAndPageTypeDict, { getPageDetails } from '../../../utils/lookupPageNameAndPageTypeDict';
 
-const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ '../Widgets/OpenExternalWebSite'));
 /* global $ */
 
 const debugMode = false;
@@ -61,6 +61,7 @@ export default class SignInOptionsPanel extends Component {
     this.toggleTwitterDisconnectOpen = this.toggleTwitterDisconnectOpen.bind(this);
     this.voterSplitIntoTwoAccounts = this.voterSplitIntoTwoAccounts.bind(this);
     this.hideDialogForCordovaLocal = this.hideDialogForCordovaLocal.bind(this);
+    this.closeSignInModalLocal = this.closeSignInModalLocal.bind(this);
   }
 
   // See https://reactjs.org/docs/error-boundaries.html
@@ -429,8 +430,6 @@ export default class SignInOptionsPanel extends Component {
     //   'hideFacebookSignInButton', hideFacebookSignInButton, 'hideDialogForCordova', hideDialogForCordova,
     //   '\nisOnFacebookSupportedDomainUrl', isOnFacebookSupportedDomainUrl, 'isOnWeVoteRootUrl', isOnWeVoteRootUrl);
 
-    const termsOfServiceURL = `${webAppConfig.WE_VOTE_URL_PROTOCOL + webAppConfig.WE_VOTE_HOSTNAME}/more/terms`;
-    const privacyPolicyURL = `${webAppConfig.WE_VOTE_URL_PROTOCOL + webAppConfig.WE_VOTE_HOSTNAME}/privacy`;
     const isTinyScreen =  isIPhone4in() || isIPhone4p7in() || window.innerWidth <= 375;
 
     return (
@@ -628,40 +627,9 @@ export default class SignInOptionsPanel extends Component {
               <br />
             </div>
             )}
-            <TermsWrapper id="terms_Wrapper">
-              By continuing, you accept WeVote.US’s
-              {' '}
-              <Suspense fallback={<></>}>
-                <OpenExternalWebSite
-                  className="open-web-site"
-                  body={(
-                    <span>
-                      Terms of Service
-                    </span>
-                  )}
-                  linkIdAttribute="openTermsOfService"
-                  target="_blank"
-                  url={termsOfServiceURL}
-                />
-              </Suspense>
-              {' '}
-              and
-              {' '}
-              <Suspense fallback={<></>}>
-                <OpenExternalWebSite
-                  linkIdAttribute="openPrivacyPolicy"
-                  url={privacyPolicyURL}
-                  target="_blank"
-                  className="open-web-site open-web-site__no-right-padding"
-                  body={(
-                    <span>
-                      Privacy Policy
-                    </span>
-                  )}
-                />
-              </Suspense>
-              .
-            </TermsWrapper>
+            <SignInOptionsTermsWrapper id="terms_Wrapper">
+              <ByContinuingNotice cordovaClose={this.closeSignInModalLocal} />
+            </SignInOptionsTermsWrapper>
           </Main>
         </SignInOptionsPanelWrapper>
       </>
@@ -688,7 +656,7 @@ const OrWrapper = styled('div')(({ theme }) => (`
   }
 `));
 
-const TermsWrapper = styled('div')(({ theme }) => (`
+const SignInOptionsTermsWrapper = styled('div')(({ theme }) => (`
   margin-top: 30px;
   // font-weight: 600;
   // ${theme.breakpoints.down('sm')} {

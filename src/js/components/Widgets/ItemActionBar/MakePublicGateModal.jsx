@@ -1,20 +1,16 @@
 import { Button } from '@mui/material';
 import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
-import React, { Suspense, useCallback, useEffect, useRef } from 'react';
+import React, { useCallback, useEffect, useRef } from 'react';
 import TagManager from 'react-gtm-module';
 import styled from 'styled-components';
-import ModalDisplayTemplateA from '../ModalDisplayTemplateA';
 import AppObservableStore from '../../../common/stores/AppObservableStore';
 import PoliticianStore from '../../../common/stores/PoliticianStore';
 import VoterStore from '../../../stores/VoterStore';
 import lookupPageNameAndPageTypeDict, { getPageDetails } from '../../../utils/lookupPageNameAndPageTypeDict';
-import webAppConfig from '../../../config';
+import ByContinuingNotice from '../ByContinuingNotice';
+import ModalDisplayTemplateA from '../ModalDisplayTemplateA';
 
-const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ '../../../common/components/Widgets/OpenExternalWebSite'));
-
-const termsOfServiceURL = `${webAppConfig.WE_VOTE_URL_PROTOCOL + webAppConfig.WE_VOTE_HOSTNAME}/more/terms`;
-const privacyPolicyURL = `${webAppConfig.WE_VOTE_URL_PROTOCOL + webAppConfig.WE_VOTE_HOSTNAME}/privacy`;
 
 function MakePublicGateModal ({ classes, politicianWeVoteId }) {
   const campaignXWeVoteIdRef = useRef('');
@@ -136,39 +132,7 @@ function MakePublicGateModal ({ classes, politicianWeVoteId }) {
         Signing in is optional. Takes about 30 seconds. Free forever.
       </HelperText>
       <TermsWrapper id="terms_Wrapper">
-        By continuing, you accept WeVote.US’s
-        <br />
-        {' '}
-        <Suspense fallback={<></>}>
-          <OpenExternalWebSite
-            className="open-web-site"
-            body={(
-              <span>
-                Terms of Service
-              </span>
-            )}
-            linkIdAttribute="openTermsOfService"
-            target="_blank"
-            url={termsOfServiceURL}
-          />
-        </Suspense>
-        {' '}
-        and
-        {' '}
-        <Suspense fallback={<></>}>
-          <OpenExternalWebSite
-            linkIdAttribute="openPrivacyPolicy"
-            url={privacyPolicyURL}
-            target="_blank"
-            className="open-web-site open-web-site__no-right-padding"
-            body={(
-              <span>
-                Privacy Policy
-              </span>
-            )}
-          />
-        </Suspense>
-        .
+        <ByContinuingNotice cordovaClose={handleCloseMakePublicGateModal} />
       </TermsWrapper>
     </MakePublicGateModalContainer>
   );
