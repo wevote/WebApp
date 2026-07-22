@@ -346,8 +346,8 @@ const CardTitleUpcoming = styled('h1')(({ theme }) => (`
   margin-bottom: 8px;
   margin-top: 12px;
   text-align: center;
-  ${theme.breakpoints.down('xs')} {
-    font-size: 60px;
+  ${theme.breakpoints.down('md')} {
+    font-size: 40px;
   }
 `));
 
@@ -358,7 +358,7 @@ const CardTitleToday = styled('h1')(({ theme }) => (`
   margin-bottom: 8px;
   margin-top: 0;
   text-align: center;
-  ${theme.breakpoints.down('xs')} {
+  ${theme.breakpoints.down('md')} {
     font-size: 40px;
   }
 `));

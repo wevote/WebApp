@@ -63,8 +63,6 @@ export const ElectionNameH1 = styled('h1', {
   padding-top: 5px;
   padding-bottom: 18px;
   ${theme.breakpoints.down('sm')} {
-    padding-top: 5px;
-    padding-bottom: 10px;
     white-space: normal;
   }
   ${() => (isIOs6p1OrSmaller() ? 'font-weight: 600;' : '')}
