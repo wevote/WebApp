@@ -124,6 +124,7 @@ const SharedItemLanding = React.lazy(() => import(/* webpackChunkName: 'SharedIt
 const SignInEmailProcess = React.lazy(() => import(/* webpackChunkName: 'SignInEmailProcess' */ './js/pages/Process/SignInEmailProcess'));
 const SignInJumpProcess = React.lazy(() => import(/* webpackChunkName: 'SignInJumpProcess' */ './js/pages/Process/SignInJumpProcess'));
 const Squads = React.lazy(() => import(/* webpackChunkName: 'Squads' */ './js/pages/Squads'));
+const SupporterLandingChooseCandidate = React.lazy(() => import(/* webpackChunkName: 'SupporterLandingChooseCandidate' */ './js/pages/SupporterLanding/SupporterLandingChooseCandidate'));
 const SuperSharingAddContacts = React.lazy(() => import(/* webpackChunkName: 'SuperSharingAddContacts' */ './js/common/pages/SuperSharing/SuperSharingAddContacts'));
 const SuperSharingChooseRecipients = React.lazy(() => import(/* webpackChunkName: 'SuperSharingChooseRecipients' */ './js/common/pages/SuperSharing/SuperSharingChooseRecipients'));
 const SuperSharingComposeEmailMessage = React.lazy(() => import(/* webpackChunkName: 'SuperSharingComposeEmailMessage' */ './js/common/pages/SuperSharing/SuperSharingComposeEmailMessage'));
@@ -663,6 +664,7 @@ class App extends Component {
                   <Route path="/setupaccount/:set_up_page" exact component={SetUpAccountRoot} />
                   <Route path="/setupaccount" exact><SetUpAccountRoot /></Route>
                   <Route path="/squads" exact><Squads /></Route>
+                  <Route path="/supporterlanding" exact component={SupporterLandingChooseCandidate} />
                   <Route path="/standards-against-child-sexual-abuse-and-exploitation-csae" component={ChildSafety} />
                   <Route exact path="/start-a-campaign"><CampaignStartIntro /></Route>
                   <Route exact path="/start-a-challenge"><ChallengeStartIntro /></Route>
