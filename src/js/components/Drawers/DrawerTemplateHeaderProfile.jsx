@@ -6,7 +6,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import DesignTokenColors from '../../common/components/Style/DesignTokenColors';
 import AppObservableStore, { messageService } from '../../common/stores/AppObservableStore';
-import { hasCordovaNotch, heightOfCordovaSpacer, isIPadSmallerThan13 } from '../../common/utils/cordovaUtils';
+import { hasCordovaNotch, heightOfCordovaSpacer, isIPadSmallerThan13, isIPhoneMiniOrSmaller } from '../../common/utils/cordovaUtils';
 import { renderLog } from '../../common/utils/logging';
 import { CloseDrawerIconWrapper, DrawerHeaderAnimateDownInnerContainer, DrawerHeaderAnimateDownOuterContainer, DrawerHeaderWrapper, DrawerTitle } from '../Style/drawerLayoutStyles';
 
@@ -133,7 +133,7 @@ DrawerTemplateHeaderProfile.propTypes = {
 const styles = () => ({
   drawer: {
     marginTop: `${heightOfCordovaSpacer(true)} !important`,
-    width: '80%',
+    width: isIPhoneMiniOrSmaller() ? '90%' : '80%',
   },
   dialogPaper: {
     display: 'block',

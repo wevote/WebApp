@@ -4,6 +4,9 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import DesignTokenColors from '../../common/components/Style/DesignTokenColors';
 import { ElectionStateLabel } from '../../components/Style/BallotTitleHeaderStyles';
+import muiTheme from '../../common/components/Style/muiTheme';
+
+const theme = muiTheme;
 
 export const ActionChip = styled('button')`
   display: inline-flex;
@@ -165,6 +168,9 @@ export const ElectionLink = styled('span')`
   cursor: pointer;
   &:hover {
     text-decoration: underline;
+  }
+  ${theme.breakpoints.down('md')} {
+    font-size: 14px;
   }
 `;
 
@@ -387,6 +393,9 @@ export const ShowMoreButton = styled('button')`
   &:hover {
     border-color: #2e3c5d;
     color: ${DesignTokenColors.neutral800};
+  }
+  ${theme.breakpoints.down('md')} {
+    margin-bottom: 70px;
   }
 `;
 

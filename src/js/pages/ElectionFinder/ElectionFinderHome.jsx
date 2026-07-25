@@ -148,7 +148,7 @@ function ElectionFinderHome () {
 
   const emptyListMessage = (() => {
     if (electionList.length === 0) return 'Loading...';
-    if (searchText) {
+    if (searchText.length) {
       if (candidateSearchLoading) return 'Fetching data...';
       return 'Your search did not return any results. Try another search.';
     }
@@ -256,7 +256,7 @@ function ElectionFinderHome () {
         </SectionTitleRow>
 
         <ElectionList>
-          {(searchText ? displayElections : displayElections.slice(0, visibleCount)).map((election) => {
+          {(searchText.length ? displayElections : displayElections.slice(0, visibleCount)).map((election) => {
             const googleCivicElectionId = election.google_civic_election_id;
             const sc = (election.state_code_list && election.state_code_list.length > 0) ?
               election.state_code_list[0].toLowerCase() :
@@ -313,7 +313,7 @@ function ElectionFinderHome () {
                     ]}
                   />
                 </ElectionRow>
-                {searchText && election.matchedOffices && election.matchedOffices.map((office) => (
+                {searchText.length > 0 && election.matchedOffices && election.matchedOffices.map((office) => (
                   <OfficeSection key={office.officeWeVoteId || office.officeName}>
                     <OfficeName style={{ display: 'block', padding: '7px 16px 7px 32px' }}>
                       {highlightMatch(office.officeName, searchText)}
@@ -340,7 +340,7 @@ function ElectionFinderHome () {
               </React.Fragment>
             );
           })}
-          {!searchText && displayElections.length > visibleCount && (
+          {searchText.length < 1 && displayElections.length > visibleCount && (
             <ShowMoreButton onClick={() => setVisibleCount((prev) => prev + 50)}>
               {`Show more (${displayElections.length - visibleCount} remaining)`}
             </ShowMoreButton>
