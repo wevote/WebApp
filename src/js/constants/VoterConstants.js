@@ -41,6 +41,7 @@ const VoterConstants = {
   // NOTIFICATION_FRIEND_MESSAGES: n/a, // In App: "Show me responses to my friend requests"
   NOTIFICATION_FRIEND_MESSAGES_EMAIL: 65536, // Email: "Show me responses to my friend requests" - friendaccept
   NOTIFICATION_FRIEND_MESSAGES_SMS: 131072, // SMS: "Show me responses to my friend requests"
+  NOTIFICATION_WEVOTE_POLITICIAN_CAMPAIGN_EMAIL: 524288, // Email: "As a politician, would you like to update your info?" - politiciancampaign
 
   // Used for converting features_provided_bitmap into which features this voter can choose to use
   // Mirrored in WeVoteServer/organization/models.py

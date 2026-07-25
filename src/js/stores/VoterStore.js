@@ -506,7 +506,7 @@ class VoterStore extends ReduceStore {
   getNotificationSettingConstantFromUnsubscribeModifier (unsubscribeModifier) {
     // New unsubscribe modifiers also need to be added in WeVoteServer
     let notificationSettingConstant = 0;
-    // dailyfriendactivity, friendaccept, friendinvite, friendopinions, friendopinionsall, friendmessage, login, newsletter
+    // dailyfriendactivity, friendaccept, friendinvite, friendopinions, friendopinionsall, friendmessage, login, newsletter, politiciancampaign
     // NOT IMPLEMENTED YET: suggestedfriend == NOTIFICATION_SUGGESTED_FRIENDS_EMAIL
     if (unsubscribeModifier === 'dailyfriendactivity') {
       notificationSettingConstant = VoterConstants.NOTIFICATION_VOTER_DAILY_SUMMARY_EMAIL;
@@ -520,6 +520,8 @@ class VoterStore extends ReduceStore {
       notificationSettingConstant = VoterConstants.NOTIFICATION_LOGIN_EMAIL;
     } else if (unsubscribeModifier === 'newsletter') {
       notificationSettingConstant = VoterConstants.NOTIFICATION_NEWSLETTER_OPT_IN;
+    } else if (unsubscribeModifier === 'politiciancampaign') {
+      notificationSettingConstant = VoterConstants.NOTIFICATION_WEVOTE_POLITICIAN_CAMPAIGN_EMAIL;
     }
     return notificationSettingConstant;
   }
