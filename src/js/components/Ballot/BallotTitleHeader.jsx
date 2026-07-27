@@ -3,25 +3,25 @@ import withStyles from '@mui/styles/withStyles';
 import withTheme from '@mui/styles/withTheme';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
-import TagManager from 'react-gtm-module';
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import Tooltip from 'react-bootstrap/Tooltip';
+import TagManager from 'react-gtm-module';
 import styled from 'styled-components';
+import DesignTokenColors from '../../common/components/Style/DesignTokenColors';
 import AppObservableStore from '../../common/stores/AppObservableStore';
 import { isAndroidSizeWide, isIPad } from '../../common/utils/cordovaUtils';
 import { formatDateToMonthDayYear } from '../../common/utils/dateFormat';
 import daysUntil from '../../common/utils/daysUntil';
 import initializeMoment from '../../common/utils/initializeMoment';
 import { isAndroid } from '../../common/utils/isCordovaOrWebApp';
+import isMobileScreenSize from '../../common/utils/isMobileScreenSize';
 import { renderLog } from '../../common/utils/logging';
 import stringContains from '../../common/utils/stringContains';
 import BallotStore from '../../stores/BallotStore';
 import VoterStore from '../../stores/VoterStore';
 import { getPageDetails } from '../../utils/lookupPageNameAndPageTypeDict';
-import { BallotAddress, ClickBlockWrapper, ContentWrapper, ElectionDateBelow, ElectionDateRight, ElectionNameBlock, ElectionNameH1, ElectionNameScrollContent, ElectionStateLabel, OverflowContainer, OverflowContent, VoteByBelowLabel, VoteByBelowWrapper, VoteByRightLabel, VoteByRightWrapper } from '../Style/BallotTitleHeaderStyles';
+import { AddressSpanLimited, BallotAddress, BallotAddressWrapper, ClickBlockWrapper, ContentWrapper, ElectionDateBelow, ElectionDateRight, ElectionNameBlock, ElectionNameH1, ElectionNameScrollContent, ElectionStateLabel, OverflowContainer, OverflowContent, VoteByBelowLabel, VoteByBelowWrapper, VoteByRightLabel, VoteByRightWrapper } from '../Style/BallotTitleHeaderStyles';
 import BallotTitleHeaderNationalPlaceholder from './BallotTitleHeaderNationalPlaceholder';
-import isMobileScreenSize from '../../common/utils/isMobileScreenSize';
-import DesignTokenColors from '../../common/components/Style/DesignTokenColors';
 
 const ShareButtonDesktopTablet = React.lazy(() => import(/* webpackChunkName: 'ShareButtonDesktopTablet' */ '../Share/ShareButtonDesktopTablet'));
 
@@ -275,45 +275,41 @@ class BallotTitleHeader extends Component {
                           ) : (
                             <>
                               {((textForMapSearch && textForMapSearch !== '' && textForMapSearch.length >= 2) || (originalTextAddress && originalTextAddress !== '' && originalTextAddress.length >= 2)) ? (
-                                <BallotAddress tabIndex={-1}
-                                  allowTextWrap={allowTextWrap}
-                                  centerText={centerText}
-                                  className={linksOff ? '' : 'u-cursor--pointer'}
-                                  id="ballotTitleBallotAddress"
-                                  onClick={() => this.showSelectBallotModalEditAddress('ballotTitleBallotAddress')}
-                                >
-                                  Ballot for
-                                  {' '}
-                                  <span
-                                    // tabIndex={0}
-                                    className={linksOff ? '' : 'u-link-color u-link-underline-on-hover'}
+                                <BallotAddressWrapper id="BallotAddressWrapper1">
+                                  <BallotAddress tabIndex={-1}
+                                    allowTextWrap={allowTextWrap}
+                                    centerText={centerText}
+                                    className={linksOff ? '' : 'u-cursor--pointer'}
+                                    id="ballotTitleBallotAddress"
+                                    onClick={() => this.showSelectBallotModalEditAddress('ballotTitleBallotAddress')}
                                   >
-                                    <span>
-                                      {(textForMapSearch && textForMapSearch !== '') ? textForMapSearch : originalTextAddress}
-                                    </span>
-                                    {linksOff ? <></> : editIconStyled}
-                                  </span>
-                                </BallotAddress>
+                                    Ballot for
+                                    {' '}
+                                      <AddressSpanLimited id="BallotFor1" className={linksOff ? '' : 'u-link-color u-link-underline-on-hover'}>
+                                        {(textForMapSearch && textForMapSearch !== '') ? textForMapSearch : originalTextAddress}
+                                      </AddressSpanLimited>
+                                      {linksOff ? <></> : editIconStyled}
+                                  </BallotAddress>
+                                </BallotAddressWrapper>
                               ) : (
                                 <>
                                   {(substitutedAddress && substitutedAddress !== '' && substitutedAddress.length >= 2) ? (
-                                    <BallotAddress
-                                      allowTextWrap={allowTextWrap}
-                                      centerText={centerText}
-                                      className={linksOff ? '' : 'u-cursor--pointer'}
-                                      id="ballotTitleBallotAddressSubstituted"
-                                      onClick={() => this.showSelectBallotModalEditAddress('ballotTitleBallotAddressSubstituted')}
-                                    >
-                                      Ballot for
-                                      {' '}
-                                      <span
-                                        // tabIndex={0}
-                                        className={linksOff ? '' : 'u-link-color u-link-underline-on-hover'}
+                                    <BallotAddressWrapper id="BallotAddressWrapper2">
+                                      <BallotAddress
+                                        allowTextWrap={allowTextWrap}
+                                        centerText={centerText}
+                                        className={linksOff ? '' : 'u-cursor--pointer'}
+                                        id="ballotTitleBallotAddressSubstituted"
+                                        onClick={() => this.showSelectBallotModalEditAddress('ballotTitleBallotAddressSubstituted')}
                                       >
-                                        {substitutedAddress}
-                                      </span>
-                                      {linksOff ? <></> : editIconStyled}
-                                    </BallotAddress>
+                                        Ballot for
+                                        {' '}
+                                        <AddressSpanLimited id="BallotFor2" className={linksOff ? '' : 'u-link-color u-link-underline-on-hover'}>
+                                          {substitutedAddress}
+                                        </AddressSpanLimited>
+                                        {linksOff ? <></> : editIconStyled}
+                                      </BallotAddress>
+                                    </BallotAddressWrapper>
                                   ) : (
                                     <BallotAddress tabIndex={-1}
                                       allowTextWrap={allowTextWrap}
