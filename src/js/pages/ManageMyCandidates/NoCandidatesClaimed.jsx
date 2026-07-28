@@ -121,6 +121,12 @@ function NoCandidateClaimed () {
       <ManageCandidatesLink href="/managecandidates">
         Candidates I&apos;m Managing
       </ManageCandidatesLink>
+      <br />
+      <br />
+      <ManageCandidatesLink href="/supporterlanding">
+        Supporter Landing Page
+      </ManageCandidatesLink>
+
     </Container>
   );
 }
