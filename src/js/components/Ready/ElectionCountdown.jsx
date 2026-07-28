@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import React, { Suspense } from 'react';
 import styled from 'styled-components';
 import BallotActions from '../../actions/BallotActions';
+import isMobileScreenSize from '../../common/utils/isMobileScreenSize';
 import BallotTitleHeader from '../Ballot/BallotTitleHeader';
 import BallotTitleHeaderNationalPlaceholder from '../Ballot/BallotTitleHeaderNationalPlaceholder';
 import { formatDateToMonthDayYear } from '../../common/utils/dateFormat';
@@ -220,7 +221,7 @@ class ElectionCountdown extends React.Component {
             centerText
             toggleSelectBallotModal={this.toggleSelectBallotModal}
             turnOffVoteByBelow
-            allowTextWrap
+            allowTextWrap={!isMobileScreenSize()}
           />
         </CountdownTitleHeaderWrapper>
       </CardCountdownInternalWrapper>

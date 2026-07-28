@@ -1,5 +1,4 @@
 import { Edit } from '@mui/icons-material';
-import parser from 'parse-address';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import TagManager from 'react-gtm-module';
@@ -11,7 +10,9 @@ import stringContains from '../../common/utils/stringContains';
 import BallotStore from '../../stores/BallotStore';
 import VoterStore from '../../stores/VoterStore';
 import { getPageDetails } from '../../utils/lookupPageNameAndPageTypeDict';
-import { BallotAddress, ClickBlockWrapper, ContentWrapper, ElectionDateBelow, ElectionDateRight, ElectionNameBlock, ElectionNameH1, ElectionNameScrollContent, ElectionStateLabel, OverflowContainer, OverflowContent, VoteByBelowLabel, VoteByBelowWrapper, VoteByRightLabel, VoteByRightWrapper } from '../Style/BallotTitleHeaderStyles';
+import { AddressSpanLimited, BallotAddress, ClickBlockWrapper, ContentWrapper,
+  ElectionDateBelow, ElectionDateRight, ElectionNameBlock, ElectionNameH1, ElectionNameScrollContent,
+  ElectionStateLabel, OverflowContainer, OverflowContent, VoteByBelowLabel, VoteByBelowWrapper, VoteByRightLabel, VoteByRightWrapper } from '../Style/BallotTitleHeaderStyles';
 
 
 class BallotTitleHeaderNationalPlaceholder extends Component {
@@ -171,7 +172,8 @@ class BallotTitleHeaderNationalPlaceholder extends Component {
                         >
                           Ballot for
                           {' '}
-                          <span
+                          <AddressSpanLimited
+                            id="BallotFor3"
                             tabIndex={0}
                             role="button"
                             onKeyDown={(event) => {
@@ -180,7 +182,7 @@ class BallotTitleHeaderNationalPlaceholder extends Component {
                             className={linksOff ? '' : 'u-link-color'}
                           >
                             {textForMapSearch}
-                          </span>
+                          </AddressSpanLimited>
                         </BallotAddress>
                       ) : (
                         <BallotAddress tabIndex={-1}
