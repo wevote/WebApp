@@ -315,7 +315,11 @@ class CampaignsHome extends Component {
   }
 
   onPoliticianStoreChange () {
-    const politicianList = PoliticianStore.getPoliticianList();
+    // Note: We deliberately use getPoliticianQueryResultsList (scoped to the most recent politiciansQuery for this
+    // state/search) rather than getPoliticianList (every politician ever cached client-side). Otherwise, opening a
+    // candidate's side drawer -- which triggers a one-off politicianRetrieve so the drawer has full profile data --
+    // would cause that politician to unexpectedly appear in this page's "Politicians" row.
+    const politicianList = PoliticianStore.getPoliticianQueryResultsList();
     // Note: sorting is being done in PoliticianListRoot
     const { politicianListToShow } = this.splitUpPoliticianList(politicianList);  // representativeListIsBattleground
     this.setState({

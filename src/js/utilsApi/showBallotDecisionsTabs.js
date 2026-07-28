@@ -9,7 +9,5 @@ export default function showBallotDecisionsTabs () {
   // const isMobileScreenSizeForShowBallotDecisionsTabs = window.innerWidth < 500;
   // console.log('window.innerWidth:', window.innerWidth, ', isMobileScreenSizeForShowBallotDecisionsTabs:', isMobileScreenSizeForShowBallotDecisionsTabs);
   return (BallotStore.ballotLength !== BallotStore.ballotRemainingChoicesLength) &&
-    (BallotStore.ballotRemainingChoicesLength > 0) &&
-    // !isMobileScreenSizeForShowBallotDecisionsTabs &&
-    isWebApp();  // November 2025:  Disabled for Cordova until the feature is finished and released to production
+    (BallotStore.ballotRemainingChoicesLength > 0);
 }

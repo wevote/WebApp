@@ -1741,9 +1741,9 @@ const BallotBottomWrapper = styled('div', {
   shouldForwardProp: (prop) => !['scrolledDown'].includes(prop),
 })(({ scrolledDown, theme }) => {
   return (`
-    ${isWebApp() ? (scrolledDown || showBallotDecisionsTabs() ? 'margin-top: 12px;' : 'margin-top: 38px;') : ''}
-    ${showBallotDecisionsTabs() ? '' : ''}
-    ${isWebApp() ? 'transition: all 150ms ease-in;' : ''}
+    ${scrolledDown || showBallotDecisionsTabs() ? 'margin-top: 12px;' : 'margin-top: 38px;'}
+    ${isCordova() && isMobileScreenSize() && 'margin-top: 0 !important;'}
+    transition: all 150ms ease-in;
     width: 100%;
     ${theme.breakpoints.down('sm') && isWebApp()} {
       ${isWebApp() ? (scrolledDown ? 'margin-top: 10px;' : 'margin-top: 20px;') : ''}

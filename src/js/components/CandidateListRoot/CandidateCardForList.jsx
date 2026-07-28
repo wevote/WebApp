@@ -3,6 +3,7 @@ import React, { Component, Suspense } from 'react';
 import CardForListBodyPlaceholder from '../../common/components/CardForListBodyPlaceholder';
 import { getTodayAsInteger } from '../../common/utils/dateFormat';
 import { renderLog } from '../../common/utils/logging';
+import AppObservableStore from '../../common/stores/AppObservableStore';
 import CampaignSupporterStore from '../../common/stores/CampaignSupporterStore';
 import CandidateStore from '../../stores/CandidateStore';
 import keepHelpingDestination from '../../common/utils/keepHelpingDestination';
@@ -21,6 +22,7 @@ class CandidateCardForList extends Component {
     this.getCampaignXBasePath = this.getCampaignXBasePath.bind(this);
     this.getPathToUseToKeepHelping = this.getPathToUseToKeepHelping.bind(this);
     this.getPoliticianBasePath = this.getPoliticianBasePath.bind(this);
+    this.onCandidateNameClick = this.onCandidateNameClick.bind(this);
     // this.pullCampaignXSupporterVoterEntry = this.pullCampaignXSupporterVoterEntry.bind(this);
   }
 
@@ -78,6 +80,18 @@ class CandidateCardForList extends Component {
       candidate,
       linkedCampaignXWeVoteId,
     });
+  }
+
+  onCandidateNameClick () {
+    const { candidate } = this.state;
+    const candidateWeVoteId = candidate && candidate.we_vote_id;
+    if (!candidateWeVoteId) {
+      return;
+    }
+    AppObservableStore.setOrganizationModalBallotItemWeVoteId(candidateWeVoteId);
+    AppObservableStore.setHideOrganizationModalBallotItemInfo(false);
+    AppObservableStore.setHideOrganizationModalPositions(false);
+    AppObservableStore.setShowOrganizationModal(true);
   }
 
   getCampaignXBasePath () {
@@ -232,6 +246,7 @@ class CandidateCardForList extends Component {
           limitCardWidth={limitCardWidth}
           linkedCampaignXWeVoteId={linkedCampaignXWeVoteId}
           officeName={contestOfficeName}
+          onDisplayNameClick={candidateWeVoteId ? this.onCandidateNameClick : undefined}
           pathToUseToKeepHelping={pathToUseToKeepHelping}
           photoLargeUrl={candidatePhotoLargeUrl}
           politicalParty={politicalParty.length ? politicalParty : ''}

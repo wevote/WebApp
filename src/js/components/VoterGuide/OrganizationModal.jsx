@@ -27,6 +27,7 @@ import MeasureStore from '../../stores/MeasureStore';
 import VoterGuideStore from '../../stores/VoterGuideStore';
 import VoterStore from '../../stores/VoterStore';
 import CardForListBodySkeleton from '../../common/components/CardForListBodySkeleton';
+import PoliticianStore from '../../common/stores/PoliticianStore';
 import VoterPositionEntryAndDisplay from '../PositionItem/VoterPositionEntryAndDisplay';
 import { Candidate, CandidateNameAndPartyWrapper, CandidateNameH4, CandidateParty, CandidateTopRow } from '../Style/BallotStyles';
 import { DrawerHeaderAnimateDownInnerContainer, DrawerHeaderAnimateDownOuterContainer } from '../Style/drawerLayoutStyles';
@@ -79,13 +80,17 @@ class OrganizationModal extends Component {
     this.appStateSubscription = messageService.getMessage().subscribe(() => this.onAppObservableStoreChange());
     this.candidateStoreListener = CandidateStore.addListener(this.onCandidateStoreChange.bind(this));
     this.measureStoreListener = MeasureStore.addListener(this.onMeasureStoreChange.bind(this));
+    this.politicianStoreListener = PoliticianStore.addListener(this.onPoliticianStoreChange.bind(this));
     const { ballotItemWeVoteId } = this.props;
     // console.log('ballotItemWeVoteId:', ballotItemWeVoteId);
     const isMeasure = stringContains('meas', ballotItemWeVoteId);
     const isCandidate = stringContains('cand', ballotItemWeVoteId);
+    // A politician we_vote_id can be passed directly when a politician has no linked candidate record to show instead
+    const isPolitician = !isCandidate && !isMeasure;
     this.setState({
       isCandidate,
       isMeasure,
+      isPolitician,
     });
     setTimeout(() => {
       const drawer = document.querySelector('.MuiDrawer-paper');
@@ -172,6 +177,23 @@ class OrganizationModal extends Component {
       });
       AnalyticsActions.saveActionMeasure(VoterStore.electionId(), ballotItemWeVoteId);
     }
+    if (isPolitician) {
+      PoliticianActions.politicianRetrieve(ballotItemWeVoteId);
+      const politician = PoliticianStore.getPoliticianByWeVoteId(ballotItemWeVoteId);
+      const {
+        linked_campaignx_we_vote_id: linkedCampaignXWeVoteId,
+        political_party: politicalParty,
+        politician_name: ballotItemDisplayName,
+        we_vote_hosted_profile_image_url_large: politicianImageUrlLarge,
+      } = politician;
+      this.setState({
+        ballotItemDisplayName,
+        linkedCampaignXWeVoteId,
+        politicalParty,
+        politicianImageUrlLarge,
+        politicianWeVoteId: ballotItemWeVoteId,
+      });
+    }
     if (apiCalming('organizationsFollowedRetrieve', 60000)) {
       OrganizationActions.organizationsFollowedRetrieve();
     }
@@ -205,6 +227,7 @@ class OrganizationModal extends Component {
   componentWillUnmount () {
     this.candidateStoreListener.remove();
     this.measureStoreListener.remove();
+    this.politicianStoreListener.remove();
     this.appStateSubscription.unsubscribe();
     AppObservableStore.setScrolledDownDrawer(false);
   }
@@ -293,6 +316,26 @@ class OrganizationModal extends Component {
     }
   }
 
+  onPoliticianStoreChange () {
+    const { ballotItemWeVoteId } = this.props;
+    const { isPolitician } = this.state;
+    if (isPolitician) {
+      const politician = PoliticianStore.getPoliticianByWeVoteId(ballotItemWeVoteId);
+      const {
+        linked_campaignx_we_vote_id: linkedCampaignXWeVoteId,
+        political_party: politicalParty,
+        politician_name: ballotItemDisplayName,
+        we_vote_hosted_profile_image_url_large: politicianImageUrlLarge,
+      } = politician;
+      this.setState({
+        ballotItemDisplayName,
+        linkedCampaignXWeVoteId,
+        politicalParty,
+        politicianImageUrlLarge,
+      });
+    }
+  }
+
   // handleResizeLocal () {
   //   if (handleResize('Footer')) {
   //     // console.log('Footer handleResizeEntry update');
@@ -343,7 +386,7 @@ class OrganizationModal extends Component {
     const { ballotItemWeVoteId, classes, hideBallotItemInfo, hidePositions, params } = this.props;
     const {
       allCachedPositionsForThisBallotItem, ballotItemDisplayName,
-      isCandidate, isMeasure, linkedCampaignXWeVoteId, modalOpen,
+      isCandidate, isMeasure, isPolitician, linkedCampaignXWeVoteId, modalOpen,
       politicianWeVoteId, scrolledDown, unFurlPositions, politicalParty, politicianImageUrlLarge,
     } = this.state;
     const avatarBackgroundImage = normalizedImagePath('../img/global/svg-icons/avatar-generic.svg');
@@ -433,7 +476,7 @@ class OrganizationModal extends Component {
             </HeartToggleAndThermometerWrapper>
           </DrawerHeaderAnimateDownInnerContainer>
         </DrawerHeaderAnimateDownOuterContainer>
-        {(isCandidate && !hideBallotItemInfo) && (
+        {((isCandidate || isPolitician) && !hideBallotItemInfo) && (
           <PoliticianCardForListWrapper>
             <Suspense fallback={<OrganizationModalPoliticianCardSkeleton />}>
               <PoliticianCardForList
@@ -445,20 +488,22 @@ class OrganizationModal extends Component {
                 useVerticalCard
               />
             </Suspense>
-            <Suspense fallback={(
-              <Box display="flex" gap={1} flexWrap="wrap" sx={{ mb: 2 }}>
-                <Skeleton variant="rounded" width={80} height={24} sx={{ borderRadius: 3 }} />
-                <Skeleton variant="rounded" width={100} height={24} sx={{ borderRadius: 3 }} />
-                <Skeleton variant="rounded" width={90} height={24} sx={{ borderRadius: 3 }} />
-                <Skeleton variant="rounded" width={70} height={24} sx={{ borderRadius: 3 }} />
-              </Box>
-            )}>  {/* CORDOVA_TOKEN_AT_CLOSE_OF_A_MULTI_LINE_FALLBACK_DO_NOT_REMOVE */}
-              <IssuesByBallotItemDisplayList
-                ballotItemDisplayName={ballotItemDisplayName}
-                ballotItemWeVoteId={ballotItemWeVoteId}
-                externalUniqueId={`candidateItem-${ballotItemWeVoteId}`}
-              />
-            </Suspense>
+            {isCandidate && (
+              <Suspense fallback={(
+                <Box display="flex" gap={1} flexWrap="wrap" sx={{ mb: 2 }}>
+                  <Skeleton variant="rounded" width={80} height={24} sx={{ borderRadius: 3 }} />
+                  <Skeleton variant="rounded" width={100} height={24} sx={{ borderRadius: 3 }} />
+                  <Skeleton variant="rounded" width={90} height={24} sx={{ borderRadius: 3 }} />
+                  <Skeleton variant="rounded" width={70} height={24} sx={{ borderRadius: 3 }} />
+                </Box>
+              )}>  {/* CORDOVA_TOKEN_AT_CLOSE_OF_A_MULTI_LINE_FALLBACK_DO_NOT_REMOVE */}
+                <IssuesByBallotItemDisplayList
+                  ballotItemDisplayName={ballotItemDisplayName}
+                  ballotItemWeVoteId={ballotItemWeVoteId}
+                  externalUniqueId={`candidateItem-${ballotItemWeVoteId}`}
+                />
+              </Suspense>
+            )}
             <BallotItemBottomSpacer />
           </PoliticianCardForListWrapper>
         )}
@@ -470,7 +515,7 @@ class OrganizationModal extends Component {
             </>
           </Suspense>
         )}
-        { (!hidePositions || unFurlPositions) && (
+        { !isPolitician && (!hidePositions || unFurlPositions) && (
           <>
             <Suspense fallback={(
               <Box sx={{ mb: 3 }}>
@@ -487,13 +532,15 @@ class OrganizationModal extends Component {
             <ScoreSummaryListControllerBottomSpacer />
           </>
         )}
-        <VoterPositionEntryAndDisplayWrapper>
-          <VoterPositionEntryAndDisplay
-            ballotItemWeVoteId={ballotItemWeVoteId}
-            politicianWeVoteId={politicianWeVoteId}
-          />
-        </VoterPositionEntryAndDisplayWrapper>
-        { !!(allCachedPositionsForThisBallotItem.length) && (
+        {!isPolitician && (
+          <VoterPositionEntryAndDisplayWrapper>
+            <VoterPositionEntryAndDisplay
+              ballotItemWeVoteId={ballotItemWeVoteId}
+              politicianWeVoteId={politicianWeVoteId}
+            />
+          </VoterPositionEntryAndDisplayWrapper>
+        )}
+        { !isPolitician && !!(allCachedPositionsForThisBallotItem.length) && (
           <>
             { !hidePositions || unFurlPositions ? (
               <Suspense fallback={(

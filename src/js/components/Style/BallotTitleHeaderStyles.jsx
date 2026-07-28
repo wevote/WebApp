@@ -11,12 +11,18 @@ export const BallotAddress = styled('button', {
 })(({ allowTextWrap, centerText }) => (`
   all: unset;
   margin-left: 2px;
-  ${isMobileScreenSize() || isCordova() ? '' : 'font-size: 18px;'}
+  ${isMobileScreenSize() ? 'width: 70%;' : 'font-size: 18px;'}
+  ${!isMobileScreenSize() && centerText && centerText.length > 0 ? 'text-align: center;' : ''}
+  {*/ July 2026, since the edit pencil was added at some point, these no longer apply to the
+     address text, ie the next 3 lines seem useless */}
   ${allowTextWrap || isMobileScreenSize() || isCordova() ? '' : 'overflow: hidden;'}
   ${allowTextWrap || isMobileScreenSize() || isCordova() ? '' : 'text-overflow: ellipsis;'}
   ${allowTextWrap || isMobileScreenSize() || isCordova() ? '' : 'white-space: nowrap;'}
-  ${centerText ? 'text-align: center;' : ''}
 `));
+
+export const BallotAddressWrapper = styled('div')`
+  width: '100%',
+`;
 
 export const ClickBlockWrapper = styled('div')`
 `;
@@ -161,3 +167,14 @@ export function ballotWrapperBodyStyles () {
   }
   return styles;
 }
+
+export const AddressSpanLimited = styled('div')`
+  ${isMobileScreenSize() && {
+    whiteSpace: 'nowrap',
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
+    display: 'inline-block',
+    width: '100%',
+    marginBottom: '-7px',
+  }}
+`;
