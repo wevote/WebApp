@@ -27,6 +27,7 @@ class PoliticianStore extends ReduceStore {
       politicianEmailQueuedToSaveSet: false,
       politicianNameQueuedToSave: '',
       politicianNameQueuedToSaveSet: false,
+      politicianQueryResultsWeVoteIds: [], // politician_we_vote_id's returned by the most recent politiciansQuery/politiciansRetrieve, as opposed to ones individually cached via politicianRetrieve
       politicianPhotoQueuedToSave: '',
       politicianPhotoQueuedToSaveSet: false,
       politicianPhotoTooBig: false,
@@ -88,6 +89,16 @@ class PoliticianStore extends ReduceStore {
   getPoliticianList () {
     const politicianList = Object.values(this.getState().allCachedPoliticians);
     return politicianList || [];
+  }
+
+  // Unlike getPoliticianList (which returns every politician ever cached, including ones pulled in one-at-a-time by
+  // politicianRetrieve, e.g. when a candidate's side drawer is opened), this only returns the politicians returned by
+  // the most recent politiciansQuery/politiciansRetrieve call (e.g. "top politicians for this state").
+  getPoliticianQueryResultsList () {
+    const { allCachedPoliticians, politicianQueryResultsWeVoteIds } = this.getState();
+    return politicianQueryResultsWeVoteIds
+      .map((politicianWeVoteId) => allCachedPoliticians[politicianWeVoteId])
+      .filter((politician) => !!politician);
   }
 
   getPoliticianName (politicianWeVoteId) {
@@ -404,7 +415,7 @@ class PoliticianStore extends ReduceStore {
     } = state;
     let {
       allCachedPoliticians, allCachedPoliticianOwners, allCachedCandidateListsByPolitician, allCachedPoliticianOwnerPhotos,
-      politicianListsByOfficeWeVoteId,
+      politicianListsByOfficeWeVoteId, politicianQueryResultsWeVoteIds,
       voterCanSendUpdatesPoliticianWeVoteIds, voterCanVoteForPoliticianWeVoteIds, voterOwnedPoliticianWeVoteIds,
       // voterStartedPoliticianWeVoteIds,
     } = state;
@@ -635,6 +646,7 @@ class PoliticianStore extends ReduceStore {
           politicianListsByOfficeWeVoteId = {};
         }
         localPoliticianList = [];
+        politicianQueryResultsWeVoteIds = [];
         politicianList.forEach((one) => {
           if (action.type === 'politiciansQuery') {
             // Since the politiciansQuery doesn't return all of the
@@ -643,8 +655,10 @@ class PoliticianStore extends ReduceStore {
             if (!(one.politician_we_vote_id in allCachedPoliticians)) {
               allCachedPoliticians[one.politician_we_vote_id] = one;
             }
+            politicianQueryResultsWeVoteIds.push(one.politician_we_vote_id);
           } else {
             allCachedPoliticians[one.we_vote_id] = one;
+            politicianQueryResultsWeVoteIds.push(one.we_vote_id);
           }
           localPoliticianList.push(one);
         });
@@ -653,6 +667,7 @@ class PoliticianStore extends ReduceStore {
           ...state,
           allCachedPoliticians,
           politicianListsByOfficeWeVoteId,
+          politicianQueryResultsWeVoteIds,
         };
 
       case 'voterCanEditPolitician':

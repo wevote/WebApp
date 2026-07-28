@@ -3,8 +3,10 @@ import React, { Component, Suspense } from 'react';
 import CardForListBodySkeleton from '../../common/components/CardForListBodySkeleton';
 import { getTodayAsInteger } from '../../common/utils/dateFormat';
 import { renderLog } from '../../common/utils/logging';
+import AppObservableStore from '../../common/stores/AppObservableStore';
 import CampaignSupporterStore from '../../common/stores/CampaignSupporterStore';
 import CandidateStore from '../../stores/CandidateStore';
+import PoliticianActions from '../../common/actions/PoliticianActions';
 import PoliticianStore from '../../common/stores/PoliticianStore';
 import keepHelpingDestination from '../../common/utils/keepHelpingDestination';
 import { mostLikelyCandidateDictFromList } from '../../utils/candidateFunctions';
@@ -24,6 +26,7 @@ class PoliticianCardForList extends Component {
     this.getCampaignXBasePath = this.getCampaignXBasePath.bind(this);
     this.getPathToUseToKeepHelping = this.getPathToUseToKeepHelping.bind(this);
     this.getPoliticianBasePath = this.getPoliticianBasePath.bind(this);
+    this.onPoliticianNameClick = this.onPoliticianNameClick.bind(this);
     // this.pullCampaignXSupporterVoterEntry = this.pullCampaignXSupporterVoterEntry.bind(this);
   }
 
@@ -90,6 +93,12 @@ class PoliticianCardForList extends Component {
     const {
       linked_campaignx_we_vote_id: linkedCampaignXWeVoteId,
     } = politician;
+    // The politician list-view (politiciansQuery/politiciansRetrieve) doesn't include candidate_list, so we need a
+    // one-time full retrieve to learn which candidate record (if any) to open in the side drawer on name click.
+    if (!('candidate_list' in politician) && !this.fullPoliticianRetrieveTriggered) {
+      this.fullPoliticianRetrieveTriggered = true;
+      PoliticianActions.politicianRetrieve(politicianWeVoteId);
+    }
     if (politician.candidate_list && politician.candidate_list.length > 0) {
       const mostLikelyCandidate = mostLikelyCandidateDictFromList(politician.candidate_list);
       // console.log('mostLikelyCandidate: ', mostLikelyCandidate);
@@ -104,6 +113,21 @@ class PoliticianCardForList extends Component {
       politician,
       linkedCampaignXWeVoteId,
     });
+  }
+
+  onPoliticianNameClick () {
+    const { politicianWeVoteId } = this.props;
+    const { candidateWeVoteId } = this.state;
+    // Prefer the politician's current candidate record when known; otherwise fall back to the politician
+    // we_vote_id itself so the drawer always opens instead of navigating to the full page.
+    const ballotItemWeVoteId = candidateWeVoteId || politicianWeVoteId;
+    if (!ballotItemWeVoteId) {
+      return;
+    }
+    AppObservableStore.setOrganizationModalBallotItemWeVoteId(ballotItemWeVoteId);
+    AppObservableStore.setHideOrganizationModalBallotItemInfo(false);
+    AppObservableStore.setHideOrganizationModalPositions(false);
+    AppObservableStore.setShowOrganizationModal(true);
   }
 
   getCampaignXBasePath () {
@@ -262,6 +286,7 @@ class PoliticianCardForList extends Component {
           limitCardWidth={limitCardWidth}
           linkedCampaignXWeVoteId={linkedCampaignXWeVoteId}
           officeName={contestOfficeName}
+          onDisplayNameClick={this.onPoliticianNameClick}
           pathToUseToKeepHelping={pathToUseToKeepHelping}
           photoLargeUrl={politicianPhotoLargeUrl}
           politicalParty={politicalParty}

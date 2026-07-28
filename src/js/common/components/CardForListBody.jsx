@@ -37,7 +37,7 @@ function CardForListBody (props) {
     ballotItemDisplayName,
     candidateWeVoteId, classes, districtName, finalElectionDateInPast, hideCardMargins,
     hideItemActionBar, isClaimedProfile, limitCardWidth, linkedCampaignXWeVoteId, officeName,
-    photoLargeUrl, politicalParty, politicianBasePath,
+    onDisplayNameClick, photoLargeUrl, politicalParty, politicianBasePath,
     politicianDescription, politicianWeVoteId, profileImageBackgroundColor,
     searchText, showPoliticianOpenInNewWindow, stateCode,
     supportPolitician, tagIdBaseName,
@@ -129,7 +129,16 @@ function CardForListBody (props) {
                     className={isCordova() ? 'u-link-color u-link-underline' : ''}
                     id={`${tagIdBaseName}DisplayName`}
                     to={politicianBasePath}
-                    onClick={() => (isCordova() ? AppObservableStore.setShowOrganizationModal(false) : null)}
+                    onClick={(e) => {
+                      if (onDisplayNameClick) {
+                        e.preventDefault();
+                        onDisplayNameClick();
+                        return;
+                      }
+                      if (isCordova()) {
+                        AppObservableStore.setShowOrganizationModal(false);
+                      }
+                    }}
                   >
                     {highlightSearchText(ballotItemDisplayName || nameFromUrl, searchText)}
                   </Link>
@@ -421,7 +430,13 @@ function CardForListBody (props) {
             hideCardMargins={hideCardMargins}
             id={`${tagIdBaseName}PhotoDesktop`}
             limitCardWidth={limitCardWidth}
-            onClick={hideCardMargins ? null : () => historyPush(politicianBasePath)}
+            onClick={hideCardMargins ? null : () => {
+              if (onDisplayNameClick) {
+                onDisplayNameClick();
+                return;
+              }
+              historyPush(politicianBasePath);
+            }}
             profileImageBackgroundColor={profileImageBackgroundColor}
             useVerticalCard={useVerticalCard}
           >
@@ -504,6 +519,7 @@ CardForListBody.propTypes = {
   limitCardWidth: PropTypes.bool,
   linkedCampaignXWeVoteId: PropTypes.string,
   officeName: PropTypes.string,
+  onDisplayNameClick: PropTypes.func,
   photoLargeUrl: PropTypes.string,
   politicalParty: PropTypes.string,
   politicianBasePath: PropTypes.string.isRequired,
