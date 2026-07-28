@@ -69,12 +69,12 @@ export default function ballotSearchPriority (originalString, item, ignoreDescri
         if (!ignoreDescriptionFields && countMatches(searchNeedleString, candidate.twitter_description)) {
           oneWordScore += countMatches(searchNeedleString, candidate.twitter_description);
           foundInThisCandidate = true;
-          if (!candidateDetailsArray.includes('Twitter description')) candidateDetailsArray.push('Twitter description');
+          if (!candidateDetailsArray.includes('Twitter description')) candidateDetailsArray.push('X description');
         }
         if (countMatches(searchNeedleString, candidate.twitter_handle)) {
           oneWordScore += countMatches(searchNeedleString, candidate.twitter_handle) * 2;
           foundInThisCandidate = true;
-          if (!candidateDetailsArray.includes('Twitter handle')) candidateDetailsArray.push('Twitter handle');
+          if (!candidateDetailsArray.includes('Twitter handle')) candidateDetailsArray.push('X handle');
         }
         if (countMatches(searchNeedleString, candidate.party)) {
           oneWordScore += countMatches(searchNeedleString, candidate.party) * 2;
