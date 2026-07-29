@@ -113,8 +113,8 @@ class VoterPhotoUpload extends Component {
     }
   }
 
-  handleCordovaDrop (files) {
-    console.log('files:', files);
+  handleCordovaDrop (event) {
+    // console.log('handleCordovaDrop event:', event);
     const { camera: { getPicture, DestinationType: { FILE_URI }, PictureSourceType: { PHOTOLIBRARY }, PopoverArrowDirection: { ARROW_ANY } } } = navigator;
     const { CameraPopoverOptions } = window;
     getPicture(async (pictureUrl) => {
@@ -188,6 +188,10 @@ class VoterPhotoUpload extends Component {
       thumbnail.style.display = 'none';
       thumbnail.src = '';
     }
+    const cordovaDropZone = document.querySelector('#cordovaDropZoneReplica');
+    if(cordovaDropZone) {
+      cordovaDropZone.style.display = 'inline-block';
+    }
   };
 
   preparePhotoForUpload = async (url) => {
@@ -201,6 +205,7 @@ class VoterPhotoUpload extends Component {
       dataUrl = url;
     }
     let thumbnail;
+    const cordovaDropZone = document.querySelector('#cordovaDropZoneReplica');
     const { isWebApp } = this.state;
     if (isWebApp) {
       thumbnail = document.querySelector('img[role="presentation"]');
@@ -210,6 +215,8 @@ class VoterPhotoUpload extends Component {
     if (thumbnail) {
       thumbnail.style.display = 'inline';
       thumbnail.src = dataUrl;
+      // console.log('preparePhotoForUpload cordovaDropZone display none', dataUrl);
+      cordovaDropZone.style.display = 'none';
     }
     const { politicianWeVoteId, onUpload } = this.props;
     if (politicianWeVoteId) {
@@ -242,6 +249,10 @@ class VoterPhotoUpload extends Component {
       pageDetails: getPageDetails(),
     };
     TagManager.dataLayer({ dataLayer: dataLayerObject });
+    this.setState({
+      politicianProfileUploadedImageUrlLarge: '',
+      voterProfileUploadedImageUrlLarge: '',
+    })
     this.clearThumbnail();
   };
 
@@ -259,8 +270,12 @@ class VoterPhotoUpload extends Component {
     const { resolveLocalFileSystemURL } = window;
     resolveLocalFileSystemURL(uri, async (fileEntry) => {
       const entryUrl = fileEntry.toURL();
-      await this.save(entryUrl);
-    }, (err) => console.error('camera resolveLocalFileSystemURL error', err));
+      await this.preparePhotoForUpload(entryUrl);
+      console.log('cameraCallback AFTER preparePhotoForUpload entryUrl' , entryUrl);
+    }, (err) => {
+      console.log('cameraCallback', err.message);
+      console.error('camera resolveLocalFileSystemURL error', err);
+    })
   }
 
   render () {
@@ -284,11 +299,12 @@ class VoterPhotoUpload extends Component {
         initialFiles = [voterProfileUploadedImageUrlLarge];
       }
     }
+
     return (
-      <OuterWrapper>
+      <OuterWrapperPhotoUpload>
         <form onSubmit={(e) => e.preventDefault()}>
-          <Wrapper>
-            <ColumnFullWidth>
+          <FormInnerWrapper>
+            <ColumnFullWidthPhotoUpload>
               {imageToDisplay ? (
                 <VoterPhotoWrapper limitPhotoHeight={limitPhotoHeight}>
                   <VoterPhotoImage maxWidth={maxWidth} src={imageToDisplay} alt="Profile Photo" />
@@ -323,22 +339,32 @@ class VoterPhotoUpload extends Component {
                     />
                   ) : (
                     <>
-                      <ChooseLink
-                        id="choosePhotoLink"
-                        className="u-link-color u-link-underline u-cursor--pointer"
-                        onClick={this.handleCordovaDrop}
-                      >
-                        Choose Photo
-                      </ChooseLink>
+                      <CordovaDropZoneReplica show id="cordovaDropZoneReplica">
+                        <div style={{ alignContent: 'center', minHeight: '100px', paddingTop: '15%'  }}>
+                          <ChooseLink
+                            id="choosePhotoLink"
+                            className={classes.dropzoneText}
+                            onClick={this.handleCordovaDrop}
+                            style={{ marginBottom: '20%' }}
+                          >
+                            Upload profile photo
+                          </ChooseLink>
+                          <AccountCircle
+                            fontSize="large"
+                            sx={{ marginLeft: '40%' }}
+                            onClick={this.handleCordovaDrop}
+                          />
+                        </div>
+                      </CordovaDropZoneReplica>
                       <img src="" id="cordova" alt="" />
                     </>
                   )}
                 </>
               )}
-            </ColumnFullWidth>
-          </Wrapper>
+            </ColumnFullWidthPhotoUpload>
+          </FormInnerWrapper>
         </form>
-      </OuterWrapper>
+      </OuterWrapperPhotoUpload>
     );
   }
 }
@@ -374,10 +400,27 @@ const styles = (theme) => ({
   },
 });
 
-const ColumnFullWidth = styled('div')`
+const ColumnFullWidthPhotoUpload = styled('div')`
   padding: 8px 12px;
   width: 100%;
 `;
+
+const CordovaDropZoneReplica = styled('div', {
+  shouldForwardProp: (prop) => !['show'].includes(prop),
+})(({ show }) => (`
+  color: #999;
+  position: relative;
+  width: 100%;
+  min-height: 250px;
+  background-color: rgb(255, 255, 255);
+  border: dashed rgba(0, 0, 0, 0.12);
+  border-radius: 4px;
+  box-sizing: border-box;
+  cursor: pointer;
+  overflow: hidden;
+  display: ${show ? 'inline-block' : 'none'};
+`));
+
 
 const DeleteLink = styled('div')`
 `;
@@ -386,7 +429,7 @@ const ChooseLink = styled('div')`
   margin: 0 0 20px 18px;
 `;
 
-const OuterWrapper = styled('div')`
+const OuterWrapperPhotoUpload = styled('div')`
   width: 100%;
 `;
 
@@ -410,7 +453,7 @@ const VoterPhotoWrapper = styled('div', {
   width: 100%;
 `));
 
-const Wrapper = styled('div')`
+const FormInnerWrapper = styled('div')`
   display: flex;
   justify-content: space-between;
   margin-left: -12px;
