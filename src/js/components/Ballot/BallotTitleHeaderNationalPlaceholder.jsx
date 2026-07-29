@@ -180,9 +180,8 @@ class BallotTitleHeaderNationalPlaceholder extends Component {
                               if (event.key === 'Enter') this.showSelectBallotModalEditAddress();
                             }}
                             className={linksOff ? '' : 'u-link-color'}
-                          >
-                            {textForMapSearch}
-                          </AddressSpanLimited>
+                            innerComponent={textForMapSearch}
+                          />
                         </BallotAddress>
                       ) : (
                         <BallotAddress tabIndex={-1}

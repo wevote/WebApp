@@ -1741,8 +1741,7 @@ const BallotBottomWrapper = styled('div', {
   shouldForwardProp: (prop) => !['scrolledDown'].includes(prop),
 })(({ scrolledDown, theme }) => {
   return (`
-    ${scrolledDown || showBallotDecisionsTabs() ? 'margin-top: 12px;' : 'margin-top: 38px;'}
-    ${isCordova() && isMobileScreenSize() && 'margin-top: 0 !important;'}
+    ${isCordova() && isMobileScreenSize() ? 'margin-top: 0 !important;' : 'margin-top: 12px'}
     transition: all 150ms ease-in;
     width: 100%;
     ${theme.breakpoints.down('sm') && isWebApp()} {
@@ -1751,6 +1750,8 @@ const BallotBottomWrapper = styled('div', {
     ${(isCordova() && pageEnumeration() === CordovaPageConstants.ballotSmHdrWild) ? 'padding-top: 20px' : ''}
   `);
 });
+// Removed Jul 29, 2026  ${scrolledDown || showBallotDecisionsTabs() ? 'margin-top: 12px;' : 'margin-top: 38px;'}
+
 
 const BallotOverflowWrapper = styled('div')`
   overflow-x: hidden;

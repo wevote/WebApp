@@ -8,7 +8,7 @@ function isCordova () {
 
 export default function isMobileScreenSize () {
   // const { muiThemeGlobal: { breakpoints: { values: { tabMin } } } } = window;
-  const tabMin = window?.muiThemeGlobal?.breakpoints?.values?.tabMin ?? 786;
+  const tabMin = window?.muiThemeGlobal?.breakpoints?.values?.tabMin || 786;
   const width = isCordova() ? window.screen.availWidth : window.innerWidth;
   // console.log('isMobileScreenSize isCordova, width, maxWidth, return value:', isCordova(), width, tabMin,  width < tabMin);
   return  width < tabMin || isCordovaPhone();

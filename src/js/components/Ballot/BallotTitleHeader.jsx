@@ -285,10 +285,12 @@ class BallotTitleHeader extends Component {
                                   >
                                     Ballot for
                                     {' '}
-                                      <AddressSpanLimited id="BallotFor1" className={linksOff ? '' : 'u-link-color u-link-underline-on-hover'}>
-                                        {(textForMapSearch && textForMapSearch !== '') ? textForMapSearch : originalTextAddress}
-                                      </AddressSpanLimited>
-                                      {linksOff ? <></> : editIconStyled}
+                                    <AddressSpanLimited
+                                      id="BallotFor1"
+                                      className={linksOff ? '' : 'u-link-color u-link-underline-on-hover'}
+                                      innerComponent={(textForMapSearch && textForMapSearch !== '') ? textForMapSearch : originalTextAddress}
+                                    />
+                                    {linksOff ? <></> : editIconStyled}
                                   </BallotAddress>
                                 </BallotAddressWrapper>
                               ) : (
@@ -304,10 +306,11 @@ class BallotTitleHeader extends Component {
                                       >
                                         Ballot for
                                         {' '}
-                                        <AddressSpanLimited id="BallotFor2" className={linksOff ? '' : 'u-link-color u-link-underline-on-hover'}>
-                                          {substitutedAddress}
-                                        </AddressSpanLimited>
-                                        {linksOff ? <></> : editIconStyled}
+                                        <AddressSpanLimited
+                                          id="BallotFor2"
+                                          className={linksOff ? '' : 'u-link-color u-link-underline-on-hover'}
+                                          innerComponent={linksOff ? <></> : editIconStyled}
+                                        />
                                       </BallotAddress>
                                     </BallotAddressWrapper>
                                   ) : (
