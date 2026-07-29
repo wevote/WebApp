@@ -271,7 +271,6 @@ class VoterPhotoUpload extends Component {
     resolveLocalFileSystemURL(uri, async (fileEntry) => {
       const entryUrl = fileEntry.toURL();
       await this.preparePhotoForUpload(entryUrl);
-      console.log('cameraCallback AFTER preparePhotoForUpload entryUrl' , entryUrl);
     }, (err) => {
       console.log('cameraCallback', err.message);
       console.error('camera resolveLocalFileSystemURL error', err);
