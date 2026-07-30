@@ -1,11 +1,11 @@
 import { Badge, Tab, Tabs } from '@mui/material';
-import styled from 'styled-components';
 import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+import styled from 'styled-components';
 import BallotActions from '../../actions/BallotActions';
-import { renderLog } from '../../common/utils/logging';
 import SmartTooltip from '../../common/components/Widgets/SmartToolTip';
+import { renderLog } from '../../common/utils/logging';
 
 
 class BallotDecisionsTabs extends Component {

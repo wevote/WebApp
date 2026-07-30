@@ -1,3 +1,4 @@
+import React from 'react';
 import styled from 'styled-components';
 import colors from '../../common/components/Style/Colors';
 import DesignTokenColors from '../../common/components/Style/DesignTokenColors';
@@ -168,13 +169,31 @@ export function ballotWrapperBodyStyles () {
   return styles;
 }
 
-export const AddressSpanLimited = styled('div')`
-  ${isMobileScreenSize() && {
-    whiteSpace: 'nowrap',
-    overflow: 'hidden',
-    textOverflow: 'ellipsis',
-    display: 'inline-block',
-    width: '100%',
-    marginBottom: '-7px',
-  }}
+export function AddressSpanLimited({ id, className, innerComponent }) {
+  if (isMobileScreenSize()) {
+    return (
+      <AddressSpanLimitedMobile className={className} id={id}>
+        {innerComponent}
+      </AddressSpanLimitedMobile>
+    );
+  } else {
+    return (
+      <AddressSpanLimitedDesktop className={className} styleid={id}>
+        {innerComponent}
+      </AddressSpanLimitedDesktop>
+    );
+  }
+}
+
+export const AddressSpanLimitedDesktop = styled('span')`
+  //color: #206DB3; /* primary500 */
+`;
+
+export const AddressSpanLimitedMobile = styled('div')`
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: inline-block;
+  width: 100%;
+  margin-bottom: -7px;
 `;
