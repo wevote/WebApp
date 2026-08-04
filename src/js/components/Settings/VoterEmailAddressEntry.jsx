@@ -475,7 +475,7 @@ class VoterEmailAddressEntry extends Component {
             autoFocus={false}
             className={classes.input}
             error={displayIncorrectEmailError}
-            helperText={(displayIncorrectEmailError) ? 'Enter valid email 6 to 254 characters long' : ''}
+            helperText={(displayIncorrectEmailError) ? 'Enter valid email address' : ''}
             id="enterVoterEmailAddress"
             InputProps={{
               startAdornment: (

@@ -22,12 +22,23 @@ const LOCAL_PART = `(?:${DOT_ATOM}|${QUOTED_STRING})`;
 const DTEXT = `[${NO_WS_CTL}\\x21-\\x5a\\x5e-\\x7e]`;
 const DCONTENT = `(?:${DTEXT}|${QUOTED_PAIR})`;
 const DOMAIN_LITERAL = `${CFWS}?\\[(?:${FWS}?${DCONTENT})*${FWS}?\\]${CFWS}?`;
-const DOMAIN = `(?:${DOT_ATOM}|${DOMAIN_LITERAL})`;
+
+// Regular domain names must contain a dot and a 2–63 character TLD.
+const DOMAIN_LABEL =
+  '[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?';
+const TOP_LEVEL_DOMAIN = '[a-zA-Z]{2,63}';
+const DOMAIN_NAME =
+  `(?:${DOMAIN_LABEL}\\.)+${TOP_LEVEL_DOMAIN}`;
+
+// Accept either a regular domain or the existing domain-literal format.
+const DOMAIN = `(?:${DOMAIN_NAME}|${DOMAIN_LITERAL})`;
+
 const ADDR_SPEC = `${LOCAL_PART}@${DOMAIN}`;
 const VALID_ADDRESS_REGEXP = new RegExp(`^${ADDR_SPEC}$`);
 
+
 export function validateEmail (email) {
-  const trimmedEmail = email ? email.trim() : '';
+  const trimmedEmail = typeof email === 'string' ? email.trim() : '';
   if (trimmedEmail.length < 6 || trimmedEmail.length > 254) {
     return false;
   } else {
