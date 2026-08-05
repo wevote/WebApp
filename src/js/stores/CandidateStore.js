@@ -7,6 +7,7 @@ import normalizedImagePath from '../common/utils/normalizedImagePath'; // eslint
 import stringContains from '../common/utils/stringContains';
 import { extractNumberOfPositionsFromPositionList } from '../utils/positionFunctions'; // eslint-disable-line import/no-cycle
 import OfficeStore from './OfficeStore';
+import PoliticianStore from '../common/stores/PoliticianStore';
 
 class CandidateStore extends ReduceStore {
   getInitialState () {
@@ -150,10 +151,21 @@ class CandidateStore extends ReduceStore {
 
   getAnalyticsCandidateDetails (candidateWeVoteId) {
     const candidate = this.getCandidateByWeVoteId(candidateWeVoteId);
+    const politician = candidate ? PoliticianStore.getPoliticianByWeVoteId(candidate.politician_we_vote_id) : null;
+    let isClaimedProfile;
+    if (politician) {
+      isClaimedProfile = politician.is_claimed_profile;
+    } else if (candidate) {
+      isClaimedProfile = candidate.is_claimed_profile;
+    } else {
+      isClaimedProfile = false;
+    }
+
     return {
       candidateWeVoteId,
       candidateName: candidate ? this.getCandidateName(candidateWeVoteId) : '',
       image: candidate ? candidate.candidate_photo_url_medium : '',
+      isClaimedProfile,
       officeName: candidate ? candidate.contest_office_name : '',
       politicianWeVoteId: candidate ? candidate.politician_we_vote_id : '',
       politicalParty: candidate ? candidate.party : '',
