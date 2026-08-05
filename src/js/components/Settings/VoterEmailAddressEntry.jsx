@@ -741,6 +741,9 @@ const styles = {
   input: {
     marginLeft: 0.1,
     flex: 1,
+    '& .MuiOutlinedInput-notchedOutline legend span': {
+      paddingRight: 10,
+    },
   },
 };
 
