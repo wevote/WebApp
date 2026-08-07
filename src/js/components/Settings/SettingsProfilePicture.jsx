@@ -10,6 +10,10 @@ import {
   Separator,
 } from '../Style/ProfilePictureStyles';
 import VoterActions from '../../actions/VoterActions';
+import PhotoUploadProgressIndicator, {
+  PHOTO_UPLOAD_FAILED_MESSAGE,
+  PHOTO_UPLOAD_TOO_BIG_MESSAGE,
+} from '../../common/components/Settings/PhotoUploadProgressIndicator';
 import VoterPhotoUpload from '../../common/components/Settings/VoterPhotoUpload';
 import VoterStore from '../../stores/VoterStore';
 import { getPageDetails } from '../../utils/lookupPageNameAndPageTypeDict';
@@ -18,6 +22,8 @@ class SettingsProfilePicture extends Component {
   constructor (props) {
     super(props);
     this.state = {
+      photoUploadErrorMessage: '',
+      photoUploadInProgress: false,
       profileImageTypeCurrentlyActive: 'UPLOADED',
       profileImageTypeCurrentlyActiveSet: false,
       uploadedFile: '',
@@ -36,20 +42,43 @@ class SettingsProfilePicture extends Component {
 
   componentWillUnmount () {
     this.voterStoreListener.remove();
+    this.clearPhotoUploadSafetyTimeout();
+  }
+
+  clearPhotoUploadSafetyTimeout () {
+    if (this.photoUploadSafetyTimeout) {
+      clearTimeout(this.photoUploadSafetyTimeout);
+      this.photoUploadSafetyTimeout = null;
+    }
+  }
+
+  startPhotoUploadSafetyTimeout () {
+    this.clearPhotoUploadSafetyTimeout();
+    this.photoUploadSafetyTimeout = setTimeout(() => {
+      if (this.state.photoUploadInProgress) {
+        this.setState({
+          photoUploadErrorMessage: PHOTO_UPLOAD_FAILED_MESSAGE,
+          photoUploadInProgress: false,
+        });
+      }
+    }, 120000);
   }
 
   onVoterStoreChange () {
-    // const { uploadedFileStaged } = this.state;
     const voter = VoterStore.getVoter();
-    // let profileImageTypeCurrentlyActive = 'UPLOADED';
-    // if (voter.profile_image_type_currently_active !== 'UNKNOWN' && !uploadedFileStaged) {
-    //   profileImageTypeCurrentlyActive = voter.profile_image_type_currently_active;
-    // }
-    this.setState({
+    const { photoUploadInProgress } = this.state;
+    const nextState = {
       profileImageTypeCurrentlyActive: voter.profile_image_type_currently_active,
       voterFacebookImageUrlLarge: voter.we_vote_hosted_profile_facebook_image_url_large,
       voterTwitterImageUrlLarge: voter.we_vote_hosted_profile_twitter_image_url_large,
-    });
+    };
+    if (photoUploadInProgress) {
+      // voterUpdate (or related) returned — clear the in-flight loader
+      this.clearPhotoUploadSafetyTimeout();
+      nextState.photoUploadInProgress = false;
+      nextState.photoUploadErrorMessage = VoterStore.getVoterPhotoTooBig() ? PHOTO_UPLOAD_TOO_BIG_MESSAGE : '';
+    }
+    this.setState(nextState);
   }
 
   setProfileImageTypeCurrentlyActive () {
@@ -61,14 +90,19 @@ class SettingsProfilePicture extends Component {
 
   save = (buttonId) => {
     const {
+      photoUploadInProgress,
       profileImageTypeCurrentlyActive,
       profileImageTypeCurrentlyActiveSet,
       uploadedFile,
       uploadedFileStaged,
     } = this.state;
+    if (photoUploadInProgress) {
+      return;
+    }
     // const voterPhotoQueuedToSave = VoterStore.getVoterPhotoQueuedToSave();
     // const voterPhotoQueuedToSaveSet = VoterStore.getVoterPhotoQueuedToSaveSet();
     if (profileImageTypeCurrentlyActiveSet && uploadedFileStaged) {
+      VoterActions.profilePhotoTooBigReset();
       VoterActions.voterPhotoSave(uploadedFile, uploadedFileStaged, profileImageTypeCurrentlyActive);
       // VoterActions.voterPhotoQueuedToSave(undefined);
 
@@ -83,9 +117,20 @@ class SettingsProfilePicture extends Component {
         pageDetails: getPageDetails(),
       };
       TagManager.dataLayer({ dataLayer: dataLayerObject });
+
+      this.startPhotoUploadSafetyTimeout();
+      this.setState({
+        photoUploadErrorMessage: '',
+        photoUploadInProgress: true,
+        profileImageTypeCurrentlyActiveSet: false,
+        uploadedFile: '',
+        uploadedFileStaged: false,
+      });
+      return;
     }
 
     this.setState({
+      photoUploadErrorMessage: '',
       profileImageTypeCurrentlyActiveSet: false,
       uploadedFile: '',
       uploadedFileStaged: false,
@@ -94,6 +139,7 @@ class SettingsProfilePicture extends Component {
 
   onUploadLocal = (file) => {
     this.setState({
+      photoUploadErrorMessage: '',
       profileImageTypeCurrentlyActive: 'UPLOADED',
       profileImageTypeCurrentlyActiveSet: true,
       uploadedFile: file,
@@ -119,10 +165,17 @@ class SettingsProfilePicture extends Component {
 
   render () {
     const {
+      photoUploadErrorMessage, photoUploadInProgress,
       profileImageTypeCurrentlyActive, profileImageTypeCurrentlyActiveSet, uploadedFileStaged, voterFacebookImageUrlLarge, voterTwitterImageUrlLarge,
     } = this.state;
     const { classes } = this.props;
     const onlyOneOption = !(voterFacebookImageUrlLarge || voterTwitterImageUrlLarge);
+    let saveButtonLabel = 'Save photo';
+    if (photoUploadInProgress) {
+      saveButtonLabel = 'Uploading…';
+    } else if (!profileImageTypeCurrentlyActiveSet && !uploadedFileStaged) {
+      saveButtonLabel = 'Photo saved';
+    }
 
     return (
       <Wrapper>
@@ -173,17 +226,21 @@ class SettingsProfilePicture extends Component {
             )}
           </ColumnWrapper>
         </RadioWrapper>
+        <PhotoUploadProgressIndicator inProgress={photoUploadInProgress} />
+        {!!photoUploadErrorMessage && (
+          <PhotoUploadErrorMessage>{photoUploadErrorMessage}</PhotoUploadErrorMessage>
+        )}
         <SaveOuterWrapper>
           <SaveInnerWrapper>
             <Button
               classes={{ root: classes.buttonSave }}
               color="primary"
-              disabled={!profileImageTypeCurrentlyActiveSet && !uploadedFileStaged}
+              disabled={photoUploadInProgress || (!profileImageTypeCurrentlyActiveSet && !uploadedFileStaged)}
               id="saveEditYourPhotoBottom"
               onClick={() => this.save('saveEditYourPhotoBottom')}
               variant="contained"
             >
-              {(!profileImageTypeCurrentlyActiveSet && !uploadedFileStaged) ? 'Photo saved' : 'Save photo'}
+              {saveButtonLabel}
             </Button>
           </SaveInnerWrapper>
         </SaveOuterWrapper>
@@ -210,6 +267,15 @@ const styles = () => ({
     // width: 150,
   },
 });
+
+const PhotoUploadErrorMessage = styled('div')`
+  color: #d32f2f;
+  font-family: 'Poppins', 'Helvetica Neue Light', 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
+  font-size: 14px;
+  margin: 8px 0;
+  text-align: center;
+  width: 100%;
+`;
 
 const Wrapper = styled('div')`
 `;

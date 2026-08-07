@@ -331,6 +331,12 @@ class VoterPhotoUpload extends Component {
                       }}
                       dropzoneText={dropzoneText}
                       filesLimit={1}
+                      getDropRejectMessage={(rejectedFile) => {
+                        if (rejectedFile && rejectedFile.size > 20000000) {
+                          return 'File is too large. Please choose a file under 20 MB.';
+                        }
+                        return 'File type not supported. Please choose an image file.';
+                      }}
                       Icon={AccountCircle}
                       initialFiles={initialFiles}
                       maxFileSize={20000000}
