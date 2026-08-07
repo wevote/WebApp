@@ -10,6 +10,10 @@ import {
   Separator,
 } from '../Style/ProfilePictureStyles';
 import PoliticianActions from '../../common/actions/PoliticianActions';
+import PhotoUploadProgressIndicator, {
+  PHOTO_UPLOAD_FAILED_MESSAGE,
+  PHOTO_UPLOAD_TOO_BIG_MESSAGE,
+} from '../../common/components/Settings/PhotoUploadProgressIndicator';
 import VoterPhotoUpload from '../../common/components/Settings/VoterPhotoUpload';
 import PoliticianStore from '../../common/stores/PoliticianStore';
 import VoterStore from '../../stores/VoterStore';
@@ -19,6 +23,8 @@ class SettingsPoliticianPicture extends Component {
   constructor (props) {
     super(props);
     this.state = {
+      photoUploadErrorMessage: '',
+      photoUploadInProgress: false,
       politicianBallotpediaImageUrlLarge: '',
       politicianFacebookImageUrlLarge: '',
       politicianLinkedInImageUrlLarge: '',
@@ -42,11 +48,31 @@ class SettingsPoliticianPicture extends Component {
   componentWillUnmount () {
     // console.log('SettingsPoliticianPicture componentWillUnmount');
     this.politicianStoreListener.remove();
+    this.clearPhotoUploadSafetyTimeout();
+  }
+
+  clearPhotoUploadSafetyTimeout () {
+    if (this.photoUploadSafetyTimeout) {
+      clearTimeout(this.photoUploadSafetyTimeout);
+      this.photoUploadSafetyTimeout = null;
+    }
+  }
+
+  startPhotoUploadSafetyTimeout () {
+    this.clearPhotoUploadSafetyTimeout();
+    this.photoUploadSafetyTimeout = setTimeout(() => {
+      if (this.state.photoUploadInProgress) {
+        this.setState({
+          photoUploadErrorMessage: PHOTO_UPLOAD_FAILED_MESSAGE,
+          photoUploadInProgress: false,
+        });
+      }
+    }, 120000);
   }
 
   onPoliticianStoreChange = () => {
     const { politicianWeVoteId } = this.props;
-    const { uploadedFileStaged } = this.state;
+    const { photoUploadInProgress, uploadedFileStaged } = this.state;
     const politician = PoliticianStore.getPoliticianByWeVoteId(politicianWeVoteId);
     let profileImageTypeCurrentlyActive = 'UPLOADED';
     if (politician.profile_image_type_currently_active && !uploadedFileStaged) {
@@ -54,7 +80,7 @@ class SettingsPoliticianPicture extends Component {
         profileImageTypeCurrentlyActive = politician.profile_image_type_currently_active;
       }
     }
-    this.setState({
+    const nextState = {
       profileImageTypeCurrentlyActive,
       politicianBallotpediaImageUrlLarge: politician.we_vote_hosted_profile_ballotpedia_image_url_large,
       politicianFacebookImageUrlLarge: politician.we_vote_hosted_profile_facebook_image_url_large,
@@ -62,7 +88,14 @@ class SettingsPoliticianPicture extends Component {
       politicianTwitterImageUrlLarge: politician.we_vote_hosted_profile_twitter_image_url_large,
       politicianVoteUSAImageUrlLarge: politician.we_vote_hosted_profile_vote_usa_image_url_large,
       politicianWikipediaImageUrlLarge: politician.we_vote_hosted_profile_wikipedia_image_url_large,
-    });
+    };
+    if (photoUploadInProgress) {
+      // politicianSave returned — clear the in-flight loader
+      this.clearPhotoUploadSafetyTimeout();
+      nextState.photoUploadInProgress = false;
+      nextState.photoUploadErrorMessage = PoliticianStore.getPoliticianPhotoTooBig() ? PHOTO_UPLOAD_TOO_BIG_MESSAGE : '';
+    }
+    this.setState(nextState);
   };
 
   // setProfileImageTypeCurrentlyActive (type) {
@@ -79,6 +112,7 @@ class SettingsPoliticianPicture extends Component {
   onUploadLocal = (file) => {
     console.log('SettingsPoliticianPicture onUploadLocal (not used):', file);
     this.setState({
+      photoUploadErrorMessage: '',
       profileImageTypeCurrentlyActive: 'UPLOADED',
       profileImageTypeCurrentlyActiveSet: true,
       // uploadedFile: file,
@@ -88,10 +122,16 @@ class SettingsPoliticianPicture extends Component {
 
   submitPoliticianPhotoSave = (buttonId) => {
     const { politicianWeVoteId } = this.props;
-    const { profileImageTypeCurrentlyActive } = this.state;
+    const { photoUploadInProgress, profileImageTypeCurrentlyActive } = this.state;
+    if (photoUploadInProgress) {
+      return;
+    }
     const politicianPhotoQueuedToSave = PoliticianStore.getPoliticianPhotoQueuedToSave();
     const politicianPhotoQueuedToSaveSet = PoliticianStore.getPoliticianPhotoQueuedToSaveSet();
+    const uploadingPhoto = !!politicianPhotoQueuedToSaveSet;
     if (politicianPhotoQueuedToSaveSet || profileImageTypeCurrentlyActive) {
+      // Fire async save before clearing the queue so the sync queue-clear store update
+      // does not clear photoUploadInProgress early.
       PoliticianActions.politicianPhotoSave(politicianWeVoteId, politicianPhotoQueuedToSave, politicianPhotoQueuedToSaveSet, profileImageTypeCurrentlyActive);
       PoliticianActions.politicianPhotoQueuedToSave(undefined);
 
@@ -111,7 +151,12 @@ class SettingsPoliticianPicture extends Component {
       TagManager.dataLayer({ dataLayer: dataLayerObject });
     }
 
+    if (uploadingPhoto) {
+      this.startPhotoUploadSafetyTimeout();
+    }
     this.setState({
+      photoUploadErrorMessage: '',
+      photoUploadInProgress: uploadingPhoto,
       politicianPhotoQueuedToSaveSet: false,
       profileImageTypeCurrentlyActiveSet: false,
       uploadedFileStaged: false,
@@ -128,12 +173,19 @@ class SettingsPoliticianPicture extends Component {
 
   render () {
     const {
+      photoUploadErrorMessage, photoUploadInProgress,
       politicianBallotpediaImageUrlLarge, profileImageTypeCurrentlyActive, profileImageTypeCurrentlyActiveSet,
       politicianFacebookImageUrlLarge, politicianLinkedInImageUrlLarge, politicianPhotoQueuedToSaveSet, politicianTwitterImageUrlLarge,
       politicianVoteUSAImageUrlLarge, politicianWikipediaImageUrlLarge,
     } = this.state;
     const { classes, politicianWeVoteId } = this.props;
     const onlyOneOption = !(politicianFacebookImageUrlLarge || politicianTwitterImageUrlLarge);
+    let saveButtonLabel = 'Save photo';
+    if (photoUploadInProgress) {
+      saveButtonLabel = 'Uploading…';
+    } else if (!politicianPhotoQueuedToSaveSet && !profileImageTypeCurrentlyActiveSet) {
+      saveButtonLabel = 'Photo saved';
+    }
 
     return (
       <Wrapper>
@@ -253,17 +305,21 @@ class SettingsPoliticianPicture extends Component {
             )}
           </ColumnWrapper>
         </RadioWrapper>
+        <PhotoUploadProgressIndicator inProgress={photoUploadInProgress} />
+        {!!photoUploadErrorMessage && (
+          <PhotoUploadErrorMessage>{photoUploadErrorMessage}</PhotoUploadErrorMessage>
+        )}
         <SaveOuterWrapper>
           <SaveInnerWrapper>
             <Button
               classes={{ root: classes.buttonSave }}
               color="primary"
-              disabled={!politicianPhotoQueuedToSaveSet && !profileImageTypeCurrentlyActiveSet}
+              disabled={photoUploadInProgress || (!politicianPhotoQueuedToSaveSet && !profileImageTypeCurrentlyActiveSet)}
               id="saveEditYourPhotoBottom"
               onClick={() => this.submitPoliticianPhotoSave('saveEditYourPhotoBottom')}
               variant="contained"
             >
-              {(!politicianPhotoQueuedToSaveSet && !profileImageTypeCurrentlyActiveSet) ? 'Photo saved' : 'Save photo'}
+              {saveButtonLabel}
             </Button>
           </SaveInnerWrapper>
         </SaveOuterWrapper>
@@ -291,6 +347,15 @@ const styles = () => ({
     // width: 150,
   },
 });
+
+const PhotoUploadErrorMessage = styled('div')`
+  color: #d32f2f;
+  font-family: 'Poppins', 'Helvetica Neue Light', 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
+  font-size: 14px;
+  margin: 8px 0;
+  text-align: center;
+  width: 100%;
+`;
 
 const Wrapper = styled('div')`
 `;
