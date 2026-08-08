@@ -2,8 +2,10 @@ import { Box } from '@mui/material';
 import Skeleton from '@mui/material/Skeleton';
 import PropTypes from 'prop-types';
 import React from 'react';
+import { useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import isMobileScreenSize from '../utils/isMobileScreenSize';
+import extractPoliticianDetailsFromUrl from '../utils/extractPoliticianDetailsFromUrl';
 import {
   CampaignActionButtonsWrapper,
   CandidateCardForListWrapper,
@@ -14,6 +16,8 @@ import {
   OneCampaignPhotoDesktopColumn,
   OneCampaignPhotoWrapperMobile,
   OneCampaignTextColumn,
+  OneCampaignTitle,
+  StateName,
   TitleAndTextWrapper,
 } from './Style/CampaignCardStyles';
 import { renderLog } from '../utils/logging';
@@ -43,6 +47,8 @@ function CardForListBodySkeleton (props) {
   renderLog('CardForListBodySkeleton');
   const { hideCardMargins, hideItemActionBar, limitCardWidth, showPoliticianOpenInNewWindow, useVerticalCard } = props;
   const useVerticalLayout = limitCardWidth || useVerticalCard || isMobileScreenSize();
+  const location = useLocation();
+  const { state: stateFromUrl, name: nameFromUrl } = extractPoliticianDetailsFromUrl(location.pathname);
 
   return (
     <CandidateCardForListWrapper limitCardWidth={limitCardWidth}>
@@ -53,11 +59,23 @@ function CardForListBodySkeleton (props) {
         >
           <OneCampaignTextColumn hideCardMargins={hideCardMargins}>
             <TitleAndTextWrapper hideCardMargins={hideCardMargins}>
-              {/* State */}
-              <Skeleton variant="text" width={80} height={12} sx={{ mb: 0.5 }} />
+              {/* State: prefer URL-derived text while API is still loading */}
+              {stateFromUrl ? (
+                <StateName>
+                  {stateFromUrl}
+                </StateName>
+              ) : (
+                <Skeleton variant="text" width={80} height={12} sx={{ mb: 0.5 }} />
+              )}
               {/* Name + optional Launch icon */}
               <Box display="flex" alignItems="center" gap={0.5} sx={{ mb: 0.5 }}>
-                <Skeleton variant="text" width={200} height={24} />
+                {nameFromUrl ? (
+                  <OneCampaignTitle>
+                    {nameFromUrl}
+                  </OneCampaignTitle>
+                ) : (
+                  <Skeleton variant="text" width={200} height={24} />
+                )}
                 {showPoliticianOpenInNewWindow && (
                   <Skeleton variant="rounded" width={14} height={14} sx={{ borderRadius: 0.5 }} />
                 )}
