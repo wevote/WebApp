@@ -85,14 +85,14 @@ function CardForListBody (props) {
         >
           <OneCampaignTextColumn hideCardMargins={hideCardMargins}>
             <TitleAndTextWrapper hideCardMargins={hideCardMargins}>
-              {stateName && (
+              {(stateName || stateFromUrl) && (
                 <StateName id={`stateName-${stateCode}-${candidateWeVoteId}`}>
                   {stateName || stateFromUrl}
                 </StateName>
               )}
               {hideCardMargins && isWebApp() ? (
                 <OneCampaignTitle>
-                  {highlightSearchText(ballotItemDisplayName, searchText)}
+                  {highlightSearchText(ballotItemDisplayName || nameFromUrl, searchText)}
                   {showPoliticianOpenInNewWindow && (
                     <LaunchIconWrapper>
                       <Suspense fallback={<Skeleton variant="rounded" width={16} height={14} sx={{ display: 'inline-block', borderRadius: 0.5 }} />}>
