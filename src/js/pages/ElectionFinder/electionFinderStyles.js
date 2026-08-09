@@ -396,7 +396,7 @@ export const ShowMoreButton = styled('button')`
     color: ${DesignTokenColors.neutral800};
   }
   ${theme.breakpoints.down('md')} {
-    ${isCordova() ? "margin-bottom: 100px;" : "70px"}
+    ${isCordova() ? 'margin-bottom: 100px;' : '70px'}
   }
 
 `;
