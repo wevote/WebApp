@@ -3,6 +3,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import DesignTokenColors from '../../common/components/Style/DesignTokenColors';
+import { isCordova } from '../../common/utils/isCordovaOrWebApp';
 import { ElectionStateLabel } from '../../components/Style/BallotTitleHeaderStyles';
 import muiTheme from '../../common/components/Style/muiTheme';
 
@@ -395,8 +396,9 @@ export const ShowMoreButton = styled('button')`
     color: ${DesignTokenColors.neutral800};
   }
   ${theme.breakpoints.down('md')} {
-    margin-bottom: 70px;
+    ${isCordova() ? 'margin-bottom: 100px;' : '70px'}
   }
+
 `;
 
 export const StateSelectCaret = styled('span')`
