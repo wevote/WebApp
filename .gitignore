@@ -192,3 +192,4 @@ tests/browserstack_automation/config/googleDriveOAuthToken.json
 tests/browserstack_automation/apps/*
 tests/browserstack_automation/*.ipa
 tests/browserstack_automation/*.apk
+config.bat
