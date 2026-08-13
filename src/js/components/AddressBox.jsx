@@ -123,6 +123,9 @@ class AddressBox extends Component {
     if (this.props.toggleEditingAddress) {
       this.props.toggleEditingAddress();
     }
+    // Close the enclosing Select Ballot Modal (if any) on cancel, same as we do after a successful save.
+    // See WV-4807: Cancel was only reverting the inline edit-address view, leaving the modal open.
+    this.incomingToggleSelectAddressModal();
   };
 
   voterAddressSaveSubmit = (event, buttonId) => {
