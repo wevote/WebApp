@@ -6,10 +6,13 @@
   <head>
     <script>
       function isOldSafari() {
-        var ua = navigator.userAgent;
-        var isSafari = ua.indexOf('Safari') !== -1 && ua.indexOf('Chrome') === -1;
-        var safariVersionMatch = ua.match(/Version\/(\d+\.\d+)/);
-        var safariVersion = safariVersionMatch ? parseFloat(safariVersionMatch[1]) : 0;
+        if (typeof navigator === 'undefined' || typeof navigator.userAgent !== 'string') {
+          return false;
+        }
+        const ua = navigator.userAgent;
+        const isSafari = ua.indexOf('Safari') !== -1 && ua.indexOf('Chrome') === -1;
+        const safariVersionMatch = ua.match(/Version\/(\d+\.\d+)/);
+        const safariVersion = safariVersionMatch ? parseFloat(safariVersionMatch[1]) : 0;
         return isSafari && safariVersion > 0 && safariVersion < 6;
       }
 
