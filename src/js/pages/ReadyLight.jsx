@@ -75,7 +75,6 @@ class ReadyLight extends Component {
     this.fireGTMDataLayerWhenReady();
   }
 
-
   componentDidCatch (error, info) {
     console.log('ReadyLight.jsx caught: ', error, info.componentStack);
   }
@@ -166,11 +165,6 @@ class ReadyLight extends Component {
                 </Suspense>
               </ElectionCountdownInnerWrapper>
             </ElectionCountdownOuterWrapper>
-            <ViewBallotButtonWrapper>
-              <Suspense fallback={<></>}>
-                <ViewUpcomingBallotButton goToBallotFunction={this.goToBallot} onlyOfferViewYourBallot />
-              </Suspense>
-            </ViewBallotButtonWrapper>
 
             <div className="col-sm-12 col-lg-8">
               {(chosenReadyIntroductionTitle || chosenReadyIntroductionText) && (
@@ -215,7 +209,7 @@ class ReadyLight extends Component {
               </ReadyIntroductionMobileWrapper>
               <ViewBallotButtonWrapper className="u-show-mobile-tablet">
                 <Suspense fallback={<></>}>
-                  <ViewUpcomingBallotButton goToBallotFunction={this.goToBallot} />
+                  <ViewUpcomingBallotButton goToBallotFunction={this.goToBallot} onlyOfferViewYourBallot />
                 </Suspense>
               </ViewBallotButtonWrapper>
               {!isAndroid() && (
