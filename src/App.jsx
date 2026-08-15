@@ -455,6 +455,7 @@ class App extends Component {
       window.location.href = destinationHref;      // This would cause big problems in Cordova, but shouldn't happen
     }
 
+    console.log('showReadyLight:', showReadyLight);
     return (
       <>
         {enableFullStory && <FullStory org={webAppConfig.FULL_STORY_ORG} />}
@@ -473,7 +474,8 @@ class App extends Component {
                   <Route path="/" exact>
                     {() => {
                       if (showReadyLight) {
-                        return <ReadyLight showReadyHeavy={this.setShowReadyHeavy} />;
+                        // return <ReadyLight showReadyHeavy={this.setShowReadyHeavy} />;
+                        return <Route render={() => <Redirect to="/ready" />} />;
                       } else {
                         return <Route render={() => <Redirect to="/ready" />} />;
                       }
