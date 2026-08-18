@@ -13,4 +13,4 @@ phases:
       - npm install
       - echo "Running Browserstack tests"
       - cp -f tests/browserstack_automation/config/browserstack.config.template.js tests/browserstack_automation/config/browserstack.config.js
-      - npm run wdio
+      - npm run wdio-BVT
