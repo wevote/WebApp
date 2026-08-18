@@ -1,0 +1,16 @@
+version: 0.2
+
+env:
+  shell: bash
+phases:
+  install:
+    runtime-versions:
+      nodejs: 25
+  build:
+    on-failure: ABORT
+    commands:
+      - echo "Installing dependencies"
+      - npm install
+      - echo "Running Browserstack tests"
+      - cp -f tests/browserstack_automation/config/browserstack.config.template.js tests/browserstack_automation/config/browserstack.config.js
+      - npm run wdio
