@@ -1,0 +1,10 @@
+version: 0.2
+
+env:
+  shell: bash
+phases:
+  build:
+    on-failure: ABORT
+    commands:
+      - echo "Purging Fastly Cache"
+      - curl -X POST -H "Fastly-Key: $FASTLY_API_KEY" -H "Accept: application/json" https://api.fastly.com/service/$FASTLY_SERVICE_ID/purge_all
