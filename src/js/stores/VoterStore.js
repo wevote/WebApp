@@ -1412,7 +1412,7 @@ class VoterStore extends ReduceStore {
         }
 
       case 'voterVerifySecretCode':
-        // console.log('VoterStore, voterVerifySecretCode, action.res:', action.res);
+        // console.log('VoterStore, voterVerifySecretCode, action.res:', JSON.stringify(action.res));
         incorrectSecretCodeEntered = (action.res.incorrect_secret_code_entered && action.res.incorrect_secret_code_entered === true);
         mergeFromVoterWeVoteId = action.res.merge_from_voter_we_vote_id;
         mergeToVoterWeVoteId = action.res.merge_to_voter_we_vote_id;
