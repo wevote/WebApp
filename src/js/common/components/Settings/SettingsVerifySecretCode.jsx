@@ -139,29 +139,6 @@ class SettingsVerifySecretCode extends Component {
     }
   }
 
-  handleDigit6Blur = () => {
-    // 2022-09-29 NOTE: Submitting the code on blur can cause some weird behavior.
-    // One case is this: clicking "Try a different number" after you have entered a full and correct
-    //  verification code, signs you in. But attempts to change/remove
-    //  this "handleDigit6Blur" function caused other, worse problems.
-
-    // 2024-04-10 NOTE: This function is no longer being used in order to address WV-328.
-    const {
-      cancelingVerifyModal, digit1, digit2, digit3, digit4, digit5, digit6,
-      voterPhoneNumber, voterVerifySecretCodeSubmitted,
-    } = this.state;
-    this.setState({ condensed: false });
-    if (digit6) {
-      // Jan 2020 this comment looks wrong, but might still contain a clue:  When there is a voterEmailAddress value and the keyboard closes, submit
-      const secretCode = `${digit1}${digit2}${digit3}${digit4}${digit5}${digit6}`;
-      const codeSentToSMSPhoneNumber = !!voterPhoneNumber;
-      if (!voterVerifySecretCodeSubmitted && !cancelingVerifyModal) {
-        VoterActions.voterVerifySecretCode(secretCode, codeSentToSMSPhoneNumber);
-        this.setState({ voterVerifySecretCodeSubmitted: true });
-      }
-    }
-  };
-
   handleKeyDown2 (e) {
     if (e.keyCode === 8 && this.state.digit2 === '') {
       e.target.parentElement.previousElementSibling.firstElementChild.value = '';
@@ -232,6 +209,7 @@ class SettingsVerifySecretCode extends Component {
       let errorMessageToDisplay = '';
       let errorToDisplay = false;
       if (voterSecretCodeRequestsLocked) {
+        // console.log('onVoterStoreChange SecretCodeRequestsLocked');
         errorToDisplay = true;
         const { voterEmailAddress, voterPhoneNumber } = this.state;
         if (voterEmailAddress) {
@@ -242,6 +220,7 @@ class SettingsVerifySecretCode extends Component {
           errorMessageToDisplay = 'Please contact WeVote support. Your account is locked.';
         }
       } else if (voterMustRequestNewCode) {
+        // console.log('onVoterStoreChange You\'ve reached the maximum number of tries.');
         errorToDisplay = true;
         errorMessageToDisplay = 'You\'ve reached the maximum number of tries.';
       } else if (incorrectSecretCodeEntered || numberOfTriesRemaining <= 4) {
@@ -249,6 +228,7 @@ class SettingsVerifySecretCode extends Component {
         errorToDisplay = true;
         errorMessageToDisplay = 'Incorrect code entered.';
       }
+      // console.log('onVoterStoreChange setState() incorrectSecretCodeEntered:', incorrectSecretCodeEntered);
       this.setState({
         errorMessageToDisplay,
         errorToDisplay,
@@ -447,21 +427,24 @@ class SettingsVerifySecretCode extends Component {
 
   // eslint-disable-next-line react/sort-comp
   onPaste (e) {
-    // console.log(e.clipboardData.getData('Text'));
-
-    let charInputArray = '';
-    if (e.clipboardData) {  // Paste
-      charInputArray = e.clipboardData.getData('Text').split('');
-    } else if (e.target.value) {   // "From Messages" in iOS
-      charInputArray = e.target.value.split('');
+    let secretCode = '';
+    if (isIOS() && e.target.value) {   // "From Messages" in iOS (once upon a time)
+      // console.log('onPaste clipboard data ios data: ', e.target.value);
+      secretCode = e.target.value;
+    } else if (e.clipboardData) {  // Paste
+      // console.log('onPaste clipboard data NOT ios data: ', e.clipboardData.getData('Text'));
+      secretCode = e.clipboardData.getData('Text')
     }
-    // console.log(charInputArray);
+    const charInputArray = secretCode.split('');
+    // console.log('onPaste charInputArray: ', charInputArray);
 
     const regex = /^[0-9]$/;
-
     const allDigits = charInputArray.filter((digit) => regex.test(digit));
 
-    if (allDigits[5]) {
+    // Pasted in from messages, or from clipboard in desktop/mobile
+    // if all 6 digits are numeric and there are 6 of them
+    if (allDigits && secretCode.length === 6) {
+      // console.log('onPaste allDigits data', allDigits);
       this.setState({
         digit1: allDigits[0],
         digit2: allDigits[1],
@@ -472,16 +455,20 @@ class SettingsVerifySecretCode extends Component {
         errorToDisplay: false,
         errorMessageToDisplay: '',
       });
+      const { voterPhoneNumber } = this.props;
+      const codeSentToSMSPhoneNumber = !!voterPhoneNumber;
 
+      // If all digits were pasted in, do not require a 'Verify' button keystroke
+      // console.log('onPaste all digits were pasted in, do not require a \'Verify\' button keystroke');
+      VoterActions.voterVerifySecretCode(secretCode, codeSentToSMSPhoneNumber);
+      this.setState({ voterVerifySecretCodeSubmitted: true });
+    } else {
       document.getElementById('digit1').blur(); // prevents change from firing on chrome
       document.getElementById('digit2').blur(); // prevents change from firing on chrome
       document.getElementById('digit3').blur(); // prevents change from firing on chrome
       document.getElementById('digit4').blur(); // prevents change from firing on chrome
       document.getElementById('digit5').blur(); // prevents change from firing on chrome
       document.getElementById('digit6').blur(); // prevents change from firing on chrome
-      // If all digits were pasted in, do not require a 'Verify' button keystroke
-      this.voterVerifySecretCode();
-    } else {
       this.setState({
         digit1: '',
         digit2: '',
@@ -499,6 +486,7 @@ class SettingsVerifySecretCode extends Component {
     const { digit1, digit2, digit3, digit4, digit5, digit6, voterPhoneNumber, voterVerifySecretCodeSubmitted } = this.state;
     // console.log('voterVerifySecretCode local function, voterPhoneNumber:', voterPhoneNumber);
     const secretCode = `${digit1}${digit2}${digit3}${digit4}${digit5}${digit6}`;
+    // console.log('voterVerifySecretCode local function, secretCode:', secretCode);
     const codeSentToSMSPhoneNumber = !!voterPhoneNumber;
     if (!voterVerifySecretCodeSubmitted) {
       VoterActions.voterVerifySecretCode(secretCode, codeSentToSMSPhoneNumber);
