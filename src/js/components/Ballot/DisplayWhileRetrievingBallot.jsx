@@ -52,6 +52,11 @@ export default function DisplayWhileRetrievingBallot ({ ballotWithAllItems }) {
     };
   }, []);
 
+  const showAddBallotItemModal = () => {
+    console.log('DisplayWhileRetrievingBallot showAddBallotItemModal');
+    AppObservableStore.setShowAddBallotItemModal(true);
+  }
+  
   const showSelectBallotModalChooseElection = () => {
     const showEditAddress = false;
     const showSelectBallotModal = true;
@@ -144,6 +149,7 @@ export default function DisplayWhileRetrievingBallot ({ ballotWithAllItems }) {
                 <Button
                   color="primary"
                   id="noDataAddBallotItem"
+                  onClick={showAddBallotItemModal}
                   variant="contained"
                 >
                   Add ballot item
@@ -195,8 +201,10 @@ export default function DisplayWhileRetrievingBallot ({ ballotWithAllItems }) {
   );
 
   renderLog('DisplayWhileRetrievingBallot functional component');
-  if (!ballotWithAllItems || ballotWithAllItems.length === 0) {
-    return showNoBallotItems ? noBallotItemsJsx : loadingJsx;
+  // if (!ballotWithAllItems || ballotWithAllItems.length === 0) {
+  //   return showNoBallotItems ? noBallotItemsJsx : loadingJsx;
+  if (true) { // TEMP - for testing add ballot item modal
+    return noBallotItemsJsx; // TEMP - for testing add ballot item modal
   } else {
     return null;
   }
