@@ -18,6 +18,25 @@ function getCandidateName (candidate) {
   return candidate.ballot_item_display_name || candidate.candidate_name || '';
 }
 
+function getCandidateOfficeLinks (candidate) {
+  const links = (candidate.contest_office_list || [])
+    .map((office) => ({
+      electionId: parseInt(office.google_civic_election_id, 10),
+      officeWeVoteId: office.contest_office_we_vote_id || '',
+      officeName: office.contest_office_name || '',
+    }))
+    .filter((link) => link.electionId);
+  if (links.length) return links;
+
+  const electionId = parseInt(candidate.google_civic_election_id, 10);
+  if (!electionId) return [];
+  return [{
+    electionId,
+    officeWeVoteId: candidate.contest_office_we_vote_id || '',
+    officeName: candidate.contest_office_name || '',
+  }];
+}
+
 function getElectionSearchText (election) {
   const parts = [
     election.election_name,
@@ -54,20 +73,25 @@ export default function buildCandidateSearchResults (scopedElectionList, candida
   (candidateList || []).forEach((candidate) => {
     if (!getCandidateName(candidate).toLowerCase().includes(lowerSearch)) return;
     if (stateFilter && candidate.state_code && candidate.state_code.toUpperCase() !== stateFilter) return;
-    const electionId = parseInt(candidate.google_civic_election_id, 10);
-    if (!electionId || !(electionId in electionById)) return;
 
-    if (!(electionId in officesByElectionId)) officesByElectionId[electionId] = {};
-    const officeKey = candidate.contest_office_we_vote_id || candidate.contest_office_name || 'unknown';
-    if (!(officeKey in officesByElectionId[electionId])) {
-      officesByElectionId[electionId][officeKey] = {
-        officeWeVoteId: candidate.contest_office_we_vote_id || '',
-        officeName: candidate.contest_office_name || '',
-        candidates: [],
-      };
-    }
-    officesByElectionId[electionId][officeKey].candidates.push(candidate);
-    matchedElectionIds.add(electionId);
+    getCandidateOfficeLinks(candidate).forEach((link) => {
+      if (!(link.electionId in electionById)) return;
+
+      if (!(link.electionId in officesByElectionId)) officesByElectionId[link.electionId] = {};
+      const officeKey = link.officeWeVoteId || link.officeName || 'unknown';
+      if (!(officeKey in officesByElectionId[link.electionId])) {
+        officesByElectionId[link.electionId][officeKey] = {
+          officeWeVoteId: link.officeWeVoteId,
+          officeName: link.officeName,
+          candidates: [],
+        };
+      }
+      const officeBucket = officesByElectionId[link.electionId][officeKey];
+      if (!officeBucket.candidates.some((c) => c.we_vote_id === candidate.we_vote_id)) {
+        officeBucket.candidates.push(candidate);
+      }
+      matchedElectionIds.add(link.electionId);
+    });
   });
 
   // Build augmented results, preserving the scopedElectionList ordering
