@@ -37,6 +37,7 @@ import TabWithPushHistory from './TabWithPushHistory';
 const HeaderNotificationMenu = React.lazy(() => import(/* webpackChunkName: 'HeaderNotificationMenu' */ './HeaderNotificationMenu'));
 const nextReleaseFeaturesEnabled = webAppConfig.ENABLE_NEXT_RELEASE_FEATURES === undefined ? false : webAppConfig.ENABLE_NEXT_RELEASE_FEATURES;
 const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ '../../common/components/Widgets/OpenExternalWebSite'));
+const weVoteHelpUrl = 'https://help.wevote.us/hc/en-us';
 
 /* global $ */
 
@@ -550,6 +551,26 @@ class HeaderBar extends Component {
                     >
                       How it works
                     </StyledMoreMenuItem>
+
+                    <Suspense fallback={<></>}>
+                      <OpenExternalWebSite
+                        linkIdAttribute="headerLinkWeVoteHelp"
+                        url={weVoteHelpUrl}
+                        target="_blank"
+                        trackingOn
+                        body={(
+                          <StyledMoreMenuItem
+                            id="HeaderBarHelp"
+                            onClick={() => {
+                              this.setState({ moreAnchorEl: null });
+                            }}
+                            disableRipple
+                          >
+                            Help
+                          </StyledMoreMenuItem>
+                        )}
+                      />
+                    </Suspense>
 
                     {nextReleaseFeaturesEnabled && (
                       <StyledMoreMenuItem

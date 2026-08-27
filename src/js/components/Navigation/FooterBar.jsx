@@ -1,4 +1,4 @@
-import { Article, CalendarMonth, Groups, Home, HowToVote, Info, MoreHoriz, People, QuestionAnswer, VerifiedUser } from '@mui/icons-material';
+import { Article, CalendarMonth, ContactSupport, Groups, Home, HowToVote, Info, MoreHoriz, People, QuestionAnswer, VerifiedUser } from '@mui/icons-material';
 import { Badge, BottomNavigation, BottomNavigationAction, ClickAwayListener } from '@mui/material';
 import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
@@ -30,6 +30,7 @@ const capitalBuilding = '/img/global/svg-icons/capital-building.svg';
 const capitalBuildingSelected = '/img/global/svg-icons/capital-building-selected.svg';
 const weVoteIcon = '/img/global/svg-icons/we-vote-icon-square-color-grey.svg';
 const weVoteIconSelected = '/img/global/svg-icons/we-vote-icon-square-color-dark.svg';
+const weVoteHelpUrl = 'https://help.wevote.us/hc/en-us';
 
 
 function MoreMenuOverlay ({ anchorRef, classes, friendInvitationsSentToMeCount, onClose }) {
@@ -62,6 +63,20 @@ function MoreMenuOverlay ({ anchorRef, classes, friendInvitationsSentToMeCount, 
           <Info />
           How it works
         </MenuItem>
+        <Suspense fallback={<></>}>
+          <OpenExternalWebSite
+            linkIdAttribute="footerBarHelp"
+            url={weVoteHelpUrl}
+            target="_blank"
+            trackingOn
+            body={(
+              <MenuItem id="FooterBarHelp" onClick={() => { onClose(); }}>
+                <ContactSupport />
+                Help
+              </MenuItem>
+            )}
+          />
+        </Suspense>
         {nextReleaseFeaturesEnabled && (
           <MenuItem id="FooterBarCandidatesManaging" $active={isManage} onClick={() => { onClose(); historyPush('/no-candidates-claimed'); }}>
             <img
