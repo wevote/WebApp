@@ -1,4 +1,4 @@
-import { Article, CalendarMonth, ContactSupport, Groups, Home, HowToVote, Info, MoreHoriz, People, QuestionAnswer, VerifiedUser } from '@mui/icons-material';
+import { Article, CalendarMonth, Groups, Home, HowToVote, Info, MoreHoriz, People, QuestionAnswer, Support, VerifiedUser } from '@mui/icons-material';
 import { Badge, BottomNavigation, BottomNavigationAction, ClickAwayListener } from '@mui/material';
 import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
@@ -71,7 +71,7 @@ function MoreMenuOverlay ({ anchorRef, classes, friendInvitationsSentToMeCount, 
             trackingOn
             body={(
               <MenuItem id="FooterBarHelp" onClick={() => { onClose(); }}>
-                <ContactSupport />
+                <Support />
                 Help
               </MenuItem>
             )}
