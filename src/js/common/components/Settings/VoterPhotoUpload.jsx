@@ -216,7 +216,8 @@ class VoterPhotoUpload extends Component {
       thumbnail.style.display = 'inline';
       thumbnail.src = dataUrl;
       // console.log('preparePhotoForUpload cordovaDropZone display none', dataUrl);
-      cordovaDropZone.style.display = 'none';
+      // cordovaDropZone.style.display = 'none';
+      if (cordovaDropZone) cordovaDropZone.style.display = 'none';
     }
     const { politicianWeVoteId, onUpload } = this.props;
     if (politicianWeVoteId) {
