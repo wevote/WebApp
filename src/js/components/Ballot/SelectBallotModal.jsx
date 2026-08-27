@@ -68,9 +68,11 @@ class SelectBallotModal extends Component {
 
   toggleEditingAddress = () => {
     const { editingAddress } = this.state;
-    this.setState({
-      editingAddress: !editingAddress,
-    });
+    // Write through to AppObservableStore (instead of only setting local state) so this stays in sync.
+    // Otherwise the next unrelated messageService broadcast re-syncs from the stale AppObservableStore
+    // value in onAppObservableStoreChange() and undoes this toggle (e.g., Cancel silently reopening
+    // the address edit view). See WV-4807.
+    AppObservableStore.setShowSelectBallotModal(true, !editingAddress);
   };
 
   render () {
