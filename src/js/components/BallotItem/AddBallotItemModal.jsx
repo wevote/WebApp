@@ -1,81 +1,79 @@
 import withStyles from '@mui/styles/withStyles';
 import withTheme from '@mui/styles/withTheme';
+
 import { 
-    FormControl, FormControlLabel, FormGroup, FormLabel, 
-    Radio, RadioGroup,TextField, ToggleButton, ToggleButtonGroup,  
-    Button,
-    Box, 
+    Box, Button, FormControl, FormControlLabel, FormGroup, FormLabel, 
+    Radio, RadioGroup, TextField, ToggleButton, ToggleButtonGroup
 } from '@mui/material';
-import { Check, DoNotDisturb } from '@mui/icons-material';
-import styled from 'styled-components';
+import CheckIcon from '@mui/icons-material/Check';
+import BlockIcon from '@mui/icons-material/Block';
+
+import DesignTokenColors from '../../common/components/Style/DesignTokenColors';
+
+import styled, { createGlobalStyle } from 'styled-components';
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import ModalDisplayTemplateA, { templateAStyles, TextFieldWrapper } from '../Widgets/ModalDisplayTemplateA';
+
 import { renderLog } from '../../common/utils/logging';
 
 
-class AddBallotItemModal extends Component {
-    constructor (props) {
-        super(props);
-        this.state = {
-            itemName: '',
-            itemRadioSelection: null,
-            candidateOfficeName: '',
-            candidatePartySelection: '',
-            otherPartyText: '',
-            chooseOpposeSelection: null,
-            opinionText: '',
-        };
-    }
 
-    handleItemRadioSelection = (event) => {
-        this.setState({ itemRadioSelection: event.target.value });
+function AddBallotItemModal ({ show, toggleFunction }) {
+    renderLog('AddBallotItemModal');  // Set LOG_RENDER_EVENTS to log all renders
+
+    const [itemName, setItemName] = useState('');
+    const [itemRadioSelection, setItemRadioSelection] = useState(null);
+    const [candidateOfficeName, setCandidateOfficeName] = useState('');
+    const [candidatePartySelection, setCandidatePartySelection] = useState('');
+    const [otherPartyText, setOtherPartyText] = useState('');
+    const [stanceSelection, setStanceSelection] = useState(null);
+    const [opinionText, setOpinionText] = useState('');
+
+    const handleItemRadioSelection = (event) => {
+        setItemRadioSelection(event.target.value);
     };
 
-    handleCandidatePartySelection = (event) => {
-        this.setState({ candidatePartySelection: event.target.value });
+    const handleCandidatePartySelection = (event) => {
+        setCandidatePartySelection(event.target.value);
     };
 
-    handleOtherTextChange = (event) => {
-        this.setState({ otherPartyText: event.target.value });
+    const handleOtherTextChange = (event) => {
+        setOtherPartyText(event.target.value);
     };
 
-    handlechooseOpposeSelection = (event, newSelection) => {
-        this.setState({ chooseOpposeSelection: newSelection });
-    };
-
-    handleSubmit = () => {
+    const handleSubmit = () => {
         let submissionData = {
-            itemName: this.state.itemName,
-            itemRadioSelection: this.state.itemRadioSelection,
-            chooseOpposeSelection: this.state.chooseOpposeSelection,
-            opinionText: this.state.opinionText,
-        }
+            itemName,
+            itemRadioSelection,
+            stanceSelection,
+            opinionText,
+            // only include these fields in submission data if user made relevant selections
+            ...(itemRadioSelection === 'candidate' && {
+                candidateOfficeName,
+                candidatePartySelection,
+                ...(candidatePartySelection === 'other' && { otherPartyText })
+            })
+            
+            // ...(itemRadioSelection === 'candidate' && candidateOfficeName && { candidateOfficeName }),
+            // ...(itemRadioSelection === 'candidate' && candidatePartySelection && { candidatePartySelection}),
+            // ...(candidatePartySelection === 'other' && otherPartyText && { otherPartyText })
 
-        if (this.state.itemRadioSelection === 'candidate') {
-            submissionData.candidateOfficeName ??= this.state.candidateOfficeName;
-            submissionData.candidatePartySelection ??= this.state.candidatePartySelection;
-            if (this.state.candidatePartySelection === 'other') {
-                submissionData.otherPartyText = this.state.otherPartyText;
-            }
-        }
+        };
 
+        // TODO: replace with real submission call & desired data structure, 
+        // then close modal once submission succeeds
         console.log('AddBallotItemModal handleSubmit called with values:', submissionData);
+    };
+
+    if (!show) {
+        return null;
     }
 
-
-    render () {
-        renderLog('AddBallotItemModal');  // Set LOG_RENDER_EVENTS to log all renders
-        
-        const { itemName, itemRadioSelection, candidateOfficeName, candidatePartySelection, otherPartyText, opinionText } = this.state;
-        const { show } = this.props;
-       
-        if (!show) {
-            return null;
-        }
-
-        const dialogTitleText = 'Add an item to your ballot';
-        const textFieldJSX = (
+    const dialogTitleText = 'Add an item to your ballot';
+    const textFieldJSX = (
+        <>
+            <ModalFont />
             <TextFieldWrapper>
                 <div>
                     <UnorderedList>
@@ -87,18 +85,18 @@ class AddBallotItemModal extends Component {
                             Once your friends like this item and add their opinions, 
                             it will become visible to everyone else. 
                         </li>
-                    {/* </ul> */}
                     </UnorderedList>
+
                     <TextField
                         id="addBallotItemInput"
                         label="Item name"
                         required
                         value={itemName}
-                        onChange={(e) => this.setState({ itemName: e.target.value })}
+                        onChange={(e) => setItemName(e.target.value)}
                         placeholder="Name of candidate, proposition, measure, or referendum"
                         variant="outlined"
                         fullWidth
-                        InputLabelProps={{ shrink: true }}
+                        // InputLabelProps={{ shrink: true }}
                         sx={{
                             '& .MuiOutlinedInput-root': {
                                 '& fieldset': {
@@ -115,99 +113,143 @@ class AddBallotItemModal extends Component {
                     <FormGroup>
                         <FormControl>
                             <FormLabel id="item-type-label">Item type (optional)</FormLabel>
+
                             <RadioGroup
                                 aria-labelledby="item-type-label"
                                 name="item-type-radio-group"
                                 value={itemRadioSelection}
-                                onChange={this.handleItemRadioSelection}
+                                onChange={handleItemRadioSelection}
                             >
-                                <FormControlLabel value="candidate" control={<Radio />} label="Candidate" />
+                                <Box sx={{ display: 'flex', alignItems: 'flex-start', gap: 1 }}>
+                                    <FormControlLabel 
+                                        value="candidate" 
+                                        control={<Radio />} 
+                                        label="Candidate"
+                                        sx={{ flexShrink: 0, alignSelf: 'flex-start' }}
+                                    />
 
-                                {itemRadioSelection === 'candidate' &&
-                                    <Box>
-                                        <TextField
-                                            id="outlined-candidateDetailsInput"
-                                            label="Office name"
-                                            value={candidateOfficeName}
-                                            onChange={(e) => this.setState({ candidateOfficeName: e.target.value })}
-                                            variant="outlined"
-                                            disabled={itemRadioSelection !== 'candidate'}
+                                    {itemRadioSelection === 'candidate' &&
+                                        <Box
                                             sx={{
-                                                '& .MuiOutlinedInput-root': {
-                                                    '& fieldset': {
-                                                        borderRadius: '10px',
-                                                    },
-                                                },
+                                                flex: 1,
+                                                display: 'flex',
+                                                flexDirection: 'column',
+                                                minWidth: 0
                                             }}
-                                        />
-                                        <RadioGroup
-                                            aria-labelledby="candidate-party-label"
-                                            name="candidate-party-radio-group"
-                                            value={candidatePartySelection}
-                                            onChange={this.handleCandidatePartySelection}
                                         >
-                                            <FormControlLabel value="democrat" control={<Radio />} label="Democrat" />
-                                            <FormControlLabel value="republican" control={<Radio />} label="Republican" />
-                                            <FormControlLabel value="independent" control={<Radio />} label="Independent" />
-                                            <FormControlLabel
-                                                value="other"
-                                                control={<Radio />}
-                                                label={
+                                            <TextField
+                                                id="outlined-candidateDetailsInput"
+                                                label="Office name"
+                                                value={candidateOfficeName}
+                                                onChange={(e) => setCandidateOfficeName(e.target.value)}
+                                                variant="outlined"
+                                                fullWidth
+                                                disabled={itemRadioSelection !== 'candidate'}
+                                                sx={{
+                                                    '& .MuiOutlinedInput-root': {
+                                                        '& fieldset': {
+                                                            borderRadius: '10px',
+                                                        },
+                                                    },
+                                                }}
+                                            />
+                                            <RadioGroup
+                                                aria-labelledby="candidate-party-label"
+                                                name="candidate-party-radio-group"
+                                                value={candidatePartySelection}
+                                                onChange={handleCandidatePartySelection}
+                                                sx={{ gap: 1, minWidth: 0 }}
+                                            >
+                                                <Box sx={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap', minWidth: 0 }}>
+                                                {/* <Box sx={{ display: 'flex', flexDirection: 'row', minWidth: 0 }}> */}
+                                                    <FormControlLabel value="democrat" control={<Radio />} label="Democrat" />
+                                                    <FormControlLabel value="republican" control={<Radio />} label="Republican" />
+                                                    <FormControlLabel value="independent" control={<Radio />} label="Independent" />
+                                                </Box>
+                                            
+                                                <Box sx= {{ display: 'flex', alignItems: 'center', ml: '-11px' }}>
+                                                    <Radio
+                                                        checked={candidatePartySelection === 'other'}
+                                                        onChange={(e) => {
+                                                            e.stopPropagation();
+                                                            setCandidatePartySelection('other');
+                                                        }}
+                                                        value="other"
+                                                        name="candidate-party-radio-group"
+                                                        disabled={itemRadioSelection !== 'candidate'}
+                                                    />
                                                     <TextField
                                                         variant="outlined"
+                                                        fullWidth
                                                         placeholder="Other (please specify)"
                                                         value={otherPartyText}
-                                                        onChange={this.handleOtherTextChange}
-                                                        // Prevents the radio button from losing focus or toggling unexpectedly
-                                                        onClick={() => this.setState({ candidatePartySelection: 'other' })}
-                                                        disabled={itemRadioSelection !== 'candidate' || (candidatePartySelection !== 'other' && otherPartyText === '')}
+                                                        onChange={handleOtherTextChange}
+                                                        onFocus={() => setCandidatePartySelection('other')}                                                     
+                                                        disabled={itemRadioSelection !== 'candidate'}
                                                         sx={{ 
                                                             minWidth: 200,
-
                                                             '& .MuiOutlinedInput-root': {
                                                                 '& fieldset': {
                                                                     borderRadius: '10px',
                                                                 },
                                                             },
-
                                                         }}
                                                     />
-                                                }
-                                            />
-                                        </RadioGroup>
-                                    </Box>
-                                }
-                                <FormControlLabel value="proposition" control={<Radio />} label="Proposition / Measure / Referendum" />
+                                                </Box>
+                                            </RadioGroup>
+                                        </Box>
+                                    }
+                                </Box>
+
+                                <FormControlLabel 
+                                    value="proposition" 
+                                    control={<Radio />} 
+                                    label="Proposition / Measure / Referendum"
+                                />
                             </RadioGroup>
                         </FormControl>
                     </FormGroup>
                 </div>
-                
+
                 <HorizontalRule />
 
-                <div style={{ marginTop: '20px' }}>
-                    <ToggleButtonGroup
-                        value={this.state.chooseOpposeSelection}
-                        onChange={this.handlechooseOpposeSelection}
-                        color={this.state.chooseOpposeSelection === 'choose' ? 'success' : this.state.chooseOpposeSelection === 'oppose' ? 'error' : 'primary'}
-                        size="large"
-                        exclusive
-                        aria-label="choose-oppose-toggle"
-                    >
-                        <ToggleButton value="choose" aria-label="choose">
-                            <Check fontSize="small" sx={{ mr: 1 }} />
+                <div style={{ marginTop: '20px' }}>  
+                    <StanceToggleRow>
+
+                        <StanceToggleButton
+                            type="button"
+                            selected={stanceSelection === 'support'}
+                            stanceType="support"
+                            onClick={() => setStanceSelection("support")}
+                        >
+                            <CheckIcon style={{ fontSize: 18, marginRight: 4 }} />
                             Choose
-                        </ToggleButton>
-                        <ToggleButton value="oppose" aria-label="oppose">
-                            <DoNotDisturb fontSize="small" sx={{ mr: 1 }} />
+                        </StanceToggleButton>
+
+                        <StanceToggleButton
+                            type="button"
+                            selected={stanceSelection === 'oppose'}
+                            stanceType="oppose"
+                            onClick={() => setStanceSelection('oppose')}
+                            >
+                            <BlockIcon style={{ fontSize: 18, marginRight: 4 }} />
                             Oppose
-                        </ToggleButton>
-                    </ToggleButtonGroup>
+                        </StanceToggleButton>
+
+                        <StanceToggleButton
+                            type="button"
+                            selected={stanceSelection === 'undecided'}
+                            stanceType="undecided"
+                            onClick={() => setStanceSelection('undecided')}
+                        >
+                            Undecided
+                        </StanceToggleButton>
+                    </StanceToggleRow>
 
                     <TextField
                         label="What's your opinion on this ballot item?"
                         value={opinionText}
-                        onChange={(e) => this.setState({ opinionText: e.target.value })}
+                        onChange={(e) => setOpinionText(e.target.value)}
                         multiline
                         minRows={3}
                         fullWidth
@@ -227,7 +269,7 @@ class AddBallotItemModal extends Component {
                         variant="outlined"
                         color="secondary"
                         sx={{ mt: 2, mr: 2 }}
-                        onClick={this.props.toggleFunction}
+                        onClick={toggleFunction}
                     >
                         Cancel
                     </CancelButton>
@@ -235,31 +277,41 @@ class AddBallotItemModal extends Component {
                         variant="contained"
                         color="primary"
                         sx={{ mt: 2 }}
-                        onClick={() => {this.handleSubmit();}}
+                        onClick={() => { handleSubmit(); }}
                     >
                         Add Ballot Item
                     </SubmitButton>
                 </SubmitActionsWrapper>
+
             </TextFieldWrapper>
-        );
-        
-        return (
-            <ModalDisplayTemplateA
-                show={show}
-                dialogTitleJSX={<>{dialogTitleText}</>}
-                toggleModal={this.props.toggleFunction}
-                textFieldJSX={textFieldJSX}
-                tallMode
-            />
-        );
-    }
+        </>
+    );
+
+    return (
+        <ModalDisplayTemplateA 
+            show={show}
+            toggleModal={toggleFunction}
+            dialogTitleJSX={<>{dialogTitleText}</>}
+            toggleModal={toggleFunction}
+            textFieldJSX={textFieldJSX}
+            tallMode
+        />
+    );
 }
 
 AddBallotItemModal.propTypes = {
-  show: PropTypes.bool,
+  show: PropTypes.bool.isRequired,
   toggleFunction: PropTypes.func.isRequired,
 };
 
+// override existing font-family rules which uniquely impact MUI Typography elements 
+// so that font is consistent throughout modal
+const ModalFont = createGlobalStyle`
+  .MuiDialog-paper:has(#addBallotItemInput) .MuiTypography-root,
+  .MuiDialog-paper:has(#addBallotItemInput) .MuiFormLabel-root {
+    font-family: "Poppins", "Helvetica Neue Light", "Helvetica Neue", "Helvetica", "Arial", sans-serif !important;
+  }
+`;
 
 const UnorderedList = styled('ul')`
     margin: 20px 0px; 
@@ -276,6 +328,41 @@ const UnorderedList = styled('ul')`
 const HorizontalRule = styled('hr')`
     width: 90%;
 `;
+
+
+const StanceToggleRow = styled('div')`
+    display: flex;
+    margin-bottom: 6px;
+`;
+
+// map both button background color when selected & text/icon color when hovered
+// to match currently active stanceType
+const stanceColor = (stanceType) => {
+    if (stanceType === 'support') return DesignTokenColors.confirmation800;
+    if (stanceType === 'oppose') return DesignTokenColors.alert800;
+    return DesignTokenColors.info800; // undecided
+}
+
+const StanceToggleButton = styled('button')`
+    align-items: center;
+    background-color: ${(props) => (props.selected ? stanceColor(props.stanceType) : DesignTokenColors.whiteUI)};
+    border: 2px solid ${(props) => (props.selected ? DesignTokenColors.info800 : DesignTokenColors.neutralUI300)};
+    border-radius: 20px;
+    color: ${(props) => (props.selected ? DesignTokenColors.whiteUI : DesignTokenColors.neutral900)};
+    cursor: pointer;
+    display: flex;
+    font-size: 14px;
+    font-weight: ${(props) => (props.selected ? '600' : '400')};
+    margin-right: 8px;
+    padding: 4px 16px;
+
+    &:hover,
+    &:focus-visible {
+        border-color: ${DesignTokenColors.info800};
+        color: ${(props) => (props.selected ? DesignTokenColors.whiteUI : stanceColor(props.stanceType))};
+    }
+`;
+
 
 const SubmitActionsWrapper = styled('div')`
     display: flex;
@@ -305,4 +392,3 @@ const SubmitButton = styled(Button)`
 
 
 export default withTheme(withStyles(templateAStyles)(AddBallotItemModal));
-// export default AddBallotItemModal;
