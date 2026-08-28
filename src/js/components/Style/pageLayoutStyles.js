@@ -94,7 +94,7 @@ export const PageContentContainer = styled('div')(({ theme }) => (`
   padding-top: ${getPaddingTop()};
   padding-bottom: ${getPaddingBottom()};
   position: relative;
-  z-index: 0;
+  z-index: 1;
   ${theme.breakpoints.down('sm')} {
     min-height: ${isWebApp() ? '10px' : `${window.innerHeight}px`};
     margin: ${getOuterContainerMargins()};
