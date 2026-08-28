@@ -455,7 +455,6 @@ class App extends Component {
       window.location.href = destinationHref;      // This would cause big problems in Cordova, but shouldn't happen
     }
 
-    console.log('showReadyLight:', showReadyLight);
     return (
       <>
         {enableFullStory && <FullStory org={webAppConfig.FULL_STORY_ORG} />}
@@ -474,8 +473,7 @@ class App extends Component {
                   <Route path="/" exact>
                     {() => {
                       if (showReadyLight) {
-                        // return <ReadyLight showReadyHeavy={this.setShowReadyHeavy} />;
-                        return <Route render={() => <Redirect to="/ready" />} />;
+                        return <ReadyLight showReadyHeavy={this.setShowReadyHeavy} />;
                       } else {
                         return <Route render={() => <Redirect to="/ready" />} />;
                       }
@@ -644,6 +642,7 @@ class App extends Component {
                   <Route path="/privacy" component={Privacy} />
                   <Route path="/personalized_score" component={FriendInvitationOnboarding} />
                   <Route path="/ready" exact><Ready /></Route>
+                  <Route path="/readylight" exact><ReadyLight showReadyHeavy={this.setShowReadyHeavy} /></Route>
                   <Route path="/ready/election/:google_civic_election_id" component={Ready} />
                   <Route path="/ready/modal/:modal_to_show/:shared_item_code" exact render={(props) => (<RouterV5SendMatch componentName="Ready" {...props} />)} />
                   <Route path="/ready/modal/:modal_to_show" exact render={(props) => (<RouterV5SendMatch componentName="Ready" {...props} />)} />
