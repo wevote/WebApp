@@ -201,10 +201,8 @@ export default function DisplayWhileRetrievingBallot ({ ballotWithAllItems }) {
   );
 
   renderLog('DisplayWhileRetrievingBallot functional component');
-  // if (!ballotWithAllItems || ballotWithAllItems.length === 0) {
-  //   return showNoBallotItems ? noBallotItemsJsx : loadingJsx;
-  if (true) { // TEMP - for testing add ballot item modal
-    return noBallotItemsJsx; // TEMP - for testing add ballot item modal
+  if (!ballotWithAllItems || ballotWithAllItems.length === 0) {
+    return showNoBallotItems ? noBallotItemsJsx : loadingJsx;
   } else {
     return null;
   }

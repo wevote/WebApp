@@ -5,6 +5,7 @@ import {
     Box, Button, FormControl, FormControlLabel, FormGroup, FormLabel, 
     Radio, RadioGroup, TextField, ToggleButton, ToggleButtonGroup
 } from '@mui/material';
+
 import CheckIcon from '@mui/icons-material/Check';
 import BlockIcon from '@mui/icons-material/Block';
 
@@ -16,7 +17,6 @@ import React, { useState } from 'react';
 import ModalDisplayTemplateA, { templateAStyles, TextFieldWrapper } from '../Widgets/ModalDisplayTemplateA';
 
 import { renderLog } from '../../common/utils/logging';
-
 
 
 function AddBallotItemModal ({ show, toggleFunction }) {
@@ -54,15 +54,10 @@ function AddBallotItemModal ({ show, toggleFunction }) {
                 candidatePartySelection,
                 ...(candidatePartySelection === 'other' && { otherPartyText })
             })
-            
-            // ...(itemRadioSelection === 'candidate' && candidateOfficeName && { candidateOfficeName }),
-            // ...(itemRadioSelection === 'candidate' && candidatePartySelection && { candidatePartySelection}),
-            // ...(candidatePartySelection === 'other' && otherPartyText && { otherPartyText })
-
         };
 
-        // TODO: replace with real submission call & desired data structure, 
-        // then close modal once submission succeeds
+        // // TODO: replace with real submission call & desired data structure, 
+        // // then close modal with toggleFunction once submission succeeds
         console.log('AddBallotItemModal handleSubmit called with values:', submissionData);
     };
 
@@ -74,6 +69,10 @@ function AddBallotItemModal ({ show, toggleFunction }) {
     const textFieldJSX = (
         <>
             <ModalFont />
+            <ModalScrollFix />
+            <ModalFooterSticky />
+            <ModalTitleBackground />
+
             <TextFieldWrapper>
                 <div>
                     <UnorderedList>
@@ -96,7 +95,6 @@ function AddBallotItemModal ({ show, toggleFunction }) {
                         placeholder="Name of candidate, proposition, measure, or referendum"
                         variant="outlined"
                         fullWidth
-                        // InputLabelProps={{ shrink: true }}
                         sx={{
                             '& .MuiOutlinedInput-root': {
                                 '& fieldset': {
@@ -107,12 +105,10 @@ function AddBallotItemModal ({ show, toggleFunction }) {
                     />
                 </div>
 
-                <HorizontalRule />
-
-                <div style={{ marginBottom: '20px' }}>
+                <div style={{ marginTop: '25px', marginLeft: '5px' }}>
                     <FormGroup>
                         <FormControl>
-                            <FormLabel id="item-type-label">Item type (optional)</FormLabel>
+                            <FormLabel id="item-type-label" sx={{ marginBottom: '10px'}}>Item type (optional)</FormLabel>
 
                             <RadioGroup
                                 aria-labelledby="item-type-label"
@@ -140,6 +136,7 @@ function AddBallotItemModal ({ show, toggleFunction }) {
                                             <TextField
                                                 id="outlined-candidateDetailsInput"
                                                 label="Office name"
+                                                size="small"
                                                 value={candidateOfficeName}
                                                 onChange={(e) => setCandidateOfficeName(e.target.value)}
                                                 variant="outlined"
@@ -161,7 +158,6 @@ function AddBallotItemModal ({ show, toggleFunction }) {
                                                 sx={{ gap: 1, minWidth: 0 }}
                                             >
                                                 <Box sx={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap', minWidth: 0 }}>
-                                                {/* <Box sx={{ display: 'flex', flexDirection: 'row', minWidth: 0 }}> */}
                                                     <FormControlLabel value="democrat" control={<Radio />} label="Democrat" />
                                                     <FormControlLabel value="republican" control={<Radio />} label="Republican" />
                                                     <FormControlLabel value="independent" control={<Radio />} label="Independent" />
@@ -181,7 +177,8 @@ function AddBallotItemModal ({ show, toggleFunction }) {
                                                     <TextField
                                                         variant="outlined"
                                                         fullWidth
-                                                        placeholder="Other (please specify)"
+                                                        size="small"
+                                                        label="Other (please specify)"
                                                         value={otherPartyText}
                                                         onChange={handleOtherTextChange}
                                                         onFocus={() => setCandidatePartySelection('other')}                                                     
@@ -205,6 +202,7 @@ function AddBallotItemModal ({ show, toggleFunction }) {
                                     value="proposition" 
                                     control={<Radio />} 
                                     label="Proposition / Measure / Referendum"
+                                    sx={{ mt: itemRadioSelection === 'candidate' ? 3 : 1 }}
                                 />
                             </RadioGroup>
                         </FormControl>
@@ -213,7 +211,7 @@ function AddBallotItemModal ({ show, toggleFunction }) {
 
                 <HorizontalRule />
 
-                <div style={{ marginTop: '20px' }}>  
+                <div style={{ marginBottom: '10px' }}>   
                     <StanceToggleRow>
 
                         <StanceToggleButton
@@ -222,7 +220,7 @@ function AddBallotItemModal ({ show, toggleFunction }) {
                             stanceType="support"
                             onClick={() => setStanceSelection("support")}
                         >
-                            <CheckIcon style={{ fontSize: 18, marginRight: 4 }} />
+                            <CheckIcon style={{ fontSize: 22, marginRight: 4 }} />
                             Choose
                         </StanceToggleButton>
 
@@ -232,7 +230,7 @@ function AddBallotItemModal ({ show, toggleFunction }) {
                             stanceType="oppose"
                             onClick={() => setStanceSelection('oppose')}
                             >
-                            <BlockIcon style={{ fontSize: 18, marginRight: 4 }} />
+                            <BlockIcon style={{ fontSize: 22, marginRight: 4 }} />
                             Oppose
                         </StanceToggleButton>
 
@@ -282,7 +280,6 @@ function AddBallotItemModal ({ show, toggleFunction }) {
                         Add Ballot Item
                     </SubmitButton>
                 </SubmitActionsWrapper>
-
             </TextFieldWrapper>
         </>
     );
@@ -304,6 +301,7 @@ AddBallotItemModal.propTypes = {
   toggleFunction: PropTypes.func.isRequired,
 };
 
+
 // override existing font-family rules which uniquely impact MUI Typography elements 
 // so that font is consistent throughout modal
 const ModalFont = createGlobalStyle`
@@ -313,10 +311,51 @@ const ModalFont = createGlobalStyle`
   }
 `;
 
+const ModalFooterSticky = createGlobalStyle`
+  /* Mobile --> < sm breakpoint (576px) */
+  @media (max-width: 575.95px) {
+    .MuiDialog-paper:has(#addBallotItemInput) {
+      max-height: 95vh !important;
+      margin: 16px !important;
+    }
+
+    .MuiDialogContent-root:has(#addBallotItemInput) {
+      padding-bottom: 0px !important;
+      overflow-y: auto !important;
+      flex: 1 1 auto !important;
+    }
+  }
+
+  /* Desktop/tablet --> >= sm breakpoint (576px) */
+  @media (min-width: 576px) {
+    .MuiDialog-paper:has(#addBallotItemInput) {
+      max-height: min(750px, calc(100vh - 96px)) !important;
+    }
+
+    .MuiDialogContent-root:has(#addBallotItemInput) {
+      overflow-y: auto !important;
+      flex: 1 1 auto !important;
+    }
+  }
+`;
+
+const ModalScrollFix = createGlobalStyle`
+  .MuiDialog-container:has(#addBallotItemInput) {
+    align-items: flex-start !important;
+  }
+`;
+
+const ModalTitleBackground = createGlobalStyle`
+  .MuiDialog-paper:has(#addBallotItemInput) .MuiDialogTitle-root {
+    background-color: ${DesignTokenColors.neutralUI50} !important;
+  }
+`;
+
+
 const UnorderedList = styled('ul')`
-    margin: 20px 0px; 
-    padding-top: 20px;
-    padding-bottom: 20px;
+    margin: 20px 0px;
+    padding-top: 18px;
+    padding-bottom: 18px;
     display: flex;
     flex-direction: column;
     gap: 12px;
@@ -326,13 +365,18 @@ const UnorderedList = styled('ul')`
 `;
 
 const HorizontalRule = styled('hr')`
-    width: 90%;
+    width: 100%;
+    margin-top: 30px;
+    margin-bottom: 30px;
 `;
 
 
 const StanceToggleRow = styled('div')`
     display: flex;
-    margin-bottom: 6px;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-bottom: 30px;
+    gap: 8px;
 `;
 
 // map both button background color when selected & text/icon color when hovered
@@ -347,14 +391,13 @@ const StanceToggleButton = styled('button')`
     align-items: center;
     background-color: ${(props) => (props.selected ? stanceColor(props.stanceType) : DesignTokenColors.whiteUI)};
     border: 2px solid ${(props) => (props.selected ? DesignTokenColors.info800 : DesignTokenColors.neutralUI300)};
-    border-radius: 20px;
+    border-radius: 24px;
     color: ${(props) => (props.selected ? DesignTokenColors.whiteUI : DesignTokenColors.neutral900)};
     cursor: pointer;
     display: flex;
-    font-size: 14px;
+    font-size: 16px;
     font-weight: ${(props) => (props.selected ? '600' : '400')};
-    margin-right: 8px;
-    padding: 4px 16px;
+    padding: 10px 24px;
 
     &:hover,
     &:focus-visible {
@@ -366,15 +409,25 @@ const StanceToggleButton = styled('button')`
 
 const SubmitActionsWrapper = styled('div')`
     display: flex;
-    justify-content: space-between;
-    margin-top: 20px;
+    justify-content: center;
+    gap: 10px;
+    padding: 10px 0 20px;
+    position: sticky;
+    bottom: 0;
+    z-index: 2;
+    background: rgb(230, 243, 255);
+    background-color: ${DesignTokenColors.whiteUI};
+    border-top: 1px solid #eee
 `;
 
 const CancelButton = styled(Button)`
     border-radius: 50px;
     background-color: #f5f5f5;
     color: #555;
+    border: 1px solid #ccc;
     flex: 1;
+    padding: 10px 24px;
+
     &:hover {
         background-color: #e0e0e0;
     }
@@ -385,6 +438,8 @@ const SubmitButton = styled(Button)`
     background-color: #1976d2;
     color: white;
     flex: 2;
+    padding: 10px 24px;
+
     &:hover {
         background-color: #115293;
     }
