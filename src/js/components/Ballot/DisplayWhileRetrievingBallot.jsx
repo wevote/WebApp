@@ -52,6 +52,11 @@ export default function DisplayWhileRetrievingBallot ({ ballotWithAllItems }) {
     };
   }, []);
 
+  const showAddBallotItemModal = () => {
+    console.log('DisplayWhileRetrievingBallot showAddBallotItemModal');
+    AppObservableStore.setShowAddBallotItemModal(true);
+  }
+  
   const showSelectBallotModalChooseElection = () => {
     const showEditAddress = false;
     const showSelectBallotModal = true;
@@ -144,6 +149,7 @@ export default function DisplayWhileRetrievingBallot ({ ballotWithAllItems }) {
                 <Button
                   color="primary"
                   id="noDataAddBallotItem"
+                  onClick={showAddBallotItemModal}
                   variant="contained"
                 >
                   Add ballot item
