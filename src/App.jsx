@@ -68,10 +68,11 @@ const Credits = React.lazy(() => import(/* webpackChunkName: 'Credits' */ './js/
 const Donate = React.lazy(() => import(/* webpackChunkName: 'Donate' */ './js/pages/More/Donate'));
 const DonateFaq = React.lazy(() => import(/* webpackChunkName: 'DonateFaq' */ './js/pages/More/DonateFaq'));
 const Drawers = React.lazy(() => import(/* webpackChunkName: 'Drawers' */ './js/components/Drawers/Drawers'));
-const ElectionReminder = React.lazy(() => import(/* webpackChunkName: 'ElectionReminder' */ './js/pages/More/ElectionReminder'));
+const ElectionData = React.lazy(() => import(/* webpackChunkName: 'ElectionData' */ './js/pages/More/ElectionData'));
 const ElectionFinderForElection = React.lazy(() => import(/* webpackChunkName: 'ElectionFinderForElection' */ './js/pages/ElectionFinder/ElectionFinderForElection'));
 const ElectionFinderForState = React.lazy(() => import(/* webpackChunkName: 'ElectionFinderForState' */ './js/pages/ElectionFinder/ElectionFinderForState'));
 const ElectionFinderHome = React.lazy(() => import(/* webpackChunkName: 'ElectionFinderHome' */ './js/pages/ElectionFinder/ElectionFinderHome'));
+const ElectionReminder = React.lazy(() => import(/* webpackChunkName: 'ElectionReminder' */ './js/pages/More/ElectionReminder'));
 const Elections = React.lazy(() => import(/* webpackChunkName: 'Elections' */ './js/pages/More/Elections'));
 const ExtensionSignIn = React.lazy(() => import(/* webpackChunkName: 'ExtensionSignIn' */ './js/pages/More/ExtensionSignIn'));
 const FAQ = React.lazy(() => import(/* webpackChunkName: 'FAQ' */ './js/pages/More/FAQ'));
@@ -550,6 +551,7 @@ class App extends Component {
                   <Route path="/challenges/" exact component={ChallengesHomeLoader} />
                   <Route path="/donate" component={(isNotWeVoteMarketingSite) ? ReadyRedirect : Donate} />
                   <Route path="/donatefaq" component={(isNotWeVoteMarketingSite) ? ReadyRedirect : DonateFaq} />
+                  <Route path="/election-data" component={ElectionData} />
                   <Route path="/facebook_invitable_friends" component={FacebookInvitableFriends} />
                   <Route path="/findfriends/:set_up_page" exact component={FindFriendsRoot} />
                   <Route path="/findfriends" exact><FindFriendsRoot /></Route>
