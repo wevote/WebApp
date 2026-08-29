@@ -15,7 +15,7 @@ function ElectionDataSourcesBody () {
     <Wrapper>
       <ElectionDataSourcesDescriptionContainer>
         <SectionTitle>Government Information, Source Links</SectionTitle>
-        We Vote is a 501(c)(3) nonprofit organization (FEIN 47-2691544) that collects and organizes nationwide ballot information from the official government sources listed below.
+        We Vote is a 501(c)(3) nonprofit organization (FEIN 47-2691544) that collects, organizes and displays nationwide ballot information from the official government sources listed below.
         <br />
         <br />
         <ul>
