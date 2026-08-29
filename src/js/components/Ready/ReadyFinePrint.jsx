@@ -58,7 +58,7 @@ function ReadyFinePrint ({ contentUnfurledOnLoad, showStep3WhenCompressed, title
               <ListRow>
                 <Dot><StepNumberPlaceholder>&nbsp;</StepNumberPlaceholder></Dot>
                 <StepText id="readyFinePrintStepTextb">
-                  WeVote provides ballot data collected from
+                  We Vote is a 501(c)(3) nonprofit organization (FEIN 47-2691544) that collects, organizes and displays nationwide ballot information collected from
                   {' '}
                   <Link to="/election-data" className="u-link-color">official government websites</Link>
                   . We work to include 100% of the items on your official ballot, but we can’t guarantee complete coverage.
