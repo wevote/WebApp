@@ -139,7 +139,7 @@ export const DualHeaderContainer = styled('div', {
   ${scrolledDown ? 'border-bottom: 1px solid #aaa' : ''};
   ${scrolledDown ? `box_shadow: ${standardBoxShadow('wide')}` : ''};
   overflow: hidden;
-  z-index: 1;
+  z-index: 2;
   left: 0;
 `));
 
@@ -153,7 +153,7 @@ export const HeadroomWrapper = styled('div')`
   left: 0;
   width: 100%;
   background: white;
-  z-index: 2;
+  z-index: 4;
 `;
 
 export const TopOfPageHeader = styled('div')(({ theme }) => (`
