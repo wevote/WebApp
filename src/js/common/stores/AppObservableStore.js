@@ -62,6 +62,7 @@ const nonFluxState = {
   whatAndHowMuchToShare: '',
   sharedItemCode: '',
   showActivityTidbitDrawer: false,
+  showAddBallotItemModal: false,
   showAdviserIntroModal: false,
   showAskFriendsModal: false,
   showBallotChoicesAndSettingsModal: false,
@@ -687,6 +688,11 @@ export default {
     messageService.sendMessage('state updated showActivityTidbitDrawer');
   },
 
+  setShowAddBallotItemModal (show) {
+    nonFluxState.showAddBallotItemModal = show;
+    messageService.sendMessage('state updated showAddBallotItemModal');
+  },
+
   setShowAdviserIntroModal (show) {
     nonFluxState.showAdviserIntroModal = show;
     messageService.sendMessage('state updated showAdviserIntroModal');
@@ -912,6 +918,10 @@ export default {
 
   showActivityTidbitDrawer () {
     return nonFluxState.showActivityTidbitDrawer;
+  },
+
+  showAddBallotItemModal () {
+    return nonFluxState.showAddBallotItemModal;
   },
 
   showAdviserIntroModal () {

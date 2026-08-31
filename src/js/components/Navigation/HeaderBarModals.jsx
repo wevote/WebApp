@@ -14,6 +14,7 @@ import AppObservableStore, { messageService } from '../../common/stores/AppObser
 import PoliticianStore from '../../common/stores/PoliticianStore';
 import SignInJoinText from '../SignIn/SignInJoinText';
 
+const AddBallotItemModal = React.lazy(() => import(/* webpackChunkName: 'AddBallotItemModal' */ '../BallotItem/AddBallotItemModal'));
 const AdviserIntroModal = React.lazy(() => import(/* webpackChunkName: 'AdviserIntroModal' */ '../CompleteYourProfile/AdviserIntroModal'));
 const AskFriendsModal = React.lazy(() => import(/* webpackChunkName: 'AskFriendsModal' */ '../Friends/AskFriendsModal'));
 const BallotChoicesAndSettingsModal = React.lazy(() => import(/* webpackChunkName: 'BallotChoicesAndSettingsModal' */ '../CompleteYourProfile/BallotChoicesAndSettingsModal'));
@@ -38,6 +39,7 @@ class HeaderBarModals extends Component {
   constructor (props) {
     super(props);
     this.state = {
+      showAddBallotItemModal: false,
       showAdviserIntroModal: false,
       showChooseOrOpposeIntroModal: false,
       showChooseOrOpposeSignInModal: false,
@@ -84,6 +86,7 @@ class HeaderBarModals extends Component {
     // console.log('HeaderBar onAppObservableStoreChange showPaidAccountUpgradeModal:', showPaidAccountUpgradeModal);
     this.setState({
       // paidAccountUpgradeMode,
+      showAddBallotItemModal: AppObservableStore.showAddBallotItemModal(),
       showAdviserIntroModal: AppObservableStore.showAdviserIntroModal(),
       showAskFriendsModal: AppObservableStore.showAskFriendsModal(),
       showBallotChoicesAndSettingsModal: AppObservableStore.showBallotChoicesAndSettingsModal(),
@@ -104,6 +107,10 @@ class HeaderBarModals extends Component {
       showImageUploadModal: AppObservableStore.showImageUploadModal(),
     });
   }
+
+  closeAddBallotItemModal = () => {
+    AppObservableStore.setShowAddBallotItemModal(false);
+  };
 
   closeAdviserIntroModal = () => {
     AppObservableStore.setShowAdviserIntroModal(false);
@@ -208,7 +215,7 @@ class HeaderBarModals extends Component {
 
     const { classes } = this.props;
     const {
-      showAdviserIntroModal, showAskFriendsModal, showBallotChoicesAndSettingsModal, showChooseOrOpposeIntroModal, showChooseOrOpposeSignInModal,
+      showAddBallotItemModal, showAdviserIntroModal, showAskFriendsModal, showBallotChoicesAndSettingsModal, showChooseOrOpposeIntroModal, showChooseOrOpposeSignInModal,
       showClaimProfileWithEmailModal, showClaimProfileWithOtherWaysModal, showEditPositionModal, showFirstPositionIntroModal,
       showMakePublicGateModal, showPaidAccountUpgradeModal, showPersonalizedScoreIntroModal,
       showSelectBallotModal, showSelectBallotModalEditAddress,
@@ -219,6 +226,17 @@ class HeaderBarModals extends Component {
 
     // renderLog(`HeaderBarModals`);
     // console.log('HeaderBarModals showSignInModal:', showSignInModal);
+    let addBallotItemModal = <></>;
+    if (showAddBallotItemModal) {
+      addBallotItemModal = (
+        <Suspense fallback={<></>}>
+          <AddBallotItemModal
+            show={showAddBallotItemModal}
+            toggleFunction={this.closeAddBallotItemModal}
+          />
+        </Suspense>
+      );
+    }
     let advisorIntroModalHtml = <></>;
     if (showAdviserIntroModal) {
       advisorIntroModalHtml = (
@@ -437,6 +455,7 @@ class HeaderBarModals extends Component {
     );
     return (
       <>
+        {addBallotItemModal}
         {advisorIntroModalHtml}
         {askFriendsModal}
         {ballotChoicesAndSettingsModal}
