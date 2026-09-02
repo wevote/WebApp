@@ -16,7 +16,7 @@ WebStorm for Windows.  (If you have an existing PyCharm setup you can use that t
 
 Navigate to https://www.jetbrains.com/webstorm/download/?section=mac and download the IDE
 
-### Download the weconnect-client code
+### Download the WebApp code
 1) In WebStorm, on the File menu | New | Project from Version Control
 2) Enter the URL  https://github.com/wevote/WebApp.git
 3) Press the Clone button
