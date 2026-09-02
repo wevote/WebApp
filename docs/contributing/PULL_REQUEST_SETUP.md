@@ -34,7 +34,8 @@ Next, make sure that master is in sync with the upstream source of truth:
    `git fetch upstream` and then `git rebase upstream/master` Or, if you prefer
 	`git pull upstream master --rebase`  
 
-
+<!--
+Sept 2026:  Covered in DOCKER.md, in a simpler way for beginners
 ## Connect Your Personal Fork To wevote/WebApp
 
   `cd PersonalGitForks/WebApp`
@@ -60,7 +61,7 @@ You should see:
     origin    git@github.com:YOUR_GITHUB_ACCOUNT/WebApp.git (push)
     upstream    git@github.com:wevote/WebApp.git (fetch)
     upstream    git@github.com:wevote/WebApp.git (push)
-
+-->
 ---
 
 Next: [Creating a Pull Request](CREATING_PULL_REQUEST.md)

@@ -8,7 +8,7 @@ services:
       - .:/app
       - webapp_node_modules:/app/node_modules
     ports:
-      - "127.0.0.1:3000:3000" # this allows access to the WeVote WebApp at localhost:3000  
+      - "127.0.0.1:3000:3000" # this allows access to the WeVote WebApp at https://wevotedeveloper.com:3000   (localhost:3000)
     networks:
       - wevote
 

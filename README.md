@@ -11,25 +11,21 @@ Please also [read about our values](https://docs.google.com/document/d/12qBXevI3
 [see our Code of Conduct](CODE_OF_CONDUCT.md)
 To join us, please [review our openings here](https://wevote.applytojob.com/apply), and apply for a volunteer position through that page.
 
-Our current version is here [https://WeVote.US](https://WeVote.US) and we are working on a new version now!
+Our live site, running the current version of our software is here [https://WeVote.US](https://WeVote.US) and are constantly improving it!
 
 ## Installing WebApp
 Our installation process is built to allow engineers all over America to contribute to WeVote.
-It may seem complicated, but it allows anyone to be in a position to make suggestions, and get involved.
 
-Installation on MacOs and Linux/WSL (Windows Subsystem for Linux)
-1. [Preparing the Environment on Your Machine (MacOS and Linux/WSL)](docs/installing/ENVIRONMENT.md)
-2. [Bringing Code to Your Machine (MacOS and Linux/WSL)](docs/installing/CLONING_CODE.md)
-3. [Running WebApp for the First Time (MacOS and Linux/WSL)](docs/installing/RUNNING_FIRST_TIME.md)
+It allows anyone to be in a position to make suggestions, and get involved.
 
-Installation on Windows
+See our installation instructions leveraging [Docker](https://www.docker.com/) and the (free) [WebStorm IDE](https://www.jetbrains.com/webstorm/): 
 
-1. [Windows Simplified setup for the WebApp](docs/WindowsSimplifiedInstall.md)
+[Installing with WebStorm and Docker](docs/installing/DOCKER.md)
 
-<!-- Not up to date
-Automated Installation
-1. [Run automated scripts](docs/installing/AUTOMATED_INSTALLATION.md)
+These instructions also can be used with Linux, both with and without WebStorm, and with Windows/WSL.
+<!-- Not up to date [Windows Simplified setup for the WebApp](docs/WindowsSimplifiedInstall.md)
 -->
+
 ## Working with WebApp
 1. [Working with WebApp Day-to-Day](docs/working/README_WORKING_WITH_WEB_APP.md)
 
@@ -43,11 +39,10 @@ Automated Installation
 
 6. [Issues and Reporting Bugs](docs/working/ISSUES.md)
 
-7. [Styling Guidelines](docs/working/STYLING.md)
-
+<!--
 8. [Want to sign in with Facebook or Twitter on localhost?](docs/working/SECURE_CERTIFICATE.md)
-
-9. [Working with ngrok to test on mobile](docs/working/WORKING_WITH_NGROK.md)
+-->
+7. [Working with ngrok to test on mobile](docs/working/WORKING_WITH_NGROK.md)
 
 Thanks to BrowserStack for helping us with automated testing!
 
