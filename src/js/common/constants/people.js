@@ -114,6 +114,14 @@ export const weVoteStaff = [{
     'Digital Product Designer with 2 years of experience in Graphic Design, User Interface Design, User Experience Design, and User Experience Research.',
   ],
 }, {
+  name: 'Joe Evans',
+  image: `${photoPath}Joe_Evans-200x200.jpg`,
+  title: [
+    'Chief Cloud Officer',
+    'Joe brings over 20 years of engineering leadership to WeVote, with a background spanning cybersecurity, AI/ML and connected devices. At WeVote, he designs and maintains the cloud infrastructure that keeps the platform secure and reliable for voters nationwide.\n' +
+    'Outside of work, Joe enjoys playing drums in local bands and tinkering with electronics.',
+  ],
+}, {
   name: 'Irene Florez',
   image: `${photoPath}Irene_Florez-200x200.jpg`,
   title: [
@@ -431,8 +439,8 @@ export const teamOfVolunteers = [
     linkedin: 'https://www.linkedin.com/in/ziweiyi/',
   },
   {
-    name: 'Antoinette "Nette" Lee',
-    title: 'Queens, NY',
+    name: 'Antoinette Lee',
+    title: 'Brooklyn, NY',
     linkedin: 'https://www.linkedin.com/in/nyette',
   },
   // 2024-03-12 Commented out upon request

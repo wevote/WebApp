@@ -14,6 +14,7 @@ import { Title } from '../../components/Welcome/headerWelcomeStyles';
 import { Bold, DescriptionContainer, MemberListContainer, Section, SectionTitle } from '../../components/Welcome/sectionStyles';
 import ShowMoreButtons from '../../components/Widgets/ShowMoreButtons';
 import VoterStore from '../../stores/VoterStore';
+import { isWebApp } from '../../common/utils/isCordovaOrWebApp';
 
 const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ '../../common/components/Widgets/OpenExternalWebSite'));
 const WelcomeAppbar = React.lazy(() => import(/* webpackChunkName: 'WelcomeAppbar' */ '../../components/Navigation/WelcomeAppbar'));
@@ -211,7 +212,7 @@ class About extends Component {
           </AboutDescriptionContainer>
         </Section>
         <Section>
-          <SectionTitle>
+          <SectionTitle id="our-team">
             Our Team
           </SectionTitle>
           <AboutDescriptionContainer>
@@ -226,9 +227,7 @@ class About extends Component {
           </MemberListContainer>
           <AboutDescriptionContainer>
             <h2 className="h2">
-              Board Members &amp; Advisers (
-              {weVoteBoard.length}
-              )
+              Board Members &amp; Advisers
             </h2>
           </AboutDescriptionContainer>
           <AboutDescriptionContainer>
@@ -258,9 +257,7 @@ class About extends Component {
           </AboutDescriptionContainer>
           <AboutDescriptionContainer>
             <h2 className="h2">
-              Staff &amp; Senior Volunteers (
-              {weVoteStaff.length}
-              )
+              Staff &amp; Senior Volunteers
             </h2>
           </AboutDescriptionContainer>
           <AboutDescriptionContainer>
@@ -288,6 +285,57 @@ class About extends Component {
               )}
             </div>
           </AboutDescriptionContainer>
+          <AboutDescriptionContainer>
+            <h2 className="h2">
+              Volunteers
+            </h2>
+          </AboutDescriptionContainer>
+          <AboutDescriptionContainer>
+            <div>
+              We couldn&apos;t do what we do without you, thank you!
+              <br />
+              <br />
+              <Link className="u-link-color" to="/more/credits#volunteers">
+                Volunteer list here
+              </Link>
+              <br />
+              <br />
+              Please join us by
+              <Suspense fallback={<></>}>
+                <OpenExternalWebSite
+                  linkIdAttribute="wevoteJoinUs"
+                  url="https://wevote.applytojob.com/apply"
+                  target="_blank"
+                  className="open-web-site open-web-site__no-right-padding"
+                  body={(
+                    <span>
+                      {' '}
+                      finding a volunteer role that excites you
+                      <Launch
+                        style={{
+                          height: 14,
+                          marginLeft: 2,
+                          marginTop: '-3px',
+                          width: 14,
+                        }}
+                      />
+                    </span>
+                  )}
+                />
+              </Suspense>
+              {isWebApp() && (
+                <span>
+                  , or by
+                  {' '}
+                  <Link className="u-link-color" to="/donate">
+                    donating now
+                  </Link>
+                </span>
+              )}
+              .
+              <br />
+            </div>
+          </AboutDescriptionContainer>
         </Section>
         <Section variant="dark" rounded>
           <SectionTitle>
@@ -296,9 +344,8 @@ class About extends Component {
           <AboutDescriptionContainer>
             We are thankful for
             {' '}
-            <Link to="/more/credits">
+            <Link className="u-link-color" to="/more/credits">
               our volunteers, our board of directors, our funders, and the organizations
-              &nbsp;
               <Launch
                 style={{
                   height: 14,

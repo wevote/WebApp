@@ -272,6 +272,7 @@ export function getApplicationViewBooleans (pathname) {
   } else if (
     isPoliticianSEOFriendlyURL(pathnameLowerCase) ||
     pathnameLowerCase.endsWith('/cs/') ||
+    ((pathnameLowerCase === '/more/faq') && isWebApp()) ||
     pathnameLowerCase.startsWith('/office') ||
     (pathnameLowerCase.startsWith('/ready') && !isSEOFriendlyURL(pathnameLowerCase)) ||
     (pathnameLowerCase === '/start-a-campaign') ||
