@@ -35,7 +35,13 @@ class Credits extends Component {
               summary of open source software
             </Link>
             {' '}
-            WeVote uses.
+            WeVote uses, and the list of
+            {' '}
+            <Link to="/election-data" id="election-data" className="u-link-color">
+              official government websites
+            </Link>
+            {' '}
+            where we get ballot data.
           </span>
           <CompanyWrapper>
             { organizationalDonors.map((item) => {
@@ -80,8 +86,8 @@ class Credits extends Component {
           </CompanyWrapper>
         </CreditsDescriptionContainer>
         <CreditsDescriptionContainer>
-          <SectionTitle>Volunteers, Interns &amp; Donors</SectionTitle>
-          We couldn&apos;t do what we do without your help.
+          <SectionTitle id="volunteers">Volunteers, Interns &amp; Donors</SectionTitle>
+          We couldn&apos;t do what we do without you, thank you!
           {' '}
           Please join us by
           <Suspense fallback={<></>}>

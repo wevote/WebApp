@@ -186,7 +186,7 @@ class FooterMainWeVote extends Component {
                   <Suspense fallback={<></>}>
                     <OpenExternalWebSite
                       linkIdAttribute="footerLinkTeam"
-                      url={`${webAppConfig.WE_VOTE_URL_PROTOCOL + webAppConfig.WE_VOTE_HOSTNAME}/more/about`}
+                      url={`${webAppConfig.WE_VOTE_URL_PROTOCOL + webAppConfig.WE_VOTE_HOSTNAME}/more/about#our-team`}
                       target="_blank"
                       trackingOn
                       body={(<span>Team</span>)}
