@@ -4,7 +4,7 @@ import styled, { css } from 'styled-components';
 import {
   KeyboardArrowDown as ExpandIcon,
   KeyboardArrowUp as CollapseIcon,
-  MailOutline as MailIcon,
+  Mail as MailIcon,
   SmsOutlined as SmsIcon,
   VisibilityOff as HideIcon,
   Search as SearchIcon,
@@ -12,7 +12,7 @@ import {
   MoreHoriz as MoreHorizIcon,
   Visibility as ShowIcon,
   History as HistoryIcon,
-  DeleteOutline as DeleteIcon,
+  DeleteOutlined as DeleteIcon,
   Edit as EditIcon,
   PersonAddAlt as AddVoterIcon,
 } from '@mui/icons-material';

@@ -111,7 +111,7 @@ const styles = (theme) => ({
   },
 });
 
-const Wrapper = styled('div', {
+const Wrapper = styled('div').withConfig({
   shouldForwardProp: (prop) => !['inModal'].includes(prop),
 })(({ inModal, theme }) => (`
   display: flex;
@@ -126,7 +126,7 @@ const InnerWrapperAboveButtons = styled('div')`
   min-height: 400px;
 `;
 
-const SlideShowTitle = styled('h3', {
+const SlideShowTitle = styled('h3').withConfig({
   shouldForwardProp: (prop) => !['inModal'].includes(prop),
 })(({ inModal, theme }) => (`
   font-weight: bold;
@@ -172,7 +172,7 @@ const Slide = styled('div')`
   justify-content: space-between;
 `;
 
-const Nav = styled('div', {
+const Nav = styled('div').withConfig({
   shouldForwardProp: (prop) => !['disabled'].includes(prop),
 })(({ disabled, theme }) => (`
   display: flex;
@@ -198,7 +198,7 @@ const Nav = styled('div', {
   }
 `));
 
-const Image = styled('img', {
+const Image = styled('img').withConfig({
   shouldForwardProp: (prop) => !['inModal'].includes(prop),
 })(({ inModal, theme }) => (`
   border: 1px solid #999;

@@ -265,7 +265,7 @@ function wrapperPadding (props) {
   return props.showPositionStatementActionBar || props.inModal ? padString : '0';
 }
 
-const Wrapper = styled('div', {
+const Wrapper = styled('div').withConfig({
   shouldForwardProp: (prop) => !['showPositionStatementActionBar', 'inModal', 'isCrunched'].includes(prop),
 })(({ showPositionStatementActionBar, inModal, isCrunched, theme }) => (`
   width: ${() => (isAndroidSizeMD() ? '95%' : '100%')};
@@ -280,14 +280,14 @@ const Wrapper = styled('div', {
   margin-top: ${isCrunched ? '0' : '12px'};
 `));
 
-const ActionBarWrapper = styled('div', {
+const ActionBarWrapper = styled('div').withConfig({
   shouldForwardProp: (prop) => !['isCrunched'].includes(prop),
 })(({ isCrunched }) => (`
   padding: 0;
   margin-bottom: ${isCrunched ? '3px' : '2px'};
 `));
 
-const CommentDisplayWrapper = styled('div', {
+const CommentDisplayWrapper = styled('div').withConfig({
   shouldForwardProp: (prop) => !['isCrunched'].includes(prop),
 })(({ isCrunched }) => (`
   padding: 0;

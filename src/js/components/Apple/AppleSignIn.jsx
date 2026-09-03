@@ -275,7 +275,7 @@ export function AppleLogo (parameters) {
 Note, May 21, 2020: Before making changes to these styles, be sure you are compliant with
 https://developer.apple.com/design/resources/ or we risk getting rejected by Apple
 */
-const AppleLogoSvg = styled('svg', {
+const AppleLogoSvg = styled('svg').withConfig({
   shouldForwardProp: (prop) => !['signedIn', 'enabled'].includes(prop),
 })(({ signedIn, enabled }) => (`
   position: absolute;
@@ -289,7 +289,7 @@ const AppleLogoSvg = styled('svg', {
 Note, May 21, 2020: Before making changes to these styles, be sure you are compliant with
 https://developer.apple.com/design/resources/ or we risk getting rejected by Apple
 */
-const AppleSignInText = styled('span', {
+const AppleSignInText = styled('span').withConfig({
   shouldForwardProp: (prop) => !['enabled'].includes(prop),
 })(({ enabled }) => (`
   font-size: 18px;
@@ -302,7 +302,7 @@ const AppleSignInText = styled('span', {
 Note, May 21, 2020: Before making changes to these styles, be sure you are compliant with
 https://developer.apple.com/design/resources/ or we risk getting rejected by Apple
 */
-const AppleSignInButton = styled('button', {
+const AppleSignInButton = styled('button').withConfig({
   shouldForwardProp: (prop) => !['isWeb', 'tinyScreen'].includes(prop),
 })(({ isWeb, tinyScreen }) => (`
   margin-top: ${isWeb ? '11px' : '13px'};
@@ -317,7 +317,7 @@ const AppleSignInButton = styled('button', {
 Note, May 21, 2020: Before making changes to these styles, be sure you are compliant with
 https://developer.apple.com/design/resources/ or we risk getting rejected by Apple
 */
-const AppleSignInContainer  = styled('div', {
+const AppleSignInContainer  = styled('div').withConfig({
   shouldForwardProp: (prop) => !['enabled'].includes(prop),
 })(({ enabled, theme }) => (`
   font-family: -apple-system, BlinkMacSystemFont, sans-serif;

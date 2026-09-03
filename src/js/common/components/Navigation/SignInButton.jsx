@@ -80,7 +80,7 @@ SignInButton.propTypes = {
   topNavigationStyles: PropTypes.bool,
 };
 
-const SignInText = styled('div', {
+const SignInText = styled('div').withConfig({
   shouldForwardProp: (prop) => !['topNavigationStyles'].includes(prop),
 })(({ topNavigationStyles }) => (`
   ${topNavigationStyles ? 'color: #6f6f6f; font-size: 14px; :hover { color: #4371cc; };' : ''}

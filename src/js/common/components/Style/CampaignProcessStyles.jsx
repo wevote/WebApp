@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-export const CampaignImage = styled('img', {
+export const CampaignImage = styled('img').withConfig({
   shouldForwardProp: (prop) => !['noBorderRadius'].includes(prop),
 })(({ noBorderRadius }) => (`
   ${noBorderRadius ? '' : 'border-radius: 5px;'}

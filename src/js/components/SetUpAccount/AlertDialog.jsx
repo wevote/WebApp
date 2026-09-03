@@ -20,7 +20,7 @@ export default function AlertDialog () {
   return (
     <div>
       <Dialog
-        open={open}
+        open={Boolean(open)}
         onClose={handleClose}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"

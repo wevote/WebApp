@@ -555,7 +555,7 @@ class SettingsVerifySecretCode extends Component {
     return (
       <Dialog
         id="codeVerificationDialog"
-        open={this.props.show}
+        open={Boolean(this.props.show)}
         onClose={this.closeVerifyModalLocal}
         className="u-z-index-9030"
         // Leaving classes.dialogRoot in place with a zIndex value of 9030
@@ -822,7 +822,7 @@ const styles = (theme) => ({
   },
 });
 
-const ModalTitleArea = styled('div', {
+const ModalTitleArea = styled('div').withConfig({
   shouldForwardProp: (prop) => !['condensed'].includes(prop),
 })(({ condensed }) => (`
   width: 100%;
@@ -835,7 +835,7 @@ const ModalTitleArea = styled('div', {
   top: 0;
 `));
 
-const ModalContent = styled('div', {
+const ModalContent = styled('div').withConfig({
   shouldForwardProp: (prop) => !['condensed'].includes(prop),
 })(({ condensed }) => (`
   display: flex;
@@ -851,13 +851,13 @@ const ModalContent = styled('div', {
 const TextContainer = styled('div')`
 `;
 
-const ButtonsContainer = styled('div', {
+const ButtonsContainer = styled('div').withConfig({
   shouldForwardProp: (prop) => !['condensed'].includes(prop),
 })(({ condensed }) => (`
   margin-top: ${condensed ? '16px' : 'auto'};
 `));
 
-const Title = styled('h3', {
+const Title = styled('h3').withConfig({
   shouldForwardProp: (prop) => !['condensed'].includes(prop),
 })(({ condensed }) => (`
   font-weight: bold;
@@ -882,7 +882,7 @@ const PhoneSubtitle = styled('h4')`
   text-align: center;
 `;
 
-const InputContainer = styled('div', {
+const InputContainer = styled('div').withConfig({
   shouldForwardProp: (prop) => !['condensed'].includes(prop),
 })(({ condensed }) => (`
   display: flex;

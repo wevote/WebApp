@@ -68,7 +68,7 @@ class DeviceDialog extends Component {
     return (
       <Dialog
         classes={{ paper: classes.dialogPaper }}
-        open={this.props.show}
+        open={Boolean(this.props.show)}
       >
         <DialogTitle>
           <div className="text-center"><TermsAndPrivacyText>Device Information</TermsAndPrivacyText></div>

@@ -7,7 +7,7 @@ import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
-import MailOutlineIcon from '@mui/icons-material/MailOutline';
+import MailOutlineIcon from '@mui/icons-material/Mail';
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import SearchIcon from '@mui/icons-material/Search';
 import ThumbUpIcon from '@mui/icons-material/ThumbUp';
@@ -543,7 +543,7 @@ export default function SupportersJoined ({ supporters }) {
 
       <Drawer
         anchor="right"
-        open={candidateDrawerOpen}
+        open={Boolean(candidateDrawerOpen)}
         onClose={closeCandidateDrawer}
         PaperProps={{ sx: { width: 'min(920px, 92vw)' } }}
       >
@@ -559,7 +559,7 @@ export default function SupportersJoined ({ supporters }) {
         </DrawerLayout>
       </Drawer>
 
-      <Dialog open={viewOpen} onClose={() => setViewOpen(false)} maxWidth="sm" fullWidth>
+      <Dialog open={Boolean(viewOpen)} onClose={() => setViewOpen(false)} maxWidth="sm" fullWidth>
         <DialogTitle>Thank-you message</DialogTitle>
         <DialogContent>
           <ThankYouPreview>{thankYouMessage}</ThankYouPreview>
@@ -569,7 +569,7 @@ export default function SupportersJoined ({ supporters }) {
         </DialogActions>
       </Dialog>
 
-      <Dialog open={editOpen} onClose={() => setEditOpen(false)} maxWidth="sm" fullWidth>
+      <Dialog open={Boolean(editOpen)} onClose={() => setEditOpen(false)} maxWidth="sm" fullWidth>
         <DialogTitle>Edit thank-you message</DialogTitle>
         <DialogContent>
           <TextField
@@ -592,7 +592,7 @@ export default function SupportersJoined ({ supporters }) {
       </Dialog>
 
       <Snackbar
-        open={copyOpen}
+        open={Boolean(copyOpen)}
         autoHideDuration={2000}
         onClose={() => setCopyOpen(false)}
         anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
@@ -601,7 +601,7 @@ export default function SupportersJoined ({ supporters }) {
         <Alert severity="success" variant="filled">Copied!</Alert>
       </Snackbar>
       <Snackbar
-        open={sendToast.open}
+        open={Boolean(sendToast.open)}
         autoHideDuration={2500}
         onClose={() => setSendToast((t) => ({ ...t, open: false }))}
         anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
@@ -648,7 +648,7 @@ function CardOpinionRow ({ children, opinion, isOpen, onToggle }) {
             <Caret as={isOpen ? KeyboardArrowUpIcon : KeyboardArrowDownIcon} />
           </ExpandBtn>
           <OpinionText
-            $open={isOpen}
+            $open={Boolean(isOpen)}
             style={!isOpen && maxH != null ? { maxHeight: `${maxH}px` } : undefined}
           >
             {opinion}

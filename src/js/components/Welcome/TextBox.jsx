@@ -17,7 +17,6 @@ class TextBox extends Component {
           placeholder={placeholder}
           inputProps={inputProps}
           value={value}
-          icon={icon}
           inputRef={inputRef}
         />
       </Container>

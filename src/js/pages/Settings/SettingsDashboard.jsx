@@ -330,7 +330,7 @@ const SettingsSectionFooterWrapper = styled('div')`
 `;
 
 // Same as bootstrap 'col-md-4 sidebar-menu' which uses a min 768px breakpoint, that doesn't work for cordova
-export const SettingsSidebarMenu = styled('div', {
+export const SettingsSidebarMenu = styled('div').withConfig({
   shouldForwardProp: (prop) => !['breakValue'].includes(prop),
 })(({ breakValue, theme }) => ({
   [theme.breakpoints.up(breakValue)]: {
@@ -345,7 +345,7 @@ export const SettingsSidebarMenu = styled('div', {
 
 // May 2022: Same as 'col-md-8 sidebar-menu' min 768px for Webapp, but needs about 850px for Cordova,
 // so instead we just pass in a very low value if isCordovaWide, so it basically always trips the breakpoint
-export const SettingsDesktopRightPane = styled('div', {
+export const SettingsDesktopRightPane = styled('div').withConfig({
   shouldForwardProp: (prop) => !['breakValue'].includes(prop),
 })(({ breakValue, theme }) => ({
   [theme.breakpoints.up(breakValue)]: {

@@ -222,7 +222,7 @@ const Wrapper = styled('div')`
   }
 `;
 
-const Icon = styled('div', {
+const Icon = styled('div').withConfig({
   shouldForwardProp: (prop) => !['backgroundColor'].includes(prop),
 })(({ backgroundColor }) => (`
   text-decoration: none !important;

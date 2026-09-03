@@ -68,11 +68,13 @@ HeaderBarLogo.propTypes = {
   light: PropTypes.bool,
 };
 
-const BetaMarker = styled('span')`
+const BetaMarker = styled('span').withConfig({
+  shouldForwardProp: (prop) => !['light'].includes(prop),
+})`
   position:relative;
 `;
 
-const BetaMarkerInner = styled('span', {
+const BetaMarkerInner = styled('span').withConfig({
   shouldForwardProp: (prop) => !['light'].includes(prop),
 })(({ light }) => (`
   position: absolute;

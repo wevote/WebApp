@@ -184,7 +184,7 @@ const styles = () => ({
   },
 });
 
-const MoreInfoIconWrapper = styled('div', {
+const MoreInfoIconWrapper = styled('div').withConfig({
   shouldForwardProp: (prop) => !['hovered', 'isSmallScreen'].includes(prop),
 })(({ hovered, isSmallScreen }) => ({
   alignItems: 'center',

@@ -881,7 +881,7 @@ const MobileSmallItemNameContainer = styled('div')`
 `;
 
 
-const PositionItemDesktop = styled('div', {
+const PositionItemDesktop = styled('div').withConfig({
   shouldForwardProp: (prop) => !['isSupport', 'isOppose'].includes(prop),
 })(({ isSupport, isOppose }) => (`
   background: #eee;
@@ -894,7 +894,7 @@ const PositionItemDesktop = styled('div', {
   padding: 6px 16px;
 `));
 
-const PositionItemMobile = styled('li', {
+const PositionItemMobile = styled('li').withConfig({
   shouldForwardProp: (prop) => !['isSupport', 'isOppose'].includes(prop),
 })(({ isSupport, isOppose }) => (`
   background: #eee;

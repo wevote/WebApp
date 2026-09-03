@@ -429,7 +429,7 @@ const styles = (theme) => ({
   },
 });
 
-const Wrapper = styled('div', {
+const Wrapper = styled('div').withConfig({
   shouldForwardProp: (prop) => !['shownInList'].includes(prop),
 })(({ shownInList }) => (`
   ${shownInList ? '' : (

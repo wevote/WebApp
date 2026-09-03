@@ -203,7 +203,9 @@ const RightColumnWrapper = styled('div')`
   width: 100%;
 `;
 
-const LikeTextWrapper = styled('div')`
+const LikeTextWrapper = styled('div').withConfig({
+  shouldForwardProp: (prop) => !['likeButtonSelected'].includes(prop),
+})`
   font-size: 14px;
   padding-left: 4px;
 `;

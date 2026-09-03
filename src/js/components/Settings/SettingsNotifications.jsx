@@ -1,4 +1,4 @@
-import { MailOutline, Notifications, Settings, CampaignRounded } from '@mui/icons-material';
+import { Mail, Notifications, Settings, CampaignRounded } from '@mui/icons-material';
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
 import styled from 'styled-components';
 import withStyles from '@mui/styles/withStyles';
@@ -191,7 +191,7 @@ class SettingsNotifications extends Component {
                       </TableCell>
                       <TableCell align="center" classes={{ root: classes.tableCellColumn }}>
                         <ColumnIcon>
-                          <MailOutline classes={{ root: classes.emailIconRoot }} />
+                          <Mail classes={{ root: classes.emailIconRoot }} />
                         </ColumnIcon>
                         <ColumnLabel>Email</ColumnLabel>
                       </TableCell>

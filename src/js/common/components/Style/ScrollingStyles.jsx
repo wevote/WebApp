@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import DesignTokenColors from './DesignTokenColors';
 
-export const BallotHorizontallyScrollingContainer = styled('div', {
+export const BallotHorizontallyScrollingContainer = styled('div').withConfig({
   shouldForwardProp: (prop) => !['isChosen', 'showLeftGradient', 'showRightGradient', 'hasEndorsements'].includes(prop),
 })(({ isChosen, showLeftGradient, showRightGradient, hasEndorsements }) => (`
   width: 100%;
@@ -54,7 +54,7 @@ export const BallotScrollingOuterWrapper = styled('div')`
   width: 100%;
 `;
 
-export const CampaignsHorizontallyScrollingContainer = styled('div', {
+export const CampaignsHorizontallyScrollingContainer = styled('div').withConfig({
   shouldForwardProp: (prop) => !['showLeftGradient', 'showRightGradient'].includes(prop),
 })(({ showLeftGradient, showRightGradient }) => (`
 
@@ -108,7 +108,7 @@ export const ChallengesScrollingOuterWrapper = styled('div')`
   position:relative;
 `;
 
-export const RightArrowInnerWrapper = styled('div', {
+export const RightArrowInnerWrapper = styled('div').withConfig({
   shouldForwardProp: (prop) => !['disableMobileRightArrow'].includes(prop),
 })(({ disableMobileRightArrow }) => (`
   ${disableMobileRightArrow ? 'opacity: 0.2;' : 'opacity: 1;'}
@@ -127,7 +127,7 @@ export const RightArrowOuterWrapper = styled('div')`
   background: linear-gradient(to right, rgba(0, 0, 0, 0), white 20%)
 `;
 
-export const LeftArrowInnerWrapper = styled('div', {
+export const LeftArrowInnerWrapper = styled('div').withConfig({
   shouldForwardProp: (prop) => !['disableMobileLeftArrow'].includes(prop),
 })(({ disableMobileLeftArrow }) => (`
   ${disableMobileLeftArrow ? 'opacity: 0.2;' : 'opacity: 1;'}
@@ -151,7 +151,9 @@ export const TitleAndMobileArrowsOuterWrapper = styled('div')`
   justify-content: space-between;
 `;
 
-export const MobileArrowsInnerWrapper = styled('div')`
+export const MobileArrowsInnerWrapper = styled('div').withConfig({
+  shouldForwardProp: (prop) => !['mobileDisableBothArrows'].includes(prop),
+})`
   display: flex;
   min-width: 24px;
 `;

@@ -434,7 +434,7 @@ const CommentWrapper = styled('div')`
   margin-bottom: 3px;
 `;
 
-const LikeTextWrapper = styled('div', {
+const LikeTextWrapper = styled('div').withConfig({
   shouldForwardProp: (prop) => !['likeButtonSelected'].includes(prop),
 })(({ likeButtonSelected }) => (`
   ${likeButtonSelected ? 'color: #2e3c5d;' : 'color: #999;'}

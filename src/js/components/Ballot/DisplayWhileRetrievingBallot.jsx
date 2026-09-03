@@ -29,9 +29,8 @@ export default function DisplayWhileRetrievingBallot ({ ballotWithAllItems }) {
       }, 3000);
 
       return () => clearTimeout(timer);
-    } else {
-      return null;
     }
+    return undefined;
   }, [ballotWithAllItems]);
 
   useEffect(() => {

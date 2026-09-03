@@ -1737,7 +1737,7 @@ const styles = (theme) => ({
 });
 
 /* eslint-disable arrow-body-style, no-nested-ternary */
-const BallotBottomWrapper = styled('div', {
+const BallotBottomWrapper = styled('div').withConfig({
   shouldForwardProp: (prop) => !['scrolledDown'].includes(prop),
 })(({ scrolledDown, theme }) => {
   return (`
@@ -1780,7 +1780,9 @@ const BallotLoadingWrapper = styled('div')`
   margin-bottom: ${() => (isIPhone6p1in() ? '800px' : '625px')};
 `;
 
-const BallotFilterTabs = styled('div')`
+const BallotFilterTabs = styled('div').withConfig({
+  shouldForwardProp: (prop) => !['showFilterTabs'].includes(prop),
+})`
   display: flex;
   overflow-y: hidden;
   overflow-x: auto;
@@ -1856,7 +1858,7 @@ const SearchResultsEmpty = styled('div')`
   font-size: 20px;
 `;
 
-const BallotWrapper = styled('div', {
+const BallotWrapper = styled('div').withConfig({
   shouldForwardProp: (prop) => !['padTop', 'padBottom'].includes(prop),
 })(({ padTop, padBottom }) => (`
   padding-top: ${padTop};

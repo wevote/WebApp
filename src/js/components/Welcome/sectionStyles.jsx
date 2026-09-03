@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-export const Section = styled('div', {
+export const Section = styled('div').withConfig({
   shouldForwardProp: (prop) => !['noTopMargin', 'noSideMargins', 'variant', 'rounded'].includes(prop),
 })(({ noTopMargin, noSideMargins, variant, rounded, theme }) => (`
   display: flex;

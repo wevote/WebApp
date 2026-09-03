@@ -187,7 +187,7 @@ export default class SettingsAddressForDrawer extends Component {
           </CardMainWrapper>
         </CardWrapper>
         <Dialog
-          open={this.state.showWarningDialog}
+          open={Boolean(this.state.showWarningDialog)}
           onClose={this.closeWarningDialog}
         >
           <DialogTitle>

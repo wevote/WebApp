@@ -187,7 +187,7 @@ const styles = () => ({
   },
 });
 
-const Card = styled('div', {
+const Card = styled('div').withConfig({
   shouldForwardProp: (prop) => !['mobile'].includes(prop),
 })(({ mobile }) => (`
   border-radius: 2px;
@@ -198,7 +198,7 @@ const CardWrapper = styled('div')`
   padding: 8px;
 `;
 
-const PricingCardHeader = styled('div', {
+const PricingCardHeader = styled('div').withConfig({
   shouldForwardProp: (prop) => !['mobile'].includes(prop),
 })(({ mobile }) => (`
   min-height: ${mobile ? '75px' : '105px'}
@@ -267,7 +267,9 @@ const BulletItem = styled('li')`
   margin-bottom: 3px;
 `;
 
-const ButtonText = styled('span')`
+const ButtonText = styled('span').withConfig({
+  shouldForwardProp: (prop) => !['fontColor'].includes(prop),
+})`
   text-transform: uppercase;
 `;
 

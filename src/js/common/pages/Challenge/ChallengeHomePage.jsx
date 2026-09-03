@@ -840,7 +840,7 @@ const ChallengeMobileHeaderContentContainer = styled('div')(({ theme }) => (`
   }
 `));
 
-const ChallengeMobileHeaderOuterContainer = styled('div', {
+const ChallengeMobileHeaderOuterContainer = styled('div').withConfig({
   shouldForwardProp: (prop) => !['scrolledDown'].includes(prop),
 })(({ scrolledDown }) => (`
   // animation: ${slideDown} 300ms ease-in;  // Not currently working -- needs debugging

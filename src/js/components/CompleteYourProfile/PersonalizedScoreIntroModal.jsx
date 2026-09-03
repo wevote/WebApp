@@ -41,7 +41,7 @@ class PersonalizedScoreIntroModal extends Component {
     return (
       <Dialog
         classes={{ paper: classes.dialogPaper }}
-        open={show}
+        open={Boolean(show)}
         onClose={this.closeThisModal}
       >
         <ModalTitleArea>

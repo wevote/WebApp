@@ -281,17 +281,21 @@ const styles = () => ({
   },
 });
 
-const FollowIfYouCare = styled('div')`
+const FollowIfYouCare = styled('div').withConfig({
+  shouldForwardProp: (prop) => !['fullWidth'].includes(prop),
+})`
   color: #999;
   font-size: .75rem;
   margin-top: 6px;
 `;
 
-const FollowIssueToggleContainer = styled('div')`
+const FollowIssueToggleContainer = styled('div').withConfig({
+  shouldForwardProp: (prop) => !['fullWidth'].includes(prop),
+})`
   margin-top: 20px;
 `;
 
-const IssuesByOrganizationDisplayListInnerWrapper = styled('div', {
+const IssuesByOrganizationDisplayListInnerWrapper = styled('div').withConfig({
   shouldForwardProp: (prop) => !['fullWidth'].includes(prop),
 })(({ fullWidth, theme }) => (`
   width: ${fullWidth ? '100%' : '85%'};
@@ -301,14 +305,18 @@ const IssuesByOrganizationDisplayListInnerWrapper = styled('div', {
   }
 `));
 
-const IssuesByOrganizationDisplayListOuterWrapper = styled('div')`
+const IssuesByOrganizationDisplayListOuterWrapper = styled('div').withConfig({
+  shouldForwardProp: (prop) => !['issueFollowedByVoter'].includes(prop),
+})`
   overflow: visible;
   display: flex;
   flex-flow: row;
   justify-content: space-between;
 `;
 
-const IssueByOrganizationList = styled('ul')`
+const IssueByOrganizationList = styled('ul').withConfig({
+  shouldForwardProp: (prop) => !['issueFollowedByVoter'].includes(prop),
+})`
   display: flex;
   flex-wrap: wrap;
   padding-inline-start: 0;
@@ -316,11 +324,13 @@ const IssueByOrganizationList = styled('ul')`
   width: 100%;
 `;
 
-const OrganizationAdvocatesText = styled('div')`
+const OrganizationAdvocatesText = styled('div').withConfig({
+  shouldForwardProp: (prop) => !['issueFollowedByVoter'].includes(prop),
+})`
   padding-bottom: 8px;
 `;
 
-const ValueIconAndTextOrganization = styled('span', {
+const ValueIconAndTextOrganization = styled('span').withConfig({
   shouldForwardProp: (prop) => !['issueFollowedByVoter'].includes(prop),
 })(({ issueFollowedByVoter }) => (`
   align-items: start;

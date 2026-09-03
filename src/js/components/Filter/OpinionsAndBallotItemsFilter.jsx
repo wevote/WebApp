@@ -480,7 +480,7 @@ const SortByContainer = styled('div')`
   align-items: center;
 `;
 
-const Wrapper = styled('div', {
+const Wrapper = styled('div').withConfig({
   shouldForwardProp: (prop) => !['showAllFilters'].includes(prop),
 })(({ showAllFilters }) => (`
   display: ${showAllFilters ? 'flex' : 'none'};

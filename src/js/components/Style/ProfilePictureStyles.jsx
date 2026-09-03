@@ -9,7 +9,7 @@ export const ColumnWrapper = styled('div')`
   justify-content: space-between;
 `;
 
-export const CustomColumns = styled('div', {
+export const CustomColumns = styled('div').withConfig({
   shouldForwardProp: (prop) => !['onlyOneOption'].includes(prop),
 })(({ onlyOneOption }) => (`
   ${onlyOneOption ? 'width: 100% !important;' : 'width: 49% !important;'}

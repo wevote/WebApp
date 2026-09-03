@@ -163,9 +163,9 @@ function CardForListBody (props) {
               {useCampaignSupportThermometer && (
                 <Suspense fallback={(
                   <Box>
-                    <Box display="flex" gap={1} sx={{ mb: 1 }}>
+                    <Box sx={{ display: 'flex', gap: 1, mb: 1 }}>
                       <Skeleton variant="rounded" width={60} height={36} sx={{ borderRadius: 2 }} />
-                      <Box flex={1} sx={{ minWidth: 0 }}>
+                      <Box sx={{ flex: 1, minWidth: 0 }}>
                         <Skeleton variant="text" width="70%" height={18} sx={{ mb: 0.5 }} />
                         <Skeleton variant="text" width="50%" height={18} />
                       </Box>
@@ -327,7 +327,7 @@ function CardForListBody (props) {
             {!hideItemActionBar && (
               <CampaignActionButtonsWrapper>
                 <Suspense fallback={(
-                  <Box display="flex" gap={1} justifyContent="center">
+                  <Box sx={{ display: 'flex', gap: 1, justifyContent: 'center' }}>
                     <Skeleton variant="rounded" width={100} height={36} sx={{ borderRadius: 2 }} />
                     <Skeleton variant="rounded" width={100} height={36} sx={{ borderRadius: 2 }} />
                   </Box>

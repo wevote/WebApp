@@ -703,11 +703,15 @@ const Wrapper = styled('div')`
   }
 `;
 
-const InnerWrapper = styled('div')`
+const InnerWrapper = styled('div').withConfig({
+  shouldForwardProp: (prop) => !['joining'].includes(prop),
+})`
   margin-bottom: 16px;
 `;
 
-const DonateDescriptionContainer = styled('div')`
+const DonateDescriptionContainer = styled('div').withConfig({
+  shouldForwardProp: (prop) => !['joining'].includes(prop),
+})`
   margin: ${isMobileScreenSize() ? '' : '1.5em auto .25em'};
   width: 960px;
   max-width: 90vw;
@@ -724,7 +728,7 @@ const DonateDescriptionContainer = styled('div')`
   }
 `;
 
-// const PaymentWrapper  = styled('div', {
+// const PaymentWrapper  = styled('div').withConfig({
 //   shouldForwardProp: (prop) => !['joining'].includes(prop),
 // })(({ joining }) => (`
 //   display: ${joining ? '' : 'none'};
@@ -769,26 +773,32 @@ const ContributeGridWrapper = styled('div')(({ theme }) => (`
     width: 300px;
 `));
 
-const ContributeGridSection = styled('div')`
+const ContributeGridSection = styled('div').withConfig({
+  shouldForwardProp: (prop) => !['joining'].includes(prop),
+})`
   display: grid;
   grid-template-columns: auto auto;
   background-color: #ebebeb;
   padding: 10px 10px 2px 10px;
 `;
 
-const ContributeMonthlyText = styled('div')`
+const ContributeMonthlyText = styled('div').withConfig({
+  shouldForwardProp: (prop) => !['joining'].includes(prop),
+})`
   font-weight: 600;
   padding: 0 0 2px 18px;
 `;
 
-const ContributeGridItem = styled('div')`
+const ContributeGridItem = styled('div').withConfig({
+  shouldForwardProp: (prop) => !['joining'].includes(prop),
+})`
   background-color: #ebebeb;
   padding: 5px 10px;
   font-size: 30px;
   text-align: center;
 `;
 
-const ContributeGridItemJoin = styled('div', {
+const ContributeGridItemJoin = styled('div').withConfig({
   shouldForwardProp: (prop) => !['joining'].includes(prop),
 })(({ joining }) => (`
   ${joining ?

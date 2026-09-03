@@ -855,7 +855,7 @@ const VoterLastName = styled('p')`
   padding: 0;
 `;
 
-export const VoterPositionContainer = styled('div', {
+export const VoterPositionContainer = styled('div').withConfig({
   shouldForwardProp: (prop) => prop !== '$noBottomMargin',
 })`
   align-items: flex-start;

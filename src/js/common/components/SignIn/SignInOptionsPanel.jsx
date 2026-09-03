@@ -664,7 +664,7 @@ const SignInOptionsTermsWrapper = styled('div')(({ theme }) => (`
   // }
 `));
 
-const Main = styled('div', {
+const Main = styled('div').withConfig({
   shouldForwardProp: (prop) => !['inModal'].includes(prop),
 })(({ inModal }) => (`
   margin-top: ${inModal ? '-16px' : '0'};

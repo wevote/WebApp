@@ -304,7 +304,7 @@ const BallotItemEndorsementTextMobile = styled('span')`
   color: #555;
 `;
 
-const LearnMoreWrapper = styled('div', {
+const LearnMoreWrapper = styled('div').withConfig({
   shouldForwardProp: (prop) => !['isButton'].includes(prop),
 })(({ isButton }) => (`
   margin-left: auto;
@@ -312,7 +312,7 @@ const LearnMoreWrapper = styled('div', {
   justify-content: flex-end;
 `));
 
-const TopCommentWrapper = styled('div', {
+const TopCommentWrapper = styled('div').withConfig({
   shouldForwardProp: (prop) => !['cursorPointerOn'].includes(prop),
 })(({ cursorPointerOn, theme }) => (`
   ${cursorPointerOn ? 'cursor: pointer;' : ''}

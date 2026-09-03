@@ -1,5 +1,7 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
+// MUI v5/v6 & React 18 Migration Note: Switched from deprecated `ReactDOM.render`
+// to `createRoot` from 'react-dom/client' for React 18 Concurrent Rendering support.
+import { createRoot } from 'react-dom/client';
 import { HelmetProvider } from 'react-helmet-async';
 import { CompatRouter } from 'react-router-dom-v5-compat';
 import App from './App';
@@ -36,7 +38,9 @@ function redirectToStandardizedWeVoteUrl () {
 }
 
 function startReact () {
-  ReactDOM.render(
+  const container = document.getElementById('app');
+  const root = createRoot(container);
+  root.render(
     <ErrorBoundary>
       <WeVoteRouter>
         <CompatRouter>
@@ -46,7 +50,6 @@ function startReact () {
         </CompatRouter>
       </WeVoteRouter>
     </ErrorBoundary>,
-    document.getElementById('app'),
   );
 
   try {

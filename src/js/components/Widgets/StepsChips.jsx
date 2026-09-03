@@ -60,7 +60,7 @@ const Wrapper = styled('div')(({ theme }) => (`
   }
 `));
 
-const Chip = styled('div', {
+const Chip = styled('div').withConfig({
   shouldForwardProp: (prop) => !['count', 'selected'].includes(prop),
 })(({ count, selected, theme }) => (`
   display: flex;
@@ -83,7 +83,7 @@ const Chip = styled('div', {
   }
 `));
 
-const ChipIndex = styled('p', {
+const ChipIndex = styled('p').withConfig({
   shouldForwardProp: (prop) => !['selected'].includes(prop),
 })(({ selected, theme }) => (`
   margin: auto 6px;
