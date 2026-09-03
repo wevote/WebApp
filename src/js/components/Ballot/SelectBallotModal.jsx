@@ -91,7 +91,7 @@ class SelectBallotModal extends Component {
     return (
       <Dialog
         classes={{ paper: classes.dialogPaper }}
-        open={show}
+        open={Boolean(show)}
         onClose={() => { this.props.closeSelectBallotModal(); }}
         id="SelectBallotModalId"
       >
@@ -323,7 +323,7 @@ const SidebarWrapper = styled('div')`
   }
 `;
 
-const BallotElectionListWrapper = styled('div', {
+const BallotElectionListWrapper = styled('div').withConfig({
   shouldForwardProp: (prop) => !['addTopMargin'].includes(prop),
 })(({ addTopMargin }) => (`
   margin-top: ${addTopMargin ? '24px' : '0'};

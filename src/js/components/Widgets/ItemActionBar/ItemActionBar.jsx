@@ -2,7 +2,7 @@
 /* eslint-disable import/newline-after-import */
 /* eslint-disable import/order */
 /* eslint-disable react/jsx-indent */
-import { ChatBubbleOutline, Comment, Done, EditOutlined, NotInterested, ThumbDown, ThumbUp } from '@mui/icons-material';
+import { Comment, Done, EditOutlined, NotInterested, ThumbDown, ThumbUp } from '@mui/icons-material';
 import { Button } from '@mui/material';
 import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
@@ -1136,7 +1136,7 @@ class ItemActionBar extends PureComponent {
                 onClick={this.onClickChatBubble}
                 type="button"
               >
-                <ChatBubbleOutline style={{ fontSize: 22, color: '#1976d2' }} />
+                <Comment style={{ fontSize: 22, color: '#1976d2' }} />
               </ChatBubbleButton>
               {measureHasOpinion && (
                 <VisibilityInlineWrapperDesktop className="u-show-desktop">
@@ -1172,7 +1172,7 @@ class ItemActionBar extends PureComponent {
                 onClick={this.onClickChatBubble}
                 type="button"
               >
-                <ChatBubbleOutline style={{ fontSize: 22, color: '#1976d2' }} />
+                <Comment style={{ fontSize: 22, color: '#1976d2' }} />
               </ChatBubbleButton>
               {visibilityRowOpen && (
                 <VisibilityInlineWrapperDesktop className="u-show-desktop">
@@ -1354,7 +1354,7 @@ const styles = (theme) => ({
 
 // Styled Components
 
-const ItemActionBarWrapper = styled('div', {
+const ItemActionBarWrapper = styled('div').withConfig({
   shouldForwardProp: (prop) => !['positionPublicToggleWrapAllowed', 'displayInline'].includes(prop),
 })(({ positionPublicToggleWrapAllowed, displayInline, theme }) => (`
   display: ${positionPublicToggleWrapAllowed ? '' : 'flex'};
@@ -1386,7 +1386,7 @@ const ActionBarRow = styled('div')`
   white-space: normal;
 `;
 
-const ButtonGroup = styled('div', {
+const ButtonGroup = styled('div').withConfig({
   shouldForwardProp: (prop) => !['positionPublicToggleWrapAllowed'].includes(prop),
 })(({ positionPublicToggleWrapAllowed }) => (`
   display: flex;
@@ -1419,13 +1419,13 @@ const ButtonWrapperRight = styled('div')`
   align-items: center;
 `;
 
-const ChooseButtonLabel = styled('span', {
+const ChooseButtonLabel = styled('span').withConfig({
   shouldForwardProp: (prop) => !['isAtState'].includes(prop),
 })(({ isAtState }) => (`
   color: #1976d2;
 `));
 
-const ChooseButtonLabelSelected = styled('span', {
+const ChooseButtonLabelSelected = styled('span').withConfig({
   shouldForwardProp: (prop) => !['isAtState'].includes(prop),
 })(({ isAtState }) => (`
    color: ${isAtState ? '#fff' : '#1976d2'};
@@ -1441,18 +1441,18 @@ const HelpButtonLabel = styled('span')`
   color: #fff;
 `;
 
-const OpposeButtonLabel = styled('span', {
+const OpposeButtonLabel = styled('span').withConfig({
   shouldForwardProp: (prop) => !['isAtState'].includes(prop),
 })(({ isAtState }) => (`
   color: #1976d2;
   ${isAtState ? 'font-weight: bold;' : ''};
 `));
 
-const OpposeButtonLabelSelected = styled('span', {
+const OpposeButtonLabelSelected = styled('span').withConfig({
   shouldForwardProp: (prop) => !['isAtState'].includes(prop),
 })(({ isAtState }) => (''));
 
-const StackedButton = styled('div', {
+const StackedButton = styled('div').withConfig({
   shouldForwardProp: (prop) => prop !== 'onlyTwoButtons',
 })(({ onlyTwoButtons }) => ({
   marginLeft: '3px',
@@ -1513,7 +1513,7 @@ const CandidateStaffDivider = styled('div')`
 `;
 
 // Section 3: "For candidate staff"
-const CandidateStaffWrapper = styled('div', {
+const CandidateStaffWrapper = styled('div').withConfig({
   shouldForwardProp: (prop) => prop !== 'visibilityRowOpen',
 })(({ visibilityRowOpen }) => (`
   display: flex;
@@ -1525,7 +1525,7 @@ const CandidateStaffWrapper = styled('div', {
   min-width: 0;
 `));
 
-const CandidateStaffWrapperMobile = styled('div', {
+const CandidateStaffWrapperMobile = styled('div').withConfig({
   shouldForwardProp: (prop) => prop !== 'visibilityRowOpen',
 })(({ visibilityRowOpen }) => (`
   display: flex;

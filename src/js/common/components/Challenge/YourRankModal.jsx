@@ -11,7 +11,7 @@ function YourRankModal ({ challengeWeVoteId, classes, show, toggleModal }) {
     <Dialog
     classes={{ paper: classes.dialogPaper }}
     onClose={() => toggleModal()}
-    open={show}
+    open={Boolean(show)}
     >
       <DialogTitle
       classes={{ root: classes.dialogTitle }}

@@ -109,7 +109,7 @@ const EndorsementCardOuterWrapper = styled('div')`
   padding: ${isIPhoneSmall() ? '16px 16px 16px 4px' : '16px'};
 `;
 
-const EndorsementCardFlexWrapper = styled('div', {
+const EndorsementCardFlexWrapper = styled('div').withConfig({
   shouldForwardProp: (prop) => !['narrowColumnDisplay'].includes(prop),
 })(({ narrowColumnDisplay }) => (`
   bottom: 8px;

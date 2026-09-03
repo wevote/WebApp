@@ -29,7 +29,7 @@ class AdviserIntroModal extends Component {
     return (
       <Dialog
         classes={{ paper: classes.dialogPaper }}
-        open={this.props.show}
+        open={Boolean(this.props.show)}
         onClose={() => { this.props.toggleFunction(pathname); }}
       >
         <ModalTitleAreaType1>

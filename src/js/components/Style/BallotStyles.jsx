@@ -96,7 +96,9 @@ export const CandidateNameH1 = styled('h1')(({ theme }) => (`
   }
 `));
 
-export const CandidateNameH4 = styled('button')`
+export const CandidateNameH4 = styled('button').withConfig({
+  shouldForwardProp: (prop) => !['showAsLink'].includes(prop),
+})`
   color: ${(props) => (props?.showAsLink ? `${DesignTokenColors.primary600}` : '#000')};
   font-weight: 400;
   font-size: 20px;

@@ -27,7 +27,7 @@ function VoterPositionEditNameAndPhotoModal ({ show, toggleModal, classes }) {
   }
 
   return (
-    <Dialog open={show} onClose={toggleModal} maxWidth="sm" fullWidth>
+    <Dialog open={Boolean(show)} onClose={toggleModal} maxWidth="sm" fullWidth>
       <DialogTitle>
         Edit Profile
         <IconButton

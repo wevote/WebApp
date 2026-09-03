@@ -12,7 +12,9 @@ export const PreviewImage = styled('img')`
   margin-right: 8px;
 `;
 
-export const DescriptionText = styled('span')(({ theme }) => (`
+export const DescriptionText = styled('span').withConfig({
+  shouldForwardProp: (prop) => !['alignRight'].includes(prop),
+})(({ theme }) => (`
   font-size: 14px;
   margin: .5em auto;
   ${theme.breakpoints.down('md')} {
@@ -20,7 +22,9 @@ export const DescriptionText = styled('span')(({ theme }) => (`
   }
 `));
 
-export const SharingRow = styled('div')`
+export const SharingRow = styled('div').withConfig({
+  shouldForwardProp: (prop) => !['alignRight'].includes(prop),
+})`
   display: flex;
   justify-content: space-between;
   border-top: 1px solid #eee;
@@ -28,13 +32,15 @@ export const SharingRow = styled('div')`
   padding-top: 20px;
 `;
 
-export const LinkToDomainRow = styled('div')`
+export const LinkToDomainRow = styled('div').withConfig({
+  shouldForwardProp: (prop) => !['alignRight'].includes(prop),
+})`
   border-top: 1px solid #eee;
   padding: 16px 0;
   padding-top: 20px;
 `;
 
-export const SharingColumn = styled('div', {
+export const SharingColumn = styled('div').withConfig({
   shouldForwardProp: (prop) => !['alignRight'].includes(prop),
 })(({ alignRight, theme }) => (`
   display: flex;

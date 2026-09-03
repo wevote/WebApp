@@ -429,7 +429,7 @@ const StepsOuterWrapper = styled('div')`
   width: 100%;
 `;
 
-const StepsWrapper = styled('div', {
+const StepsWrapper = styled('div').withConfig({
   shouldForwardProp: (prop) => !['width'].includes(prop),
 })(({ width }) => (`
   width: ${`${width}px`};

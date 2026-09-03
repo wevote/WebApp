@@ -537,12 +537,15 @@ class VoterPhoneVerificationEntry extends Component {
             error={displayIncorrectPhoneNumberError}
             helperText={(displayIncorrectPhoneNumberError) ? 'Enter a valid phone number' : ''}
             id="enterVoterPhone"
-            InputProps={{
-              startAdornment: (
-                <InputAdornment position="start">
-                  <Phone />
-                </InputAdornment>
-              ) }}
+            slotProps={{
+              input: {
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <Phone />
+                  </InputAdornment>
+                ),
+              },
+            }}
             label="Mobile Phone Number"
             name="voter_phone_number"
             onBlur={this.onBlur}
@@ -828,13 +831,13 @@ const CancelButtonContainer = styled('div')`
 //   font-size: 14px;
 // `;
 
-const PhoneNumberSection = styled('div', {
+const PhoneNumberSection = styled('div').withConfig({
   shouldForwardProp: (prop) => !['isWeb'].includes(prop),
 })(({ isWeb }) => (`
   margin-top: ${isWeb ? '18px;' : '0'};
 `));
 
-const VoterPhoneVerificationWrapper = styled('div', {
+const VoterPhoneVerificationWrapper = styled('div').withConfig({
   shouldForwardProp: (prop) => !['isWeb'].includes(prop),
 })(({ isWeb }) => (`
   margin-top: ${isWeb ? '32px;' : '0'};

@@ -83,14 +83,14 @@ ChallengeParticipantListItem.propTypes = {
 const AvatarStyled = styled(Avatar)`
 `;
 
-const Rank = styled('div', {
+const Rank = styled('div').withConfig({
   shouldForwardProp: (prop) => !['showSimpleList, isCurrentUser'].includes(prop),
 })(({ showSimpleList, isCurrentUser }) => `
   font-weight: ${isCurrentUser ? 'bold' : 'normal'};
   width: ${showSimpleList ? 'fit-content' : '35px'};
 `);
 
-const Name = styled('div', {
+const Name = styled('div').withConfig({
   shouldForwardProp: (prop) => !['isCurrentUser'].includes(prop),
 })(({ isCurrentUser }) => `
   align-items: center;
@@ -100,7 +100,7 @@ const Name = styled('div', {
   gap: 10px;
 `);
 
-const Points = styled('div', {
+const Points = styled('div').withConfig({
   shouldForwardProp: (prop) => !['showSimpleList, isCurrentUser'].includes(prop),
 })(({ showSimpleList, isCurrentUser }) => `
   font-size: ${showSimpleList ? '18px' : '14px'};
@@ -118,7 +118,7 @@ const Details = styled('div')`
   text-align: left;
 `;
 
-const FriendsJoined = styled('div', {
+const FriendsJoined = styled('div').withConfig({
   shouldForwardProp: (prop) => !['makeBold'].includes(prop),
 })(({ makeBold }) => (`
   color: ${DesignTokenColors.neutral900};
@@ -128,7 +128,7 @@ const FriendsJoined = styled('div', {
   width: 76px;
 `));
 
-const ParticipantItem = styled('div', {
+const ParticipantItem = styled('div').withConfig({
   shouldForwardProp: (prop) => !['isCurrentUser, showSimpleList'].includes(prop),
 })(({ isCurrentUser, showSimpleList }) => (`
   background-color: ${isCurrentUser ? '#f9e79f' : '#fff'};
@@ -137,7 +137,7 @@ const ParticipantItem = styled('div', {
   ${!showSimpleList && `border-bottom: 1px solid ${DesignTokenColors.neutral100};`}
 `));
 
-const ParticipantRow = styled('div', {
+const ParticipantRow = styled('div').withConfig({
   shouldForwardProp: (prop) => !['showSimpleList'].includes(prop),
 })(({ showSimpleList }) => (`
   display: flex;

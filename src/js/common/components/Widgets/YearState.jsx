@@ -64,7 +64,7 @@ const PoliticalPartyWrapper = styled('div')`
   text-overflow: ellipsis;
 `;
 
-const YearStateText = styled('div', {
+const YearStateText = styled('div').withConfig({
   shouldForwardProp: (prop) => !['centeredText'].includes(prop),
 })(({ centeredText }) => (`
   ${centeredText ? 'justify-content: center;' : ''}

@@ -165,7 +165,7 @@ MessageToFriendButton.propTypes = {
   voterEmailAddressMissing: PropTypes.bool,
 };
 
-const MessageToFriendButtonWrapper = styled('div', {
+const MessageToFriendButtonWrapper = styled('div').withConfig({
   shouldForwardProp: (prop) => !['displayFullWidth'].includes(prop),
 })(({ displayFullWidth }) => (`
   white-space: nowrap;

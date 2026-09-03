@@ -33,7 +33,7 @@ class FAQModal extends Component {
     return (
       <Dialog
         classes={{ paper: classes.dialogPaper }}
-        open={this.props.show}
+        open={Boolean(this.props.show)}
         onClose={() => { this.props.toggleFunction(pathname); }}
       >
         <ModalTitleArea>
@@ -101,7 +101,7 @@ const styles = () => ({
 });
 
 /* eslint no-nested-ternary: ["off"] */
-const ModalTitleArea = styled('div', {
+const ModalTitleArea = styled('div').withConfig({
   shouldForwardProp: (prop) => !['firstslide'].includes(prop),
 })(({ firstslide }) => (`
   justify-content: flex-start;

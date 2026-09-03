@@ -955,9 +955,10 @@ const styles = (theme) => {
   };
 };
 
-const HeaderBarWrapper = styled.div.attrs({
-  className: 'HeaderBarWrapper', // div.attrs and className all added to achieve drop-shadow on Donate page
+const HeaderBarWrapper = styled('div').withConfig({
   shouldForwardProp: (prop) => !['scrolledDown', 'hasSubmenu'].includes(prop),
+}).attrs({
+  className: 'HeaderBarWrapper',
 })(({ scrolledDown, hasSubmenu }) => (`
   box-shadow: ${(!scrolledDown || !hasSubmenu) ? '' : standardBoxShadow('wide')};
   border-bottom: ${(!scrolledDown || !hasSubmenu) ? '' : '1px solid #aaa'};

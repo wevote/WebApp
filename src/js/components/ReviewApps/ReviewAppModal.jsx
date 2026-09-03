@@ -24,14 +24,14 @@ export default function ReviewAppModal (props) {
   const emailInputRef = useRef('');
   const bodyInputRef = useRef('');
 
-  // eslint-disable-next-line consistent-return
   useEffect(() => {
     emailInputRef.current = props.initialEmail;
     const isShowing = AppObservableStore.getShowingNegativeFeedbackModal();
     if (isShowing) {
-      return <></>;
+      return undefined;
     }
     AppObservableStore.setShowingNegativeFeedbackModal(true);
+    return undefined;
   }, []);
 
   const closeAnyOtherInstancesOfDialog = () => {
@@ -64,7 +64,7 @@ export default function ReviewAppModal (props) {
     <>
       {open && (
         <Dialog
-          open={open}
+          open={Boolean(open)}
           onClose={handleClose}
           sx={{ '& .MuiDialog-paperScrollPaper': { margin: '2px' /* , maxWidth: '300px', maxHeight: '400px' */ } }}
         >

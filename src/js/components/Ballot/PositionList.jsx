@@ -510,7 +510,7 @@ const LoadingItemsWheel = styled('div')`
 const PositionListWrapper = styled('div')`
 `;
 
-const PositionListForBallotItemWrapper = styled('div', {
+const PositionListForBallotItemWrapper = styled('div').withConfig({
   shouldForwardProp: (prop) => prop !== '$compact',
 })(({ $compact }) => `
   margin: 8px ${$compact ? '0' : '15px'} 8px ${$compact ? '0' : '15px'};

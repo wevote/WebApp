@@ -632,7 +632,7 @@ const CandidateEndorsementCount = styled('div')`
   width: 100%;
 `;
 
-const CandidateEndorsementPhotos = styled('div', {
+const CandidateEndorsementPhotos = styled('div').withConfig({
   shouldForwardProp: (prop) => !['showRightGradient'].includes(prop),
 })(({ showRightGradient }) => (`
   align-items: center;

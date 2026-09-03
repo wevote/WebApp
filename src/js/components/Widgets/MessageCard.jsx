@@ -56,7 +56,7 @@ MessageCard.propTypes = {
   secondaryText: PropTypes.string,
 };
 
-const Card = styled('div', {
+const Card = styled('div').withConfig({
   shouldForwardProp: (prop) => !['inModal'].includes(prop),
 })(({ inModal }) => (`
   padding: ${inModal ? '0' : '64px 32px'};

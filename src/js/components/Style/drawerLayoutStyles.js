@@ -11,7 +11,9 @@ const slideIn = keyframes`
   }
 `;
 
-export const DrawerHeaderAnimateDownOuterContainer = styled.div.attrs(({ scrolledDown }) => ({
+export const DrawerHeaderAnimateDownOuterContainer = styled('div').withConfig({
+  shouldForwardProp: (prop) => !['scrolledDown'].includes(prop),
+}).attrs(({ scrolledDown }) => ({
   style: {
     display: scrolledDown ? 'block' : 'hidden',
   },

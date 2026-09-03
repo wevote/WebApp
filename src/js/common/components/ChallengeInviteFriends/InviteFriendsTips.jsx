@@ -147,7 +147,7 @@ const NextSpan = styled('span')`
   text-decoration:underline;
 `;
 
-const StyledChip = styled(Chip, {
+const StyledChip = styled(Chip).withConfig({
   shouldForwardProp: (prop) => !['colorOptionNumber'].includes(prop),
 })(({ colorOptionNumber }) => (`
   ${colorOptionNumber ? '' : `background-color: ${DesignTokenColors.confirmation700};`}

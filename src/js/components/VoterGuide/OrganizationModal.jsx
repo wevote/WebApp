@@ -459,9 +459,9 @@ class OrganizationModal extends Component {
             <HeartToggleAndThermometerWrapper>
               <Suspense fallback={(
                 <Box>
-                  <Box display="flex" gap={1} sx={{ mb: 1 }}>
+                  <Box sx={{ display: 'flex', gap: 1, mb: 1 }}>
                     <Skeleton variant="rounded" width={60} height={36} sx={{ borderRadius: 2 }} />
-                    <Box flex={1} sx={{ minWidth: 0 }}>
+                    <Box sx={{ flex: 1, minWidth: 0 }}>
                       <Skeleton variant="text" width="70%" height={18} sx={{ mb: 0.5 }} />
                       <Skeleton variant="text" width="50%" height={18} />
                     </Box>
@@ -490,7 +490,7 @@ class OrganizationModal extends Component {
             </Suspense>
             {isCandidate && (
               <Suspense fallback={(
-                <Box display="flex" gap={1} flexWrap="wrap" sx={{ mb: 2 }}>
+                <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap', mb: 2 }}>
                   <Skeleton variant="rounded" width={80} height={24} sx={{ borderRadius: 3 }} />
                   <Skeleton variant="rounded" width={100} height={24} sx={{ borderRadius: 3 }} />
                   <Skeleton variant="rounded" width={90} height={24} sx={{ borderRadius: 3 }} />
@@ -546,9 +546,9 @@ class OrganizationModal extends Component {
               <Suspense fallback={(
                 <Box sx={{ mb: 3 }}>
                   {[1, 2, 3, 4].map((i) => (
-                    <Box key={i} display="flex" gap={1} alignItems="center" sx={{ mb: 2 }}>
+                    <Box key={i} sx={{ display: 'flex', gap: 1, alignItems: 'center', mb: 2 }}>
                       <Skeleton variant="circular" width={40} height={40} />
-                      <Box flex={1}>
+                      <Box sx={{ flex: 1 }}>
                         <Skeleton variant="text" width="60%" height={16} />
                         <Skeleton variant="text" width="40%" height={14} />
                       </Box>
@@ -561,9 +561,9 @@ class OrganizationModal extends Component {
                     <Suspense fallback={(
                       <Box sx={{ mb: 3 }}>
                         {[1, 2, 3].map((i) => (
-                          <Box key={i} display="flex" gap={1} alignItems="center" sx={{ mb: 2 }}>
+                          <Box key={i} sx={{ display: 'flex', gap: 1, alignItems: 'center', mb: 2 }}>
                             <Skeleton variant="circular" width={40} height={40} />
-                            <Box flex={1}>
+                            <Box sx={{ flex: 1 }}>
                               <Skeleton variant="text" width="60%" height={16} />
                               <Skeleton variant="text" width="40%" height={14} />
                             </Box>

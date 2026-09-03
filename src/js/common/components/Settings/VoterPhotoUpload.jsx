@@ -411,7 +411,7 @@ const ColumnFullWidthPhotoUpload = styled('div')`
   width: 100%;
 `;
 
-const CordovaDropZoneReplica = styled('div', {
+const CordovaDropZoneReplica = styled('div').withConfig({
   shouldForwardProp: (prop) => !['show'].includes(prop),
 })(({ show }) => (`
   color: #999;
@@ -439,7 +439,7 @@ const OuterWrapperPhotoUpload = styled('div')`
   width: 100%;
 `;
 
-const VoterPhotoImage = styled('img', {
+const VoterPhotoImage = styled('img').withConfig({
   shouldForwardProp: (prop) => !['maxWidth'].includes(prop),
 })(({ maxWidth }) => (`
   border-radius: 100px;
@@ -447,7 +447,7 @@ const VoterPhotoImage = styled('img', {
   ${maxWidth ? `max-width: ${maxWidth}px;` : 'max-width: 200px;'}
 `));
 
-const VoterPhotoWrapper = styled('div', {
+const VoterPhotoWrapper = styled('div').withConfig({
   shouldForwardProp: (prop) => !['limitPhotoHeight'].includes(prop),
 })(({ limitPhotoHeight }) => (`
   align-items: center;

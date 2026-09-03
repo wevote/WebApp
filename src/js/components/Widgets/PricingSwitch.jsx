@@ -60,7 +60,7 @@ PricingSwitch.propTypes = {
   switchToDifferentCategoryFunction: PropTypes.func,
 };
 
-const Container = styled('div', {
+const Container = styled('div').withConfig({
   shouldForwardProp: (prop) => !['chosenBackgroundColor'].includes(prop),
 })(({ chosenBackgroundColor }) => (`
   display: flex;
@@ -76,7 +76,7 @@ const Container = styled('div', {
   transition: all 150ms ease-in;
 `));
 
-const Choice = styled('div', {
+const Choice = styled('div').withConfig({
   shouldForwardProp: (prop) => !['thisPricingPlanInView', 'chosenBackgroundColor', 'chosenTextColor'].includes(prop),
 })(({ thisPricingPlanInView, chosenBackgroundColor, chosenTextColor }) => (`
   display: flex;

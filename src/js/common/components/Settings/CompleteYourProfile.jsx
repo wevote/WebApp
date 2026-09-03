@@ -412,20 +412,20 @@ const AlreadyHaveAccount = styled('div')`
   margin-right: 2px;
 `;
 
-const CompleteYourProfileButtonWrapper = styled('div', {
+const CompleteYourProfileButtonWrapper = styled('div').withConfig({
   shouldForwardProp: (prop) => !['outerMarginsOff'].includes(prop),
 })(({ outerMarginsOff }) => (`
   background-color: #fff;
   margin: ${outerMarginsOff ? '8px 0 0 0' : '8px 15px 0 15px'};
 `));
 
-const CheckboxWrapper = styled('div', {
+const CheckboxWrapper = styled('div').withConfig({
   shouldForwardProp: (prop) => !['outerMarginsOff'].includes(prop),
 })(({ outerMarginsOff }) => (`
   margin: ${outerMarginsOff ? '25px 0 0 0' : '25px 15px 0 15px'};
 `));
 
-const FinePrint = styled('div', {
+const FinePrint = styled('div').withConfig({
   shouldForwardProp: (prop) => !['outerMarginsOff'].includes(prop),
 })(({ outerMarginsOff }) => (`
   color: #999;
@@ -433,7 +433,7 @@ const FinePrint = styled('div', {
   margin: ${outerMarginsOff ? '10px 0 15px 0' : '10px 15px 15px 15px'};
 `));
 
-const InputFieldsWrapper = styled('div', {
+const InputFieldsWrapper = styled('div').withConfig({
   shouldForwardProp: (prop) => !['outerMarginsOff'].includes(prop),
 })(({ outerMarginsOff }) => (`
   margin: ${outerMarginsOff ? '0 0 !important' : '0 15px !important'};

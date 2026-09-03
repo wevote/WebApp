@@ -309,7 +309,7 @@ const styles = () => ({
 });
 
 /* eslint no-nested-ternary: ["off"] */
-const ModalTitleArea = styled('div', {
+const ModalTitleArea = styled('div').withConfig({
   shouldForwardProp: (prop) => !['firstSlide', 'onSignInSlide', 'noBoxShadowMode'].includes(prop),
 })(({ firstSlide, onSignInSlide, noBoxShadowMode }) => (`
   text-align: left;
@@ -332,7 +332,7 @@ const RadioButtonText = styled('div')`
   margin-top: 4px;
 `;
 
-const RadioGroup = styled('div', {
+const RadioGroup = styled('div').withConfig({
   shouldForwardProp: (prop) => !['preventStackedButtons'].includes(prop),
 })(({ preventStackedButtons, theme }) => (`
   display: flex;
@@ -351,7 +351,7 @@ const RadioGroup = styled('div', {
   }
 `));
 
-const RadioItem = styled('div', {
+const RadioItem = styled('div').withConfig({
   shouldForwardProp: (prop) => !['preventStackedButtons'].includes(prop),
 })(({ preventStackedButtons, theme }) => (`
   margin-bottom: 20px;

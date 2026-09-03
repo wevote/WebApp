@@ -151,7 +151,7 @@ const SplitButtonSeparatorRight = styled('div')`
   right: 44px;
 `;
 
-const SplitButtonIcon = styled('span', {
+const SplitButtonIcon = styled('span').withConfig({
   shouldForwardProp: (prop) => !['adjustedIconWidth'].includes(prop),
 })(({ adjustedIconWidth }) => (`
   flex: none;
@@ -162,7 +162,7 @@ const SplitButtonIcon = styled('span', {
   width: ${adjustedIconWidth ? `${adjustedIconWidth}px;` : 'width: 44px;'}
 `));
 
-const SplitButtonText = styled('span', {
+const SplitButtonText = styled('span').withConfig({
   shouldForwardProp: (prop) => !['compressedsize'].includes(prop),
 })(({ compressedsize }) => (`
   padding: 8px 8px 8px;

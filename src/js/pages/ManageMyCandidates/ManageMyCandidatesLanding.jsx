@@ -377,7 +377,7 @@ const NavBar = styled.nav`
   }
 `;
 
-const NavBarMobile = styled('nav', {
+const NavBarMobile = styled('nav').withConfig({
   shouldForwardProp: (prop) => !['showLeftGradient', 'showRightGradient'].includes(prop),
 })(({ showLeftGradient, showRightGradient }) => (`
   display: flex;

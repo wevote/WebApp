@@ -9,7 +9,7 @@ export const DesktopNextButtonsInnerWrapper = styled('div')`
   padding: 10px 0;
 `;
 
-export const DesktopNextButtonsOuterWrapperUShowDesktopTablet = styled('div', {
+export const DesktopNextButtonsOuterWrapperUShowDesktopTablet = styled('div').withConfig({
   shouldForwardProp: (prop) => !['breakValue'].includes(prop),
 })(({ breakValue, theme }) => ({
   display: 'flex',
@@ -22,7 +22,7 @@ export const DesktopNextButtonsOuterWrapperUShowDesktopTablet = styled('div', {
   },
 }));
 
-export const DesktopStaticNextButtonsOuterWrapper = styled('div', {
+export const DesktopStaticNextButtonsOuterWrapper = styled('div').withConfig({
   shouldForwardProp: (prop) => !['breakValue'].includes(prop),
 })(({ breakValue, theme }) => ({
   borderTop: '1px solid #ddd',
@@ -46,7 +46,7 @@ export const MobileStaticNextButtonsInnerWrapper = styled('div')`
   padding: 10px 20px;
 `;
 
-export const MobileStaticNextButtonsOuterWrapperUShowMobile = styled('div', {
+export const MobileStaticNextButtonsOuterWrapperUShowMobile = styled('div').withConfig({
   shouldForwardProp: (prop) => !['breakValue'].includes(prop),
 })(({ breakValue, theme }) => ({
   bottom: 0,

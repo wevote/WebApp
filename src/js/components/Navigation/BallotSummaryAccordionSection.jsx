@@ -58,7 +58,9 @@ const styles = () => ({
   },
 });
 
-const AccordionWrapper = styled('div')`
+const AccordionWrapper = styled('div').withConfig({
+  shouldForwardProp: (prop) => !['isOpen'].includes(prop),
+})`
   background: none;
   padding: 0 16px;
 `;
@@ -68,7 +70,7 @@ const AccordionBorderWrapper = styled('div')`
   padding: 16px 0;
 `;
 
-const AccordionTitle = styled('div', {
+const AccordionTitle = styled('div').withConfig({
   shouldForwardProp: (prop) => !['isOpen'].includes(prop),
 })(({ isOpen }) => (`
   font-weight: ${isOpen ? 600 : 500};

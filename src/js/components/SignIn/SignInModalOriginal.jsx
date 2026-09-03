@@ -173,7 +173,7 @@
 //           }),
 //           root: classes.dialogRoot,
 //         }}
-//         open={this.props.show}
+//         open={Boolean(this.props.show)}
 //         onClose={() => { this.closeFunction(); }}
 //         style={{ paddingTop: `${isCordova() ? '75px' : 'undefined'}` }}
 //       >

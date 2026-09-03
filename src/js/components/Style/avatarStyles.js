@@ -33,7 +33,7 @@ const AvatarCordovaStyles = `
   }
 `;
 
-const Avatar = styled('div', {
+const Avatar = styled('div').withConfig({
   shouldForwardProp: (prop) => !['inSideColumn'].includes(prop),
 })(({ inSideColumn }) => (`
     margin-right: 8px;

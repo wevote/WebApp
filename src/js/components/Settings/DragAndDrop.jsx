@@ -81,7 +81,7 @@ DragAndDrop.propTypes = {
 };
 
 
-const Wrapper = styled('div', {
+const Wrapper = styled('div').withConfig({
   shouldForwardProp: (prop) => !['active'].includes(prop),
 })(({ active }) => (`
   background: ${active ? '#e8e8e8' : '#f7f7f7'};

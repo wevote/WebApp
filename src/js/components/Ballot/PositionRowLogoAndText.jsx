@@ -310,7 +310,7 @@ const OrganizationName = styled('div')`
   white-space: normal;
 `;
 
-const OrganizationNameWrapper = styled('div', {
+const OrganizationNameWrapper = styled('div').withConfig({
   shouldForwardProp: (prop) => !['overlayUsed'].includes(prop),
 })(({ overlayUsed }) => (`
   border-left: 1px dotted #dcdcdc;
@@ -328,7 +328,7 @@ const OrganizationOverlayOuterWrapper = styled('div')`
   z-index: 1;
 `;
 
-const OrganizationPhotoOuterWrapper = styled('div', {
+const OrganizationPhotoOuterWrapper = styled('div').withConfig({
   shouldForwardProp: (prop) => !['overlayUsed'].includes(prop),
 })(({ overlayUsed }) => (`
   border-left: 1px dotted #dcdcdc;

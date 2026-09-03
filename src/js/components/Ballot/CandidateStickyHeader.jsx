@@ -84,7 +84,7 @@ const slideDown = keyframes`
   }
 `;
 
-const CandidateStickyHeaderWrapper = styled('div', {
+const CandidateStickyHeaderWrapper = styled('div').withConfig({
   shouldForwardProp: (prop) => !['ipad'].includes(prop),
 })(({ ipad, theme }) => (`
   animation: ${slideDown} 150ms ease-in;

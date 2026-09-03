@@ -197,7 +197,9 @@ const styles = () => ({
   },
 });
 
-const DeleteAllConfirmText = styled('div')`
+const DeleteAllConfirmText = styled('div').withConfig({
+  shouldForwardProp: (prop) => !['leftAlign'].includes(prop),
+})`
   color: #999;
   margin-bottom: 12px;
 `;
@@ -209,7 +211,7 @@ const DeleteYourAccountButtonInnerCancelWrapper = styled('div')`
   width: 100%;
 `;
 
-const DeleteYourAccountButtonInnerWrapper = styled('div', {
+const DeleteYourAccountButtonInnerWrapper = styled('div').withConfig({
   shouldForwardProp: (prop) => !['leftAlign'].includes(prop),
 })(({ leftAlign }) => (`
   display: flex;
@@ -217,7 +219,7 @@ const DeleteYourAccountButtonInnerWrapper = styled('div', {
   width: 100%;
 `));
 
-const DeleteYourAccountButtonOuterWrapper = styled('div', {
+const DeleteYourAccountButtonOuterWrapper = styled('div').withConfig({
   shouldForwardProp: (prop) => !['leftAlign'].includes(prop),
 })(({ leftAlign }) => (`
   display: flex;
