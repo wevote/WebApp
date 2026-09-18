@@ -3,11 +3,11 @@ import withStyles from '@mui/styles/withStyles';
 import { heicTo, isHeic } from 'heic-to';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { getPNGfromFile } from 'tiff-to-png-client';
-import { DropzoneArea } from 'mui-file-dropzone';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import TagManager from 'react-gtm-module';
+import SharedDropzoneArea from '../Widgets/SharedDropzoneArea';
 import PoliticianActions from '../../actions/PoliticianActions';
 import PoliticianStore from '../../stores/PoliticianStore';
 import VoterActions from '../../../actions/VoterActions';
@@ -22,6 +22,7 @@ class VoterPhotoUpload extends Component {
     super(props);
     this.state = {
       isWebApp: !isCordova(),
+      previewDataUrl: '',
       showDropzoneIcon: true,
       politicianProfileUploadedImageUrlLarge: '',
       voterProfileUploadedImageUrlLarge: '',
@@ -84,7 +85,7 @@ class VoterPhotoUpload extends Component {
         dataUrl = await this.readFileAsDataUrl(fileFromDropzone);
         await this.preparePhotoForUpload(dataUrl);
       } else if (fileFromDropzone.type === 'image/svg+xml') {
-        dataUrl = await this.convertImageToAcceptedFormat();
+        dataUrl = await this.convertImageToAcceptedFormat(fileFromDropzone);
         await this.preparePhotoForUpload(dataUrl);
       } else if (fileFromDropzone.type === 'image/tiff') {
         [dataUrl] = await getPNGfromFile(fileFromDropzone);
@@ -96,6 +97,7 @@ class VoterPhotoUpload extends Component {
       const dropzoneText = isMobileScreenSize() ? 'A small preview of your photo is shown below. You can: 1) Click button below to continue, or 2) click here to upload different photo.' : 'A small preview of your photo is shown below. You can: 1) click button below to continue, 2) delete it (hover over photo to see trash can), or 3) drag a NEW version here (or click here to find file).';
       this.setState({
         dropzoneText,
+        previewDataUrl: dataUrl,
         showDropzoneIcon: false,
       });
     } else {
@@ -108,12 +110,18 @@ class VoterPhotoUpload extends Component {
       }
       this.setState({
         dropzoneText,
+        previewDataUrl: '',
         showDropzoneIcon,
       });
+      if (politicianWeVoteId) {
+        PoliticianActions.politicianPhotoQueuedToSave(undefined);
+      } else {
+        VoterActions.voterPhotoQueuedToSave(undefined);
+      }
     }
   }
 
-  handleCordovaDrop (event) {
+  handleCordovaDrop () {
     // console.log('handleCordovaDrop event:', event);
     const { camera: { getPicture, DestinationType: { FILE_URI }, PictureSourceType: { PHOTOLIBRARY }, PopoverArrowDirection: { ARROW_ANY } } } = navigator;
     const { CameraPopoverOptions } = window;
@@ -138,6 +146,7 @@ class VoterPhotoUpload extends Component {
         });
         // Clear the substitute image
         if (politicianProfileUploadedImageUrlLarge && politicianProfileUploadedImageUrlLarge.length > 0) {
+          this.setState({ previewDataUrl: '' });
           const thumbnail = document.getElementById('cordova');
           if (thumbnail) {
             thumbnail.style.display = 'none';
@@ -158,6 +167,7 @@ class VoterPhotoUpload extends Component {
       });
       // Clear the substitute image
       if (voterProfileUploadedImageUrlLarge && voterProfileUploadedImageUrlLarge.length > 0) {
+        this.setState({ previewDataUrl: '' });
         const thumbnail = document.getElementById('cordova');
         if (thumbnail) {
           thumbnail.style.display = 'none';
@@ -167,12 +177,17 @@ class VoterPhotoUpload extends Component {
     }
   }
 
-  convertImageToAcceptedFormat = async (type = 'image/png') => {
+  convertImageToAcceptedFormat = async (fileOrDataUrl, type = 'image/png') => {
     // If the given type is not supported, convert the image to a PNG
-    const img = document.querySelector('img[role="presentation"]');
+    let img = document.querySelector('img[role="presentation"]');
+    if (!img && fileOrDataUrl) {
+      img = new Image();
+      img.src = typeof fileOrDataUrl === 'string' ? fileOrDataUrl : URL.createObjectURL(fileOrDataUrl);
+    }
+    if (!img) return '';
     await img.decode();
-    const w = img.width;
-    const h = img.height;
+    const w = img.width || 300;
+    const h = img.height || 300;
     this.canvas.width = w;
     this.canvas.height = h;
     const ctx = this.canvas.getContext('2d');
@@ -183,13 +198,14 @@ class VoterPhotoUpload extends Component {
   };
 
   clearThumbnail = () => {
+    this.setState({ previewDataUrl: '' });
     const thumbnail = document.querySelector('img#cordova');
     if (thumbnail) {
       thumbnail.style.display = 'none';
       thumbnail.src = '';
     }
     const cordovaDropZone = document.querySelector('#cordovaDropZoneReplica');
-    if(cordovaDropZone) {
+    if (cordovaDropZone) {
       cordovaDropZone.style.display = 'inline-block';
     }
   };
@@ -204,6 +220,7 @@ class VoterPhotoUpload extends Component {
     } else {
       dataUrl = url;
     }
+    this.setState({ previewDataUrl: dataUrl });
     let thumbnail;
     const cordovaDropZone = document.querySelector('#cordovaDropZoneReplica');
     const { isWebApp } = this.state;
@@ -252,8 +269,9 @@ class VoterPhotoUpload extends Component {
     TagManager.dataLayer({ dataLayer: dataLayerObject });
     this.setState({
       politicianProfileUploadedImageUrlLarge: '',
+      previewDataUrl: '',
       voterProfileUploadedImageUrlLarge: '',
-    })
+    });
     this.clearThumbnail();
   };
 
@@ -275,7 +293,7 @@ class VoterPhotoUpload extends Component {
     }, (err) => {
       console.log('cameraCallback', err.message);
       console.error('camera resolveLocalFileSystemURL error', err);
-    })
+    });
   }
 
   render () {
@@ -319,7 +337,7 @@ class VoterPhotoUpload extends Component {
               ) : (
                 <>
                   {isWebApp ? (
-                    <DropzoneArea
+                    <SharedDropzoneArea
                       acceptedFiles={['image/*']}
                       classes={showDropzoneIcon ? {
                         icon: classes.dropzoneIcon,
@@ -342,6 +360,9 @@ class VoterPhotoUpload extends Component {
                       initialFiles={initialFiles}
                       maxFileSize={20000000}
                       onChange={this.handleWebAppDrop}
+                      onDelete={() => this.deleteYourPhoto('removePhotoLink')}
+                      previewUrl={this.state.previewDataUrl}
+                      showIcon={showDropzoneIcon}
                     />
                   ) : (
                     <>
