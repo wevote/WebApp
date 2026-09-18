@@ -24,7 +24,9 @@ StepIcon.propTypes = {
   completed: PropTypes.bool,
 };
 
-const StepIconContainer = styled('div')`
+const StepIconContainer = styled('div').withConfig({
+  shouldForwardProp: (prop) => !['completed'].includes(prop),
+})`
  ${({ completed }) => `
     display: flex;
     justify-content: center;

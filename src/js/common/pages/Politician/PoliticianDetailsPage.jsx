@@ -1539,7 +1539,7 @@ function TranslateYOnScroll (scrolledDown) {
 // ${scrolledDown ? 'display: block' : 'display: none'};
 // visibility: ${scrolledDown ? 'visible' : 'hidden'};
 // opacity: ${scrolledDown ? 1 : 0};
-const PoliticianMobileHeaderOuterContainer = styled('div', {
+const PoliticianMobileHeaderOuterContainer = styled('div').withConfig({
   shouldForwardProp: (prop) => !['scrolledDown'].includes(prop),
 })(({ scrolledDown }) => (`
   width: 100%;
@@ -1573,7 +1573,7 @@ const PoliticianLinksWrapper = styled('div')`
   }
 `;
 
-const EndorsementsContentWrapper = styled('div', {
+const EndorsementsContentWrapper = styled('div').withConfig({
   shouldForwardProp: (prop) => prop !== 'useMinHeight',
 })(({ theme, useMinHeight }) => ({
   ...(useMinHeight && {

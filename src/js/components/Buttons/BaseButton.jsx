@@ -4,7 +4,9 @@ import styled from 'styled-components';
 import colors from '../../common/components/Style/Colors';
 // import DesignTokenColors from '../../common/components/Style/DesignTokenColors';  // 2024-04-16 Upgrade to using this
 
-const StyledButton = styled.button`
+const StyledButton = styled('button').withConfig({
+  shouldForwardProp: (prop) => !['primary', 'secondary', 'size'].includes(prop),
+})`
 /* Default styles */
 color: ${colors.white};
 font-weight: 600;
@@ -74,11 +76,11 @@ ${(props) => !props.primary && `
 function Button ({ primary, size, label, onClick, ...props }) {
   return (
     <StyledButton
-    primary={primary === true}
-    size={size}
-    aria-label={label}
-    onClick={onClick}
-    {...props}
+      primary={primary === true}
+      size={size}
+      aria-label={label}
+      onClick={onClick}
+      {...props}
     >
       {label}
     </StyledButton>

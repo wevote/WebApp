@@ -122,7 +122,7 @@ SuggestedFriendToggle.propTypes = {
   otherVoterWeVoteId: PropTypes.string.isRequired,
 };
 
-const SuggestedFriendToggleWrapper = styled('div', {
+const SuggestedFriendToggleWrapper = styled('div').withConfig({
   shouldForwardProp: (prop) => !['displayFullWidth'].includes(prop),
 })(({ displayFullWidth }) => (`
   white-space: nowrap;

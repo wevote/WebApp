@@ -225,7 +225,7 @@ const SpeakerAvatar = styled('div')`
   position: relative;
 `;
 
-const Wrapper = styled('div', {
+const Wrapper = styled('div').withConfig({
   shouldForwardProp: (prop) => !['commentsExist'].includes(prop),
 })(({ commentsExist }) => (`
   align-items: center;

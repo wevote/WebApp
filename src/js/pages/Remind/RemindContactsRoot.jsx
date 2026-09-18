@@ -1144,7 +1144,7 @@ const DeleteAllContactsWrapper = styled('div')`
   margin-top: 0;
 `;
 
-const ImportContactsOuterWrapperUShowDesktopTablet = styled('div', {
+const ImportContactsOuterWrapperUShowDesktopTablet = styled('div').withConfig({
   shouldForwardProp: (prop) => !['breakValue'].includes(prop),
 })(({ breakValue, theme }) => ({
   display: 'flex',

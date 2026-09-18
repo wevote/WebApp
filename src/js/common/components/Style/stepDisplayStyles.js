@@ -65,7 +65,7 @@ export const PageTitle = styled('div')`
   text-transform: uppercase;
 `;
 
-export const StepCircle = styled('div', {
+export const StepCircle = styled('div').withConfig({
   shouldForwardProp: (prop) => !['inverseColor'].includes(prop),
 })(({ inverseColor, theme }) => (`
   display: flex;
@@ -79,7 +79,7 @@ export const StepCircle = styled('div', {
   height: 30px;
 `));
 
-export const StepCircleGray = styled('div', {
+export const StepCircleGray = styled('div').withConfig({
   shouldForwardProp: (prop) => !['inverseColor'].includes(prop),
 })(({ inverseColor, theme }) => (`
   display: flex;
@@ -93,7 +93,7 @@ export const StepCircleGray = styled('div', {
   height: 30px;
 `));
 
-export const StepNumber = styled('div', {
+export const StepNumber = styled('div').withConfig({
   shouldForwardProp: (prop) => !['inverseColor'].includes(prop),
 })(({ inverseColor, theme }) => (`
   color: ${inverseColor ? 'white' : theme.colors.brandBlue};

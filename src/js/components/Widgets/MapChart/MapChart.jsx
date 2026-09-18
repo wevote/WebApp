@@ -102,7 +102,7 @@ const StyledGeography = styled(Geography)`
   }
 `;
 
-const StyledG = styled('g', {
+const StyledG = styled('g').withConfig({
   shouldForwardProp: (prop) => !['dx', 'dy'].includes(prop),
 })(({ dx, dy }) => (`
   background: orange !important;

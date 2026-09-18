@@ -246,7 +246,7 @@ const MutualFriendCountWrapper = styled('div')`
   white-space: nowrap;
 `;
 
-const MutualFriendImage = styled('img', {
+const MutualFriendImage = styled('img').withConfig({
   shouldForwardProp: (prop) => !['isFirst', 'mutualFriendImageCount'].includes(prop),
 })(({ isFirst, mutualFriendImageCount }) => (`
   border: 2px solid #fff;

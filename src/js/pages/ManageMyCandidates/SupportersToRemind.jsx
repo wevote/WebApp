@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import AutorenewIcon from '@mui/icons-material/Autorenew';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import EmailOutlinedIcon from '@mui/icons-material/EmailOutlined';
-import MailOutlineIcon from '@mui/icons-material/MailOutline';
+import MailOutlineIcon from '@mui/icons-material/Mail';
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import SearchIcon from '@mui/icons-material/Search';
 import SmsOutlinedIcon from '@mui/icons-material/SmsOutlined';
@@ -288,7 +288,7 @@ export default function SupportersToRemind ({ supporters }) {
       />
 
       <Snackbar
-        open={sendToast.open}
+        open={Boolean(sendToast.open)}
         autoHideDuration={2500}
         onClose={() => setSendToast((t) => ({ ...t, open: false }))}
         anchorOrigin={{ vertical: 'top', horizontal: 'center' }}

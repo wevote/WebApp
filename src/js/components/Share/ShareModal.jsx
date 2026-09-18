@@ -250,10 +250,10 @@ class ShareModal extends Component {
     if (shareWithFriendsNow) {
       shareHtml = (
         <Dialog
+          disableScrollLock
           classes={{ paper: classes.dialogPaper }}
-          open={this.props.show}
+          open={Boolean(this.props.show)}
           onClose={() => { this.props.closeShareModal(pathname); }}
-          ModalProps={{ disableScrollLock: true }}
           sx={isIPad() ? { top: 24 } : {}}
         >
           <ModalTitleAreaMini>
@@ -303,10 +303,10 @@ class ShareModal extends Component {
     ) {
       shareHtml = (
         <Dialog
+          disableScrollLock
           classes={{ paper: classes.dialogPaper }}
-          open={this.props.show}
+          open={Boolean(this.props.show)}
           onClose={() => { this.props.closeShareModal(pathname); }}
-          ModalProps={{ disableScrollLock: true }}
         >
           <ShareModalTitleArea
             firstSlide
@@ -343,10 +343,10 @@ class ShareModal extends Component {
     } else {
       shareHtml = (
         <Dialog
+          disableScrollLock
           classes={{ paper: classes.dialogPaper }}
-          open={this.props.show}
+          open={Boolean(this.props.show)}
           onClose={() => { this.props.closeShareModal(pathname); }}
-          ModalProps={{ disableScrollLock: true }}
         >
           <ModalTitleAreaMini>
             <Button className={classes.backButton} color="primary">
@@ -399,7 +399,7 @@ const Flex = styled('div')`
 `;
 
 /* eslint no-nested-ternary: ["off"] */
-const  ModalTitleAreaMini = styled('div', {
+const  ModalTitleAreaMini = styled('div').withConfig(  {
   shouldForwardProp: (prop) => !['firstSlide', 'onSignInSlide'].includes(prop),
 })(({ firstSlide, onSignInSlide }) => (`
   justify-content: flex-start;

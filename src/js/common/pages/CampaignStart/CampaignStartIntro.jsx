@@ -271,7 +271,7 @@ const MobileButtonPanel = styled('div')`
   padding: 10px;
 `;
 
-export const MobileButtonWrapper = styled('div', {
+export const MobileButtonWrapper = styled('div').withConfig({
   shouldForwardProp: (prop) => !['isCampaignSite'].includes(prop),
 })(({ isCampaignSite }) => (`
   ${isCampaignSite ? 'bottom: 0;' : 'bottom: 57px;'}

@@ -25,7 +25,7 @@ export const ButtonLeft = styled('div')`
   justify-content: flex-start !important;
 `;
 
-export const ButtonText = styled('div', {
+export const ButtonText = styled('div').withConfig({
   shouldForwardProp: (prop) => !['fontColor'].includes(prop),
 })(({ fontColor, theme }) => (`
   ${fontColor ? `color: ${fontColor};` : ''}
@@ -35,7 +35,7 @@ export const ButtonText = styled('div', {
   }
 `));
 
-export const ReadyCard = styled('div', {
+export const ReadyCard = styled('div').withConfig({
   shouldForwardProp: (prop) => !['showProgressColor'].includes(prop),
 })(({ showProgressColor, theme }) => (`
   padding: 16px;
@@ -65,7 +65,9 @@ export const ReadyCard = styled('div', {
   }
 `));
 
-export const Icon = styled('div')(({ theme }) => (`
+export const Icon = styled('div').withConfig({
+  shouldForwardProp: (prop) => !['showProgressColor'].includes(prop),
+})(({ theme }) => (`
   align-items: center;
   border-radius: 50px;
   display: flex;
@@ -82,7 +84,7 @@ export const Icon = styled('div')(({ theme }) => (`
   }
 `));
 
-export const PercentComplete = styled('div', {
+export const PercentComplete = styled('div').withConfig({
   shouldForwardProp: (prop) => !['showProgressColor'].includes(prop),
 })(({ showProgressColor, theme }) => (`
   color: ${showProgressColor ? 'green' : 'black'};
@@ -102,7 +104,9 @@ export const TitleRowWrapper = styled('div')`
   justify-content: space-between !important;
 `;
 
-export const Title = styled('h3')(({ theme }) => (`
+export const Title = styled('h3').withConfig({
+  shouldForwardProp: (prop) => !['completed', 'darkButton', 'withoutsteps'].includes(prop),
+})(({ theme }) => (`
   margin: 0;
   font-size: 30px;
   font-weight: 600;
@@ -118,13 +122,15 @@ export const Title = styled('h3')(({ theme }) => (`
   }
 `));
 
-export const SubTitle = styled('small')`
+export const SubTitle = styled('small').withConfig({
+  shouldForwardProp: (prop) => !['completed', 'darkButton', 'withoutsteps'].includes(prop),
+})`
   margin: 0;
   font-size: 16px;
   color: #555;
 `;
 
-export const StyledButton = styled(Button, {
+export const StyledButton = styled(Button).withConfig({
   shouldForwardProp: (prop) => !['completed', 'darkButton', 'withoutsteps'].includes(prop),
 })(({ completed, darkButton, withoutsteps, theme }) => (`
   ${darkButton ? '' : `border: 1.5px solid ${completed ? 'rgb(31,192,111)' : '#ddd'} !important;`}

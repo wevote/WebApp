@@ -277,7 +277,7 @@ class HeaderBarModals extends Component {
         <Suspense fallback={<></>}>
           <Dialog
             classes={{ paper: classes.dialogPaper }}
-            open={showChooseOrOpposeIntroModal}
+            open={Boolean(showChooseOrOpposeIntroModal)}
             onClose={this.closeChooseOrOpposeIntroModal}
           >
             <ChooseOrOpposeIntroModal
@@ -295,7 +295,7 @@ class HeaderBarModals extends Component {
         <Suspense fallback={<></>}>
           <Dialog
             classes={{ paper: classes.dialogPaper }}
-            open={showChooseOrOpposeSignInModal}
+            open={Boolean(showChooseOrOpposeSignInModal)}
             onClose={this.closeChooseOrOpposeSignInModal}
           >
             <ChooseOrOpposeSignInModal

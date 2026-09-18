@@ -178,7 +178,7 @@ const CampaignXOwnerLeadPhoto = styled('img')`
   margin-right: 8px;
 `;
 
-const CampaignXOwnerWrapper = styled('span', {
+const CampaignXOwnerWrapper = styled('span').withConfig({
   shouldForwardProp: (prop) => !['compressedMode'].includes(prop),
 })(({ compressedMode }) => (`
   ${compressedMode ? 'font-size: 12px;' : ''};

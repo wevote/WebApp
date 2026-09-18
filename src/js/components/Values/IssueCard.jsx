@@ -507,7 +507,7 @@ const CheckWrapper = styled('div')`
   margin-top: -4px;
 `;
 
-const IssueCardWrapper = styled('div', {
+const IssueCardWrapper = styled('div').withConfig({
   shouldForwardProp: (prop) => !['condensed'].includes(prop),
 })(({ condensed }) => (`
   display: block !important;
@@ -562,7 +562,7 @@ const FollowIssueCardToggleContainer = styled('div')`
   margin-left: auto;
 `;
 
-const Flex = styled('div', {
+const Flex = styled('div').withConfig({
   shouldForwardProp: (prop) => !['condensed', 'followToggleOnItsOwnLine'].includes(prop),
 })(({ condensed, followToggleOnItsOwnLine }) => (`
   ${followToggleOnItsOwnLine ?
@@ -572,7 +572,7 @@ const Flex = styled('div', {
   width: ${condensed ? '100%' : null};
 `));
 
-const FlexNameAndIcon = styled('div', {
+const FlexNameAndIcon = styled('div').withConfig({
   shouldForwardProp: (prop) => !['condensed'].includes(prop),
 })(({ condensed }) => (`
   display: flex;
@@ -603,7 +603,7 @@ const LinkedOrganizationCountWrapper = styled('div')`
 const OneOrganizationName = styled('span')`
 `;
 
-const OrganizationImage = styled('img', {
+const OrganizationImage = styled('img').withConfig({
   shouldForwardProp: (prop) => !['isFirst', 'organizationImageCount'].includes(prop),
 })(({ isFirst, organizationImageCount }) => (`
   border: 2px solid #fff;

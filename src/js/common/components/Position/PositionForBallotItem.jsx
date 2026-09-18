@@ -322,7 +322,7 @@ const OpinionSource = styled('button')`
 `;
 
 
-const PositionForBallotItemWrapper = styled('div', {
+const PositionForBallotItemWrapper = styled('div').withConfig({
   shouldForwardProp: (prop) => prop !== '$compactMode',
 })`
   display: flex;

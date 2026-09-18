@@ -684,12 +684,14 @@ const styles = () => ({
   },
 });
 
-const Introduction = styled('p')`
+const Introduction = styled('p').withConfig({
+  shouldForwardProp: (prop) => !['error'].includes(prop),
+})`
   margin: 0 0 16px 0;
   font-size: 14px;
 `;
 
-const IconInputContainer = styled('div', {
+const IconInputContainer = styled('div').withConfig({
   shouldForwardProp: (prop) => !['error'].includes(prop),
 })(({ error }) => (`
   display: flex;
@@ -702,7 +704,7 @@ const IconInputContainer = styled('div', {
   width: 100%;
 `));
 
-const InputBoxLabel = styled('h4', {
+const InputBoxLabel = styled('h4').withConfig({
   shouldForwardProp: (prop) => !['error'].includes(prop),
 })(({ error }) => (`
   font-size: 14px;
@@ -710,7 +712,7 @@ const InputBoxLabel = styled('h4', {
   color: ${error ? 'rgb(255, 73, 34)' : 'black'}
 `));
 
-const InputBoxHelperLabel = styled('p', {
+const InputBoxHelperLabel = styled('p').withConfig({
   shouldForwardProp: (prop) => !['error'].includes(prop),
 })(({ error }) => (`
   margin: 0;
@@ -720,14 +722,16 @@ const InputBoxHelperLabel = styled('p', {
   color: ${error ? 'rgb(255, 73, 34)' : 'black'};
 `));
 
-const InputBoxDescriptionUnder = styled('div')`
+const InputBoxDescriptionUnder = styled('div').withConfig({
+  shouldForwardProp: (prop) => !['error'].includes(prop),
+})`
   color: rgba(0, 0, 0, 0.54);
   font-size: 14px;
   margin-bottom:  4px;
   margin-top:  4px;
 `;
 
-const SubdomainExtensionText = styled('h5', {
+const SubdomainExtensionText = styled('h5').withConfig({
   shouldForwardProp: (prop) => !['error'].includes(prop),
 })(({ error }) => (`
   margin: 0;

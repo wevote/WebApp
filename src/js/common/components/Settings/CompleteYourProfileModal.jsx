@@ -94,7 +94,7 @@ class CompleteYourProfileModal extends Component {
           paper: classes.dialogPaper,
           root: classes.dialogRoot,
         }}
-        open={this.props.show}
+        open={Boolean(this.props.show)}
         onClose={() => { this.closeModalFunction(); }}
       >
         <DialogTitle classes={{ root: classes.dialogTitle }}>

@@ -587,7 +587,7 @@ const BallotItemSupportOpposeCountDisplayWrapper = styled('div')`
   float: right;
 `;
 
-const CandidateInfo = styled('div', {
+const CandidateInfo = styled('div').withConfig({
   shouldForwardProp: (prop) => !['isClickable'].includes(prop),
 })(({ isClickable }) => (`
   ${isClickable ? 'cursor: pointer;' : ''}

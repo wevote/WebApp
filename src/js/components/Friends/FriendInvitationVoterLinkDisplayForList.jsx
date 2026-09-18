@@ -292,7 +292,7 @@ const IgnoreButtonWrapperNotInColumn = `
 */
 `;
 
-const IgnoreButtonWrapper = styled('div', {
+const IgnoreButtonWrapper = styled('div').withConfig({
   shouldForwardProp: (prop) => !['inSideColumn'].includes(prop),
 })(({ inSideColumn }) => (`
   margin-bottom: 0;

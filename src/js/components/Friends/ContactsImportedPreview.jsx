@@ -178,7 +178,7 @@ const ContactsImportedPreviewInnerWrapper = styled('div')`
   margin-top: -3px;
 `;
 
-const ContactWithAccountImage = styled('img', {
+const ContactWithAccountImage = styled('img').withConfig({
   shouldForwardProp: (prop) => !['isFirst', 'contactWithAccountImageCount'].includes(prop),
 })(({ isFirst, contactWithAccountImageCount }) => (`
   border: 2px solid #fff;

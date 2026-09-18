@@ -45,7 +45,7 @@ const DelayedLoadingWrapper = styled('div')`
   padding-bottom: ${() => (isCordova() ? '800px' : null)};
 `;
 
-export const LoadingText = styled('div', {
+export const LoadingText = styled('div').withConfig({
   shouldForwardProp: (prop) => !['leftAlign'].includes(prop),
 })(({ leftAlign }) => (`
   ${leftAlign ? '' : 'padding: 10px;'}

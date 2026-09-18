@@ -121,7 +121,7 @@ const ThisIsMeOuterWrapper = styled('div')`
   padding: 16px;
 `;
 
-const EndorsementCardFlexWrapper = styled('div', {
+const EndorsementCardFlexWrapper = styled('div').withConfig({
   shouldForwardProp: (prop) => !['narrowColumnDisplay'].includes(prop),
 })(({ narrowColumnDisplay }) => (`
   bottom: 8px;

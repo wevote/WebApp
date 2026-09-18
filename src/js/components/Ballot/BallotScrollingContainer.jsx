@@ -395,7 +395,7 @@ BallotScrollingContainer.propTypes = {
 
 // Styles
 
-const CandidateCardWrapper = styled('div', {
+const CandidateCardWrapper = styled('div').withConfig({
   shouldForwardProp: (prop) => prop !== '$isChosen',
 })(({ $isChosen }) => `
   display: flex;
@@ -445,7 +445,7 @@ const ColumnsRow = styled('div')`
 `;
 
 const ISSUES_SPACER_WIDTH = 80;
-const IssuesColumn = styled('div', {
+const IssuesColumn = styled('div').withConfig({
   shouldForwardProp: (prop) => prop !== '$hasIssues',
 })(({ $hasIssues }) => `
   ${$hasIssues ? `
@@ -458,14 +458,14 @@ const IssuesColumn = styled('div', {
   `}
 `);
 
-const FlexColumn = styled('div', {
+const FlexColumn = styled('div').withConfig({
   shouldForwardProp: (prop) => prop !== '$hasIssues',
 })(({ $hasIssues }) => `
   border-left: ${$hasIssues ? '1px solid #ddd' : 'none'};
   padding-left: ${$hasIssues ? '16px' : '0'};
 `);
 
-const CandidateOpinionsColumnWrapper = styled('div', {
+const CandidateOpinionsColumnWrapper = styled('div').withConfig({
   shouldForwardProp: (prop) => prop !== '$hasContentBefore',
 })(({ $hasContentBefore }) => `
   overflow: hidden;

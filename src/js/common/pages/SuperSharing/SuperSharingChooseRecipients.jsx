@@ -627,7 +627,7 @@ const LoadMoreItemsManuallyWrapper = styled('div')`
   }
 `;
 
-const CheckmarkWrapper = styled('div', {
+const CheckmarkWrapper = styled('div').withConfig({
   shouldForwardProp: (prop) => !['inverseColor'].includes(prop),
 })(({ inverseColor, theme }) => (`
   color: ${inverseColor ? 'white' : '#E8E8E8'};

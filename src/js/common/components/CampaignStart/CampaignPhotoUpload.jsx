@@ -1,9 +1,9 @@
 import { Button } from '@mui/material';
 import withStyles from '@mui/styles/withStyles';
-import { DropzoneArea } from 'mui-file-dropzone';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import styled from 'styled-components';
+import SharedDropzoneArea from '../Widgets/SharedDropzoneArea';
 import CampaignStartActions from '../../actions/CampaignStartActions';
 import isMobileScreenSize from '../../utils/isMobileScreenSize';
 import { renderLog } from '../../utils/logging';
@@ -126,7 +126,7 @@ class CampaignPhotoUpload extends Component {
                   </OverlayInnerWrapper>
                 </OverlayOuterWrapper>
               ) : (
-                <DropzoneArea
+                <SharedDropzoneArea
                   acceptedFiles={['image/*']}
                   classes={{
                     icon: classes.dropzoneIcon,

@@ -409,7 +409,7 @@ const styles = (theme) => ({
   },
 });
 
-const Closer = styled('div', {
+const Closer = styled('div').withConfig({
   shouldForwardProp: (prop) => !['isSearching', 'showCloser'].includes(prop),
 })(({ isSearching, showCloser }) => (`
   display: ${isSearching ? 'inherit' : 'none'};
@@ -421,7 +421,7 @@ const Closer = styled('div', {
   transition: all 150ms ease-in;
 `));
 
-const Separator = styled('div', {
+const Separator = styled('div').withConfig({
   shouldForwardProp: (prop) => !['isSearching', 'alwaysOpen'].includes(prop),
 })(({ isSearching, alwaysOpen }) => (`
   display: ${isSearching || alwaysOpen ? 'inherit' : 'none'},
@@ -437,7 +437,7 @@ const BigAndroidClickableTarget = styled.div`
 `;
 /* For diagnosis: background-color: ${() => (isAndroid() ? 'lightgoldenrodyellow' : '')}; */
 
-const SearchWrapper = styled('div', {
+const SearchWrapper = styled('div').withConfig({
   shouldForwardProp: (prop) => !['isSearching', 'brandBlue', 'searchTextLarge'].includes(prop),
 })(({ isSearching, brandBlue, searchTextLarge, theme }) => (`
   display: flex;

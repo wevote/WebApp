@@ -477,12 +477,15 @@ class VoterEmailAddressEntry extends Component {
             error={displayIncorrectEmailError}
             helperText={(displayIncorrectEmailError) ? 'Enter valid email address' : ''}
             id="enterVoterEmailAddress"
-            InputProps={{
-              startAdornment: (
-                <InputAdornment position="start">
-                  <Mail />
-                </InputAdornment>
-              ) }}
+            slotProps={{
+              input: {
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <Mail />
+                  </InputAdornment>
+                ),
+              },
+            }}
             label="Email"
             name="voter_email_address"
             onBlur={this.onBlur}
@@ -763,13 +766,13 @@ const CancelButtonContainer = styled('div')`
   width: fit-content;
 `;
 
-const EmailSection = styled('div', {
+const EmailSection = styled('div').withConfig({
   shouldForwardProp: (prop) => !['isWeb'].includes(prop),
 })(({ isWeb }) => (`
   margin-top: ${isWeb ? '0' : '0'};
 `));
 
-const Wrapper = styled('div', {
+const Wrapper = styled('div').withConfig({
   shouldForwardProp: (prop) => !['isWeb'].includes(prop),
 })(({ isWeb }) => (`
   margin-top: ${isWeb ? '0' : '0'};

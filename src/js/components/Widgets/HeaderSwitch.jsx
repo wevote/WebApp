@@ -34,7 +34,7 @@ HeaderSwitch.propTypes = {
   switchToDifferentCategoryFunction: PropTypes.func,
 };
 
-const HeaderSwitchContainer = styled('div', {
+const HeaderSwitchContainer = styled('div').withConfig({
   shouldForwardProp: (prop) => !['color'].includes(prop),
 })(({ color }) => (`
   display: flex;
@@ -48,7 +48,7 @@ const HeaderSwitchContainer = styled('div', {
   transition: all 150ms ease-in;
 `));
 
-const Choice = styled('div', {
+const Choice = styled('div').withConfig({
   shouldForwardProp: (prop) => !['selectedCategoryIndex', 'color'].includes(prop),
 })(({ selectedCategoryIndex, color, theme }) => (`
   display: flex;

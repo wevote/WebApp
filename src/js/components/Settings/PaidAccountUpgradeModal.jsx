@@ -1012,7 +1012,7 @@ class PaidAccountUpgradeModal extends Component {
     return (
       <Dialog
         classes={{ paper: classes.dialogPaper }}
-        open={this.props.show}
+        open={Boolean(this.props.show)}
         onClose={() => { this.props.toggleFunction(pathname); }}
       >
         <ModalTitleArea noBoxShadowMode={(paidAccountProcessStep !== 'choosePlan')}>
@@ -1262,7 +1262,7 @@ const ButtonsContainer = styled('div')`
   margin-top: 12px;
 `;
 
-const ModalTitleArea = styled('div', {
+const ModalTitleArea = styled('div').withConfig({
   shouldForwardProp: (prop) => !['noBoxShadowMode'].includes(prop),
 })(({ noBoxShadowMode }) => (`
   width: 100%;
@@ -1359,7 +1359,7 @@ const WrapperRight = styled('div')`
   margin-top: 32px;
 `;
 
-const Fieldset = styled('fieldset', {
+const Fieldset = styled('fieldset').withConfig({
   shouldForwardProp: (prop) => !['disabledMode'].includes(prop),
 })(({ disabledMode, theme }) => (`
   border: 2px solid ${disabledMode ? '#ddd' : theme.colors.main};

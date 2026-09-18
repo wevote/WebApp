@@ -209,10 +209,14 @@ const styles = () => ({
   },
 });
 
-const Card = styled('div')`
+const Card = styled('div').withConfig({
+  shouldForwardProp: (prop) => !['percentage'].includes(prop),
+})`
 `;
 
-const CardTitle = styled('h2')`
+const CardTitle = styled('h2').withConfig({
+  shouldForwardProp: (prop) => !['percentage'].includes(prop),
+})`
   display: inline-block;
   font-size: 26px;
   color: black !important;
@@ -221,12 +225,14 @@ const CardTitle = styled('h2')`
   margin-bottom: 0;
 `;
 
-const CardSubTitle = styled('h3')`
+const CardSubTitle = styled('h3').withConfig({
+  shouldForwardProp: (prop) => !['percentage'].includes(prop),
+})`
   display: inline-block;
   font-size: 16px;
 `;
 
-const ProgressBar = styled('div', {
+const ProgressBar = styled('div').withConfig({
   shouldForwardProp: (prop) => !['percentage'].includes(prop),
 })(({ percentage }) => (`
   background: #f7f7f7;

@@ -302,7 +302,7 @@ const NetworkScoreDescriptionText = styled('div')`
   margin-left: 6px;
 `;
 
-const NetworkScoreSmall = styled('div', {
+const NetworkScoreSmall = styled('div').withConfig({
   shouldForwardProp: (prop) => !['voterPersonalNetworkScoreIsNegative', 'voterPersonalNetworkScoreIsPositive'].includes(prop),
 })(({ voterPersonalNetworkScoreIsNegative, voterPersonalNetworkScoreIsPositive }) => (`
   background: ${(voterPersonalNetworkScoreIsNegative && 'rgb(255, 73, 34)') || (voterPersonalNetworkScoreIsPositive && 'rgb(31, 192, 111)') || '#888'};

@@ -98,10 +98,7 @@ class SnackNotifier extends Component {
         anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
         autoHideDuration={autoHideDuration}
         onClose={this.handleSnackbarClose}
-        open={open}
-        ContentProps={{
-          'aria-describedby': 'snackbar-message-id',
-        }}
+        open={Boolean(open)}
         classes={{ anchorOriginBottomCenter: classes.anchorOriginBottomCenter }}
       >
         <Alert

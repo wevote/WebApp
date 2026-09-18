@@ -155,7 +155,7 @@ SettingsSectionFooter.propTypes = {
   drawerOpenGlobalVariableName: PropTypes.string,
 };
 
-const DoesNotSupport = styled('div', {
+const DoesNotSupport = styled('div').withConfig({
   shouldForwardProp: (prop) => !['centered'].includes(prop),
 })(({ centered }) => (`
   color: #999;
@@ -166,7 +166,7 @@ const DoesNotSupport = styled('div', {
   ${isIPad ? 'width: 210px;' : ''}
 `));
 
-const OneRow = styled('div', {
+const OneRow = styled('div').withConfig({
   shouldForwardProp: (prop) => !['centered'].includes(prop),
 })(({ centered }) => (`
   ${centered ? 'display: flex;' : ''}

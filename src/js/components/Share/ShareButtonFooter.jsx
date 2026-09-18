@@ -519,7 +519,7 @@ const AskFriendsModalBodyArea = styled('div')`
 `;
 
 /* eslint-disable no-nested-ternary */
-const ContainerShareFooter = styled('div', {
+const ContainerShareFooter = styled('div').withConfig({
   shouldForwardProp: (prop) => !['shareOptionsMode'].includes(prop),
 })(({ shareOptionsMode }) => (`
   margin: 0 auto;
@@ -541,7 +541,7 @@ const Icon = styled('span')`
   margin-right: 4px;
 `;
 
-const ModalTitleAreaFixed = styled('div', {
+const ModalTitleAreaFixed = styled('div').withConfig({
   shouldForwardProp: (prop) => !['notchOrIsland'].includes(prop),
 })(({ notchOrIsland }) => (`
   background-color: #fff;
@@ -558,7 +558,7 @@ const ModalTitleAreaFixedInnerWrapper = styled('div')`
   width: 100%;
 `;
 
-const ShareButtonFooterWrapper = styled('div', {
+const ShareButtonFooterWrapper = styled('div').withConfig({
   shouldForwardProp: (prop) => !['shareBottomValue'].includes(prop),
 })(({ shareBottomValue }) => (`
   position: fixed;

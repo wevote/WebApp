@@ -169,14 +169,14 @@ const YourRankInnerWrapper = styled('div')`
   justify-content: center;
 `;
 
-const YourRankOuterWrapper = styled('div', {
+const YourRankOuterWrapper = styled('div').withConfig({
   shouldForwardProp: (prop) => !['hasBackgroundColor'].includes(prop),
 })(({ hasBackgroundColor }) => `
   background-color: ${hasBackgroundColor ? DesignTokenColors.neutralUI50 : DesignTokenColors.white};
   z-index: 100;
 `);
 
-const YourRankButtonWrapper = styled('div', {
+const YourRankButtonWrapper = styled('div').withConfig({
   shouldForwardProp: (prop) => !['clicked'].includes(prop),
 })(({ clicked }) => `
   background-color: ${clicked ? DesignTokenColors.orange500 : DesignTokenColors.white};

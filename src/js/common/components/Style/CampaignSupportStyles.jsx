@@ -95,7 +95,7 @@ export const CampaignSupportDesktopButtonWrapper = styled('div')`
   width: 100%;
 `;
 
-export const CampaignSupportImageWrapper = styled('div', {
+export const CampaignSupportImageWrapper = styled('div').withConfig({
   shouldForwardProp: (prop) => !['borderRadiusOnTop'].includes(prop),
 })(({ borderRadiusOnTop, theme }) => (`
   align-items: center;
@@ -134,14 +134,14 @@ export const CampaignSupportMobileButtonFixedWrapper = styled('div')`
   left: ${() => (isCordova() && !isIPadMini() ? '2.5%' : '')};
 `;
 
-export const CampaignSupportSection = styled('div', {
+export const CampaignSupportSection = styled('div').withConfig({
   shouldForwardProp: (prop) => !['marginBottomOff'].includes(prop),
 })(({ marginBottomOff }) => (`
   ${marginBottomOff ? '' : 'margin-bottom: 20px !important;'}
   width: 100%;
 `));
 
-export const CampaignSupportSectionWrapper = styled('div', {
+export const CampaignSupportSectionWrapper = styled('div').withConfig({
   shouldForwardProp: (prop) => !['marginTopOff'].includes(prop),
 })(({ marginTopOff }) => (`
   display: flex;

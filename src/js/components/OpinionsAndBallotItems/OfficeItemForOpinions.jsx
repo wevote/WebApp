@@ -181,7 +181,7 @@ const styles = (theme) => ({
   },
 });
 
-const Container = styled('div', {
+const Container = styled('div').withConfig({
   shouldForwardProp: (prop) => !['candidateLength'].includes(prop),
 })(({ candidateLength, theme }) => (`
   display: flex;
@@ -203,7 +203,7 @@ const Title = styled('div')(({ theme }) => (`
   }
 `));
 
-const CandidateInfo = styled('div', {
+const CandidateInfo = styled('div').withConfig({
   shouldForwardProp: (prop) => !['numberOfCandidatesInList'].includes(prop),
 })(({ numberOfCandidatesInList, theme }) => (`
   display: flex;

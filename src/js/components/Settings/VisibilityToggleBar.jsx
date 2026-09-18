@@ -83,7 +83,9 @@ const Container = styled('div')`
   width: fit-content;
 `;
 
-const SlidingIndicator = styled('div')`
+const SlidingIndicator = styled('div').withConfig({
+  shouldForwardProp: (prop) => !['animate'].includes(prop),
+})`
   background-color: ${DesignTokenColors.info100};
   border-radius: 13px;
   bottom: 2px;
@@ -93,7 +95,9 @@ const SlidingIndicator = styled('div')`
   z-index: 0;
 `;
 
-const ToggleButton = styled('button')`
+const ToggleButton = styled('button').withConfig({
+  shouldForwardProp: (prop) => !['selected'].includes(prop),
+})`
   background: transparent;
   border: none;
   color: ${(props) => (props.selected ? DesignTokenColors.info800 : DesignTokenColors.neutralUI700)};

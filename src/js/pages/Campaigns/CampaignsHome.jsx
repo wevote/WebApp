@@ -996,7 +996,7 @@ const CampaignsHomeWrapper = styled('div')`
   // padding-top: ${isAndroid() ? '30px' : ''};
 `;
 
-const WhatIsHappeningSection = styled('div', {
+const WhatIsHappeningSection = styled('div').withConfig({
   shouldForwardProp: (prop) => !['useMinimumHeight'].includes(prop),
 })(({ useMinimumHeight }) => (`
   // background: linear-gradient(180deg, rgba(2,0,36,1) 0%, rgba(46,55,77,0) 52%);

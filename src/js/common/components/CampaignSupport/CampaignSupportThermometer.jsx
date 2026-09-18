@@ -251,7 +251,7 @@ const GoalText = styled('span')`
   font-weight: 800;
 `;
 
-const ProgressBar = styled('div', {
+const ProgressBar = styled('div').withConfig({
   shouldForwardProp: (prop) => !['percentage'].includes(prop),
 })(({ percentage }) => (`
   background: #ccc;
@@ -283,7 +283,7 @@ const ProgressBarWrapper = styled('div')`
   margin-top: 6px;
 `;
 
-const SupportersText = styled('div', {
+const SupportersText = styled('div').withConfig({
   shouldForwardProp: (prop) => !['inCompressedMode'].includes(prop),
 })(({ inCompressedMode }) => (`
   color: black !important;

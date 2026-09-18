@@ -60,7 +60,9 @@ const PoliticianLinksContainer = styled('div')`
   width: 100%;
 `;
 
-const LinkContainer = styled('div')`
+const LinkContainer = styled('div').withConfig({
+  shouldForwardProp: (prop) => !['isFirst'].includes(prop),
+})`
   padding-bottom: 4px;
   padding-right: 14px;
   padding-left: 14px;

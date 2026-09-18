@@ -85,7 +85,9 @@ const DotsButton = styled('button')`
   }
 `;
 
-const MakePublicButton = styled('span')`
+const MakePublicButton = styled('span').withConfig({
+  shouldForwardProp: (prop) => !['label', 'labelPublic'].includes(prop),
+})`
   display: inline-flex;
   align-items: center;
   cursor: pointer;
@@ -122,7 +124,7 @@ const TopRow = styled('div')`
   gap: 8px;
 `;
 
-const VisibilityText = styled('span', {
+const VisibilityText = styled('span').withConfig({
   shouldForwardProp: (prop) => prop !== 'isPublic',
 })(({ isPublic }) => (`
   color: #555;

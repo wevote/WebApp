@@ -7,7 +7,7 @@ import { isCordova, isWebApp } from '../../common/utils/isCordovaOrWebApp';
 import isMobileScreenSize from '../../common/utils/isMobileScreenSize';
 import showBallotDecisionsTabs from '../../utilsApi/showBallotDecisionsTabs'; // 2024-04-16 Upgrade to using this
 
-export const BallotAddress = styled('button', {
+export const BallotAddress = styled('button').withConfig({
   shouldForwardProp: (prop) => !['centerText', 'allowTextWrap'].includes(prop),
 })(({ allowTextWrap, centerText }) => (`
   all: unset;
@@ -31,7 +31,7 @@ export const ClickBlockWrapper = styled('div')`
 export const ComponentWrapper = styled('div')`
 `;
 
-export const ContentWrapper = styled('div', {
+export const ContentWrapper = styled('div').withConfig({
   shouldForwardProp: (prop) => !['spaceBetween'].includes(prop),
 })(({ spaceBetween }) => (`
   display: flex;
@@ -47,7 +47,7 @@ export const ElectionDateRight = styled('div')`
     font-size: 18px;
 `;
 
-export const ElectionNameBlock = styled('div', {
+export const ElectionNameBlock = styled('div').withConfig({
   shouldForwardProp: (prop) => !['allowTextWrap'].includes(prop),
 })(({ allowTextWrap }) => (`
   ${allowTextWrap ? '' : 'overflow: hidden;'}
@@ -63,7 +63,7 @@ function electionNameH1Width () {
   return size;
 }
 
-export const ElectionNameH1 = styled('h1', {
+export const ElectionNameH1 = styled('h1').withConfig({
   shouldForwardProp: (prop) => !['centerText'].includes(prop),
 })(({ centerText, theme }) => (`
   font-size: ${electionNameH1Width()};
@@ -84,7 +84,7 @@ export const ElectionNameH1 = styled('h1', {
 export const ElectionNameScrollContent = styled('div')`
 `;
 
-export const ElectionStateLabel = styled('div', {
+export const ElectionStateLabel = styled('div').withConfig({
   shouldForwardProp: (prop) => !['centerText'].includes(prop),
 })(({ centerText }) => (`
   color: ${colors.middleGrey};
@@ -97,7 +97,7 @@ export const ElectionStateLabel = styled('div', {
 `));
 
 /* eslint-disable no-nested-ternary */
-export const OverflowContent = styled('div', {
+export const OverflowContent = styled('div').withConfig({
   shouldForwardProp: (prop) => !['turnOffVoteByBelow'].includes(prop),
 })(({ theme, turnOffVoteByBelow }) => (`
   display: block;
@@ -108,7 +108,7 @@ export const OverflowContent = styled('div', {
   }
 `));
 
-export const OverflowContainer = styled('div', {
+export const OverflowContainer = styled('div').withConfig({
   shouldForwardProp: (prop) => !['allowTextWrap'].includes(prop),
 })(({ allowTextWrap }) => (`
   ${allowTextWrap ? '' : 'max-width: fit-content;'}
@@ -121,7 +121,7 @@ export const VoteByBelowLabel = styled('div')`
   margin-right: 4px;
 `;
 
-export const VoteByBelowWrapper = styled('div', {
+export const VoteByBelowWrapper = styled('div').withConfig({
   shouldForwardProp: (prop) => !['centerText'].includes(prop),
 })(({ centerText, theme }) => (`
   display: flex;
@@ -178,7 +178,7 @@ export function AddressSpanLimited({ id, className, innerComponent }) {
     );
   } else {
     return (
-      <AddressSpanLimitedDesktop className={className} styleid={id}>
+      <AddressSpanLimitedDesktop className={className} id={id}>
         {innerComponent}
       </AddressSpanLimitedDesktop>
     );

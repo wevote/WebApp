@@ -129,7 +129,7 @@ export function getTopOffsetDueToHeadroomWrapper () {
 }
 
 
-export const DualHeaderContainer = styled('div', {
+export const DualHeaderContainer = styled('div').withConfig({
   shouldForwardProp: (prop) => !['scrolledDown', 'topOffset'].includes(prop),
 })(({ scrolledDown, topOffset }) => (`
   position: fixed;

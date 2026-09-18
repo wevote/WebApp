@@ -275,7 +275,7 @@ const MobileButtonPanel = styled('div')`
   padding: 10px;
 `;
 
-export const MobileButtonWrapper = styled('div', {
+export const MobileButtonWrapper = styled('div').withConfig({
   shouldForwardProp: (prop) => !['isChallengeSite'].includes(prop),
 })(({ isChallengeSite }) => (`
   ${isChallengeSite ? 'bottom: 0;' : 'bottom: 57px;'}

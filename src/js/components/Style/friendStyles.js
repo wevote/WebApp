@@ -2,13 +2,15 @@ import styled from 'styled-components';
 import { isAndroidSizeMD, isAndroidSizeSM, isCordovaWide } from '../../common/utils/cordovaUtils';
 import { isCordova, isWebApp } from '../../common/utils/isCordovaOrWebApp';
 
-export const CancelButtonWrapper = styled('div')`
+export const CancelButtonWrapper = styled('div').withConfig({
+  shouldForwardProp: (prop) => !['inSideColumn'].includes(prop),
+})`
   width: fit-content;
   margin-bottom: 0;
   margin-left: 8px;
 `;
 
-export const FriendButtonsWrapper = styled('div', {
+export const FriendButtonsWrapper = styled('div').withConfig({
   shouldForwardProp: (prop) => !['specialCase, theme'].includes(prop),
 })(({ specialCase, theme }) => (`
   align-items: center;
@@ -35,7 +37,9 @@ export const FriendColumnWithoutButtons = styled('div')`
   width: 100%;
 `;
 
-export const FriendDetailsLine = styled('div')`
+export const FriendDetailsLine = styled('div').withConfig({
+  shouldForwardProp: (prop) => !['inSideColumn'].includes(prop),
+})`
   // margin-top: -3px;
   width: 100%;
   @media (min-width: 400px){
@@ -58,7 +62,7 @@ export const FriendDetailsWrapperNotInColumn = `
   }
 `;
 
-export const FriendDetailsWrapper = isWebApp() ? styled('div', {
+export const FriendDetailsWrapper = isWebApp() ? styled('div').withConfig({
   shouldForwardProp: (prop) => !['inSideColumn'].includes(prop),
 })(({ inSideColumn }) => (`
   margin: 0 auto;
@@ -77,7 +81,7 @@ export const FriendDisplayDesktopButtonsWrapper = styled('div')`
 // When wider than sm, show Buttons to the right
 // Otherwise, show Buttons under FriendColumnWithoutButtons
 // If inSideColumn is true, force buttons under FriendColumnWithoutButtons regardless of screen width
-export const FriendDisplayOuterWrapper = styled('div', {
+export const FriendDisplayOuterWrapper = styled('div').withConfig({
   shouldForwardProp: (prop) => !['inSideColumn'].includes(prop),
 })(({ inSideColumn, theme }) => (`
   // In this default, fill up the full width with both Friend info & buttons
@@ -114,7 +118,7 @@ export const FriendNameNotInSideColumn = `
   font-size: 18px;
 `;
 
-export const FriendName = styled('h3', {
+export const FriendName = styled('h3').withConfig({
   shouldForwardProp: (prop) => !['inSideColumn'].includes(prop),
 })(({ inSideColumn }) => (`
   color: black !important;
@@ -128,7 +132,9 @@ export const FriendName = styled('h3', {
   ${inSideColumn ? FriendNameInSideColumn : FriendNameNotInSideColumn}
 `));
 
-export const InviteToWeVoteLine = styled('div')`
+export const InviteToWeVoteLine = styled('div').withConfig({
+  shouldForwardProp: (prop) => !['inSideColumn'].includes(prop),
+})`
   margin-top: 4px;
   width: 100%;
   @media (min-width: 400px){

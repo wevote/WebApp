@@ -1,4 +1,6 @@
 import { StyledEngineProvider, ThemeProvider } from '@mui/material/styles';
+import { ThemeProvider as MuiStylesThemeProvider } from '@mui/styles';
+import { ThemeProvider as StyledComponentsThemeProvider } from 'styled-components';
 import OpenReplay from '@openreplay/tracker';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
@@ -461,7 +463,9 @@ class App extends Component {
         {enableFullStory && <FullStory org={webAppConfig.FULL_STORY_ORG} />}
         <StyledEngineProvider injectFirst>
           <ThemeProvider theme={muiTheme}>
-            <WeVoteBody>
+            <MuiStylesThemeProvider theme={muiTheme}>
+              <StyledComponentsThemeProvider theme={muiTheme}>
+                <WeVoteBody>
               {/* DO NOT put SnackNotifier or anything else that is non-essential here (to keep it out of the main chunk). */}
               <Suspense fallback={<HeaderBarSuspense />}>
                 <Header hideHeader={hideHeader} params={{ }} pathname={normalizedHref()} />
@@ -814,8 +818,10 @@ class App extends Component {
               <Suspense fallback={<span>&nbsp;</span>}>
                 <Footer />
               </Suspense>
-            </WeVoteBody>
-          </ThemeProvider>
+              </WeVoteBody>
+            </StyledComponentsThemeProvider>
+          </MuiStylesThemeProvider>
+        </ThemeProvider>
         </StyledEngineProvider>
       </>
     );

@@ -4,7 +4,7 @@ export const DecidedIconWrapper = styled('span')`
   margin-right: 6px;
 `;
 
-export const NetworkScore = styled('div', {
+export const NetworkScore = styled('div').withConfig({
   shouldForwardProp: (prop) => !['hideNumbersOfAllPositions', 'voterOpposesBallotItem', 'voterPersonalNetworkScoreIsNegative', 'voterPersonalNetworkScoreIsPositive', 'voterSupportsBallotItem'].includes(prop),
 })(({ hideNumbersOfAllPositions, voterOpposesBallotItem, voterPersonalNetworkScoreIsNegative, voterPersonalNetworkScoreIsPositive, voterSupportsBallotItem }) => (`
   background: ${(voterSupportsBallotItem && 'rgb(31, 192, 111)') || (voterOpposesBallotItem && 'rgb(255, 73, 34)') || (voterPersonalNetworkScoreIsPositive && 'rgb(31, 192, 111)') || (voterPersonalNetworkScoreIsNegative && 'rgb(255, 73, 34)') || (hideNumbersOfAllPositions && 'rgb(211, 211, 211)') || '#888'};
@@ -27,7 +27,7 @@ export const NetworkScore = styled('div', {
   }
 `));
 
-export const NetworkScoreSmall = styled('div', {
+export const NetworkScoreSmall = styled('div').withConfig({
   shouldForwardProp: (prop) => !['hideNumbersOfAllPositions', 'voterOpposesBallotItem', 'voterPersonalNetworkScoreIsNegative', 'voterPersonalNetworkScoreIsPositive', 'voterSupportsBallotItem'].includes(prop),
 })(({ hideNumbersOfAllPositions, voterOpposesBallotItem, voterPersonalNetworkScoreIsNegative, voterPersonalNetworkScoreIsPositive, voterSupportsBallotItem }) => (`
   background: ${(voterSupportsBallotItem && 'rgb(31, 192, 111)') || (voterOpposesBallotItem && 'rgb(255, 73, 34)') || (voterPersonalNetworkScoreIsPositive && 'rgb(31, 192, 111)') || (voterPersonalNetworkScoreIsNegative && 'rgb(255, 73, 34)') || (hideNumbersOfAllPositions && 'rgb(211, 211, 211)') || '#888'};

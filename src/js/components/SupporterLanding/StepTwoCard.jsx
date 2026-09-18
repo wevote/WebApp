@@ -1,4 +1,4 @@
-import { ChatBubbleOutline as ChatBubbleOutlineIcon } from '@mui/icons-material';
+import { Comment as ChatBubbleOutlineIcon } from '@mui/icons-material';
 import PropTypes from 'prop-types';
 import React from 'react';
 import CommentComposer from './CommentComposer';

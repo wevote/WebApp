@@ -53,7 +53,7 @@ class BrowserPushMessage extends Component {
           vertical: 'bottom',
           horizontal: 'center',
         }}
-        open={openSnackbar}
+        open={Boolean(openSnackbar)}
         autoHideDuration={5000}
         onClose={this.handleClose}
         ContentProps={{

@@ -19,7 +19,7 @@ export const CampaignDescriptionDesktop = styled('div')`
   white-space: pre-wrap;
 `;
 
-export const CampaignDescriptionWrapper = styled('div', {
+export const CampaignDescriptionWrapper = styled('div').withConfig({
   shouldForwardProp: (prop) => !['hideCardMargins'].includes(prop),
 })(({ hideCardMargins }) => (`
   ${hideCardMargins ? 'padding:  0;' : 'margin: 10px;'}

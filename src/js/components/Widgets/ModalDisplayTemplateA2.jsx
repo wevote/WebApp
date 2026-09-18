@@ -65,7 +65,7 @@ class ModalDisplayTemplateA2 extends Component {
       <Dialog
         classes={{ paper: dialogPaperCombined }}
         onClose={() => this.props.toggleModal()}
-        open={show}
+        open={Boolean(show)}
         style={{ paddingTop: `${isCordova() ? '75px' : 'undefined'}` }}
       >
         <DialogTitle

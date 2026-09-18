@@ -68,7 +68,7 @@ function CardForListBodySkeleton (props) {
                 <Skeleton variant="text" width={80} height={12} sx={{ mb: 0.5 }} />
               )}
               {/* Name + optional Launch icon */}
-              <Box display="flex" alignItems="center" gap={0.5} sx={{ mb: 0.5 }}>
+              <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5, mb: 0.5 }}>
                 {nameFromUrl ? (
                   <OneCampaignTitle>
                     {nameFromUrl}
@@ -91,9 +91,9 @@ function CardForListBodySkeleton (props) {
               {/* Thermometer */}
               {useVerticalLayout && (
                 <>
-                  <Box display="flex" gap={1} sx={{ mb: 1 }}>
+                  <Box sx={{ display: 'flex', gap: 1, mb: 1 }}>
                     <Skeleton variant="rounded" width={60} height={36} sx={{ borderRadius: 2 }} />
-                    <Box flex={1} sx={{ minWidth: 0 }}>
+                    <Box sx={{ flex: 1, minWidth: 0 }}>
                       <Skeleton variant="text" width="70%" height={18} sx={{ mb: 0.5 }} />
                       <Skeleton variant="text" width="50%" height={18} />
                     </Box>
@@ -123,7 +123,7 @@ function CardForListBodySkeleton (props) {
             </TitleAndTextWrapper>
             {!hideItemActionBar && (
               <CampaignActionButtonsWrapper>
-                <Box display="flex" gap={1} justifyContent="center">
+                <Box sx={{ display: 'flex', gap: 1, justifyContent: 'center' }}>
                   <Skeleton variant="rounded" width={100} height={36} sx={{ borderRadius: 2 }} />
                   <Skeleton variant="rounded" width={100} height={36} sx={{ borderRadius: 2 }} />
                 </Box>

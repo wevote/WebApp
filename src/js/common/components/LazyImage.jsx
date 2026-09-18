@@ -57,7 +57,7 @@ LazyImage.propTypes = {
 
 
 // was .header-nav__avatar
-const StyledImage = styled('img', {
+const StyledImage = styled('img').withConfig({
   shouldForwardProp: (prop) => !['isAvatar'].includes(prop),
 })(({ isAvatar }) => (`
   ${isAvatar ?

@@ -324,7 +324,7 @@ const OrganizationOpposeWrapper = styled('div')`
   z-index: 1;
 `;
 
-const OrganizationSupportIconWrapper = styled('div', {
+const OrganizationSupportIconWrapper = styled('div').withConfig({
   shouldForwardProp: (prop) => !['speakerImageExists'].includes(prop),
 })(({ speakerImageExists }) => (`
   margin-left: ${speakerImageExists ? '2px' : '0'};
@@ -350,7 +350,7 @@ const OrganizationSupportWrapper = styled('div')`
   z-index: 1;
 `;
 
-const ScoreNumberWrapper = styled('div', {
+const ScoreNumberWrapper = styled('div').withConfig({
   shouldForwardProp: (prop) => !['advisorImageExists'].includes(prop),
 })(({ advisorImageExists }) => (`
   ${advisorImageExists ? 'margin-top: -5px;' : 'margin-top: 0px;'}
@@ -374,7 +374,7 @@ const SupportAndPartOfScore = styled('div')(({ theme }) => (`
   }
 `));
 
-const ToScoreLabel = styled('div', {
+const ToScoreLabel = styled('div').withConfig({
   shouldForwardProp: (prop) => !['advisorImageExists'].includes(prop),
 })(({ advisorImageExists }) => (`
   font-size: 10px;

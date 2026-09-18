@@ -146,7 +146,7 @@ FriendToggle.propTypes = {
 };
 
 
-const ButtonContainer = styled('div', {
+const ButtonContainer = styled('div').withConfig({
   shouldForwardProp: (prop) => !['displayFullWidth'].includes(prop),
 })(({ displayFullWidth }) => (`
   width: 100%;

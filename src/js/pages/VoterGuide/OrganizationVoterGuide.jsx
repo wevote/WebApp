@@ -598,7 +598,7 @@ const BannerOverlayDesktopInnerWrapper = styled('div')(({ theme }) => (`
   }
 `));
 
-const CardContainer = styled('div', {
+const CardContainer = styled('div').withConfig({
   shouldForwardProp: (prop) => !['bannerUrl'].includes(prop),
 })(({ bannerUrl, theme }) => (`
   ${theme.breakpoints.up('lg')} {

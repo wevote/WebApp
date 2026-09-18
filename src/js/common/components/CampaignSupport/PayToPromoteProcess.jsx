@@ -457,7 +457,7 @@ const ButtonInsideWrapper = styled('div')`
   width: 100%;
 `;
 
-const ContributeGridWrapper = styled('div', {
+const ContributeGridWrapper = styled('div').withConfig({
   shouldForwardProp: (prop) => !['show'].includes(prop),
 })(({ show, theme }) => (`
   background-color: #ebebeb;
@@ -507,7 +507,7 @@ const PaymentAmount = styled('div')`
   font-size: 1.1rem;
 `;
 
-const PaymentCenteredWrapper = styled('div', {
+const PaymentCenteredWrapper = styled('div').withConfig({
   shouldForwardProp: (prop) => !['show'].includes(prop),
 })(({ show, theme }) => (`
   width: 500px;

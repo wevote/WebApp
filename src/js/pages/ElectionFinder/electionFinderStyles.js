@@ -221,7 +221,9 @@ export const ElectionTitleRow = styled('div')`
   margin-bottom: 0;
 `;
 
-export const ExpandCollapseButton = styled('button')`
+export const ExpandCollapseButton = styled('button').withConfig({
+  shouldForwardProp: (prop) => !['expanded'].includes(prop),
+})`
   display: flex;
   align-items: center;
   gap: 2px;
@@ -243,14 +245,18 @@ export const ExpandCollapseRow = styled('div')`
   margin-bottom: 16px;
 `;
 
-export const ExpandMoreIcon = styled('span')`
+export const ExpandMoreIcon = styled('span').withConfig({
+  shouldForwardProp: (prop) => !['active', 'expanded'].includes(prop),
+})`
   display: flex;
   align-items: center;
   transition: transform 0.2s;
   transform: ${({ expanded }) => (expanded ? 'rotate(0deg)' : 'rotate(-90deg)')};
 `;
 
-export const FilterTab = styled('button')`
+export const FilterTab = styled('button').withConfig({
+  shouldForwardProp: (prop) => !['active'].includes(prop),
+})`
   padding: 3px 12px;
   font-size: 13px;
   height: 26px;
@@ -278,7 +284,9 @@ export const HighlightSpan = styled('span')`
   font-weight: 600;
 `;
 
-export const InlineSearchField = styled(TextField)`
+export const InlineSearchField = styled(TextField).withConfig({
+  shouldForwardProp: (prop) => !['InputProps'].includes(prop),
+})`
   flex: 1 1 150px;
   max-width: 280px;
   & .MuiOutlinedInput-root {
@@ -325,27 +333,37 @@ export const OfficeHeader = styled('div')`
   }
 `;
 
-export const OfficeHeaderLeft = styled('div')`
+export const OfficeHeaderLeft = styled('div').withConfig({
+  shouldForwardProp: (prop) => !['active'].includes(prop),
+})`
   display: flex;
   align-items: center;
   cursor: pointer;
   gap: 4px;
 `;
 
-export const OfficeName = styled('span')`
+export const OfficeName = styled('span').withConfig({
+  shouldForwardProp: (prop) => !['active'].includes(prop),
+})`
   font-size: 16px;
   font-weight: 600;
   color: ${DesignTokenColors.neutral800};
 `;
 
-export const OfficePrimaryPartySpan = styled('span')`
+export const OfficePrimaryPartySpan = styled('span').withConfig({
+  shouldForwardProp: (prop) => !['active'].includes(prop),
+})`
   font-weight: 400;
 `;
 
-export const OfficeSection = styled('div')`
+export const OfficeSection = styled('div').withConfig({
+  shouldForwardProp: (prop) => !['active'].includes(prop),
+})`
 `;
 
-export const SearchIconButton = styled('button')`
+export const SearchIconButton = styled('button').withConfig({
+  shouldForwardProp: (prop) => !['active'].includes(prop),
+})`
   display: flex;
   align-items: center;
   justify-content: center;

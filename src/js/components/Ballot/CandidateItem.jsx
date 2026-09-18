@@ -727,14 +727,14 @@ const styles = () => ({
   },
 });
 
-const BallotItemSupportOpposeCountDisplayWrapper = styled('div', {
+const BallotItemSupportOpposeCountDisplayWrapper = styled('div').withConfig({
   shouldForwardProp: (prop) => !['isClickable'].includes(prop),
 })(({ isClickable }) => (`
   ${isClickable ? 'cursor: pointer;' : ''}
   float: right;
 `));
 
-const CandidateInfo = styled('div', {
+const CandidateInfo = styled('div').withConfig({
   shouldForwardProp: (prop) => !['isClickable'].includes(prop),
 })(({ isClickable }) => (`
   ${isClickable ? 'cursor: pointer;' : ''}
@@ -752,7 +752,7 @@ const CandidateQuote = styled('div')`
 const CandidateItemWrapper = styled('div')`
 `;
 
-const CandidateNameRow = styled('div', {
+const CandidateNameRow = styled('div').withConfig({
   shouldForwardProp: (prop) => !['isClickable'].includes(prop),
 })(({ isClickable }) => (`
   ${isClickable ? 'cursor: pointer;' : ''}
@@ -796,7 +796,7 @@ const ForMoreInformationInfoText = styled('div')`
 `;
 
 // Replacing className="card-main__media-object-anchor"
-const MediaObjectAnchor = styled('div', {
+const MediaObjectAnchor = styled('div').withConfig({
   shouldForwardProp: (prop) => !['isClickable'].includes(prop),
 })(({ isClickable }) => (`
   ${isClickable ? 'cursor: pointer;' : ''}

@@ -163,7 +163,7 @@ class ActivityPostPublicToggle extends Component {
     const ActivityPostIsPublicHelpModal = (
       <Dialog
         classes={{ paper: classes.dialogPaper, root: classes.dialogRoot }}
-        open={showActivityPostIsPublicHelpModal}
+        open={Boolean(showActivityPostIsPublicHelpModal)}
         onClose={() => { this.toggleActivityPostIsPublicHelpModal(); }}
       >
         <DialogTitle>
@@ -348,7 +348,7 @@ const PublicToggle = styled('div')(({ theme }) => (`
 //   }
 // `;
 
-const RadioItem = styled('div', {
+const RadioItem = styled('div').withConfig({
   shouldForwardProp: (prop) => !['preventStackedButtons'].includes(prop),
 })(({ preventStackedButtons, theme }) => (`
   ${preventStackedButtons ? '' : (`
@@ -361,7 +361,7 @@ const RadioItem = styled('div', {
   };
 `));
 
-const RadioGroup = styled('div', {
+const RadioGroup = styled('div').withConfig({
   shouldForwardProp: (prop) => !['preventStackedButtons'].includes(prop),
 })(({ preventStackedButtons, theme }) => (`
   display: flex;

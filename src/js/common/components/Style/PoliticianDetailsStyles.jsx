@@ -50,7 +50,7 @@ export const PoliticianImageSharedStyles = css`
   margin: 0;
 `;
 
-export const PoliticianImageDesktopPlaceholder = styled('div', {
+export const PoliticianImageDesktopPlaceholder = styled('div').withConfig({
   shouldForwardProp: (prop) => !['limitCardWidth', 'profileImageBackgroundColor'].includes(prop),
 })(({ limitCardWidth, profileImageBackgroundColor }) => (`
   ${limitCardWidth ? 'height: 315px;' : 'height: 117px;'}
@@ -62,7 +62,7 @@ export const PoliticianImageDesktopPlaceholder = styled('div', {
   ${PoliticianImageSharedStyles}
 `));
 
-export const PoliticianImageMobilePlaceholder = styled('div', {
+export const PoliticianImageMobilePlaceholder = styled('div').withConfig({
   shouldForwardProp: (prop) => !['limitCardWidth', 'profileImageBackgroundColor'].includes(prop),
 })(({ limitCardWidth, profileImageBackgroundColor }) => (`
   ${limitCardWidth ? 'height: 200px;' : 'height: 117px;'}

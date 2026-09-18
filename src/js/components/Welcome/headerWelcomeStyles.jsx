@@ -40,7 +40,7 @@ const fadeOut = keyframes`
   }
 `;
 
-export const SubTitle = styled('h3', {
+export const SubTitle = styled('h3').withConfig({
   shouldForwardProp: (prop) => !['out'].includes(prop),
 })(({ out, theme }) => (`
   font-weight: 300;

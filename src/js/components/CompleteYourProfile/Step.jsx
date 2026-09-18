@@ -41,7 +41,9 @@ Step.propTypes = {
   width: PropTypes.string,
 };
 
-const HowItWorksStep = styled.div`
+const HowItWorksStep = styled.div.withConfig({
+  shouldForwardProp: (prop) => !['completed'].includes(prop),
+})`
   display: flex;
   width: 33.33%;
   flex-direction: column;
@@ -66,7 +68,9 @@ const HowItWorksStep = styled.div`
 `}
 `;
 
-const StepText = styled('div')`
+const StepText = styled('div').withConfig({
+  shouldForwardProp: (prop) => !['completed'].includes(prop),
+})`
   font-size: 16px;
   font-weight: 400;
   margin: 6px 0 6px 0;

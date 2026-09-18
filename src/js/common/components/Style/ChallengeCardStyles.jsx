@@ -1,7 +1,7 @@
 import styled, { css } from 'styled-components';
 import DesignTokenColors from './DesignTokenColors';
 
-export const ChallengeCardForListWrapper = styled('div', {
+export const ChallengeCardForListWrapper = styled('div').withConfig({
   shouldForwardProp: (prop) => !['limitCardWidth'].includes(prop),
 })(({ limitCardWidth }) => (`
   ${limitCardWidth ? 'width: 290px;' : ''}
@@ -33,7 +33,7 @@ export const ChallengeImageDesktopSharedStyles = css`
   margin: 0;
 `;
 
-export const ChallengeImageDesktopPlaceholder = styled('div', {
+export const ChallengeImageDesktopPlaceholder = styled('div').withConfig({
   shouldForwardProp: (prop) => !['limitCardWidth', 'profileImageBackgroundColor', 'useVerticalCard'].includes(prop),
 })(({ limitCardWidth, profileImageBackgroundColor, useVerticalCard }) => (`
   align-items: center;
@@ -50,7 +50,7 @@ export const ChallengeImageDesktopPlaceholder = styled('div', {
   ${ChallengeImageDesktopSharedStyles}
 `));
 
-export const ChallengeImageDesktop = styled('img', {
+export const ChallengeImageDesktop = styled('img').withConfig({
   shouldForwardProp: (prop) => !['limitCardWidth'].includes(prop),
 })(({ limitCardWidth }) => (`
   // We don't want to set height/width here because this component is also used for very large versions of this image
@@ -65,7 +65,7 @@ export const ChallengeImageMobileSharedStyles = css`
   max-width: 100%;
 `;
 
-export const ChallengeImageMobilePlaceholder = styled('div', {
+export const ChallengeImageMobilePlaceholder = styled('div').withConfig({
   shouldForwardProp: (prop) => !['profileImageBackgroundColor', 'useVerticalCard', 'inChallengeList'].includes(prop),
 })(({ profileImageBackgroundColor, useVerticalCard, inChallengeList }) => (`
   // align-items: center;
@@ -92,7 +92,7 @@ export const ChallengeImageMobile = styled('img')`
   ${ChallengeImageMobileSharedStyles}
 `;
 
-export const ListWrapper = styled('div', {
+export const ListWrapper = styled('div').withConfig({
   shouldForwardProp: (prop) => !['useVerticalCard'].includes(prop),
 })(({ useVerticalCard }) => (`
   display: flex;
@@ -112,7 +112,7 @@ export const LoadMoreItemsManuallyWrapper = styled('div')`
 `;
 
 // https://css-tricks.com/snippets/css/css-box-shadow/
-export const OneChallengeInnerWrapper = styled('div', {
+export const OneChallengeInnerWrapper = styled('div').withConfig({
   shouldForwardProp: (prop) => !['hideCardMargins', 'useVerticalCard'].includes(prop),
 })(({ hideCardMargins, useVerticalCard }) => (`
   // background-color: #fff;
@@ -124,14 +124,14 @@ export const OneChallengeInnerWrapper = styled('div', {
   ${hideCardMargins ? '' : '&:hover { box-shadow: 0 20px 50px -16px rgba(46,55,77,.7); }'}
 `));
 
-export const OneChallengeOuterWrapper = styled('div', {
+export const OneChallengeOuterWrapper = styled('div').withConfig({
   shouldForwardProp: (prop) => !['limitCardWidth'].includes(prop),
 })(({ limitCardWidth }) => (`
   ${limitCardWidth ? 'margin-right: 15px;' : ''} // margin-bottom: 15px;
   // ${limitCardWidth ? 'height: 400px;' : ''}
 `));
 
-export const OneChallengePhotoDesktopColumn = styled('div', {
+export const OneChallengePhotoDesktopColumn = styled('div').withConfig({
   shouldForwardProp: (prop) => !['limitCardWidth', 'profileImageBackgroundColor', 'useVerticalCard'].includes(prop),
 })(({ hideCardMargins, limitCardWidth, profileImageBackgroundColor, useVerticalCard }) => (`
   align-items: center;
@@ -161,7 +161,7 @@ export const OneChallengePhotoWrapperMobile = styled('div')(({ theme }) => (`
   }
 `));
 
-export const OneChallengeTextColumn = styled('div', {
+export const OneChallengeTextColumn = styled('div').withConfig({
   shouldForwardProp: (prop) => !['hideCardMargins'].includes(prop),
 })(({ hideCardMargins }) => (`
   ${hideCardMargins ? 'padding: 0;' : 'padding: 0 10px;'}
@@ -179,7 +179,7 @@ export const OneChallengeTitleLink = styled('h1')(({ theme }) => (`
   }
 `));
 
-export const TitleAndTextWrapper = styled('div', {
+export const TitleAndTextWrapper = styled('div').withConfig({
   shouldForwardProp: (prop) => !['hideCardMargins'].includes(prop),
 })(({ hideCardMargins }) => (`
   ${hideCardMargins ? '' : 'height: 60px;'}

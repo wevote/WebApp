@@ -537,7 +537,7 @@ const MobileSmallItemNameContainer = styled('div')`
   }
 `;
 
-const VoterGuideDesktop = styled('div', {
+const VoterGuideDesktop = styled('div').withConfig({
   shouldForwardProp: (prop) => !['isSupport', 'isOppose'].includes(prop),
 })(({ isSupport, isOppose }) => (`
   background: #eee;
@@ -550,7 +550,7 @@ const VoterGuideDesktop = styled('div', {
   padding: 6px 16px;
 `));
 
-const VoterGuideMobile = styled('li', {
+const VoterGuideMobile = styled('li').withConfig({
   shouldForwardProp: (prop) => !['isSupport', 'isOppose'].includes(prop),
 })(({ isSupport, isOppose }) => (`
   background: #fff;

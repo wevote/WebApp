@@ -419,7 +419,7 @@ class SharedItemModal extends Component {
     return (
       <Dialog
         id="sharedItemModal"
-        open={this.props.show}
+        open={Boolean(this.props.show)}
         onClose={this.closeSharedItemModalLocal}
         classes={{
           paper: clsx(classes.dialogPaper, {
@@ -759,7 +759,7 @@ const ModalTitleSharedByShown = `
   // height: 177px;
 `;
 
-const ModalTitleArea = styled('div', {
+const ModalTitleArea = styled('div').withConfig({
   shouldForwardProp: (prop) => !['hideSharedByIntro'].includes(prop),
 })(({ hideSharedByIntro, theme }) => (`
   background: #fff;
@@ -804,7 +804,7 @@ const ModalContent = styled('div')`
   width: 100%;
 `;
 
-const ModalContentInnerWrapper = styled('div', {
+const ModalContentInnerWrapper = styled('div').withConfig({
   shouldForwardProp: (prop) => !['hideSharedByIntro'].includes(prop),
 })(({ hideSharedByIntro, theme }) => (`
   ${hideSharedByIntro ? (`
@@ -920,7 +920,7 @@ const StepsOuterWrapper = styled('div')`
   width: 100%;
 `;
 
-const StepsWrapper = styled('div', {
+const StepsWrapper = styled('div').withConfig({
   shouldForwardProp: (prop) => !['width'].includes(prop),
 })(({ width }) => (`
   width: ${`${width}px`};

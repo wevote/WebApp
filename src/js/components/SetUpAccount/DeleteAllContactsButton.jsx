@@ -117,14 +117,16 @@ const styles = () => ({
   },
 });
 
-const DeleteContactsButtonInnerCancelWrapper = styled('div')`
+const DeleteContactsButtonInnerCancelWrapper = styled('div').withConfig({
+  shouldForwardProp: (prop) => !['leftAlign'].includes(prop),
+})`
   display: flex;
   justify-content:center;
   margin-bottom: 8px;
   width: 100%;
 `;
 
-const DeleteContactsButtonInnerWrapper = styled('div', {
+const DeleteContactsButtonInnerWrapper = styled('div').withConfig({
   shouldForwardProp: (prop) => !['leftAlign'].includes(prop),
 })(({ leftAlign }) => (`
   display: flex;
@@ -132,7 +134,7 @@ const DeleteContactsButtonInnerWrapper = styled('div', {
   width: 100%;
 `));
 
-const DeleteContactsButtonOuterWrapper = styled('div', {
+const DeleteContactsButtonOuterWrapper = styled('div').withConfig({
   shouldForwardProp: (prop) => !['leftAlign'].includes(prop),
 })(({ leftAlign }) => (`
   display: flex;

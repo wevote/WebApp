@@ -276,7 +276,9 @@ const styles = (theme) => ({
 const InnerWrapper = styled('div')`
 `;
 
-const IntroHeader = styled('div')(({ theme }) => (`
+const IntroHeader = styled('div').withConfig({
+  shouldForwardProp: (prop) => !['titleCentered', 'titleLarge'].includes(prop),
+})(({ theme }) => (`
   margin: 0;
   font-size: 18px;
   font-weight: 600;
@@ -299,23 +301,29 @@ const OuterWrapper = styled('div')`
   max-width: 260px;
 `;
 
-const PublicFiguresAndOrganizationsList = styled('div')`
+const PublicFiguresAndOrganizationsList = styled('div').withConfig({
+  shouldForwardProp: (prop) => !['searchTextLarge'].includes(prop),
+})`
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
 `;
 
-const PublicFiguresAndOrganizationsWrapper = styled('div')`
+const PublicFiguresAndOrganizationsWrapper = styled('div').withConfig({
+  shouldForwardProp: (prop) => !['searchTextLarge'].includes(prop),
+})`
 `;
 
-const Separator = styled('div')`
+const Separator = styled('div').withConfig({
+  shouldForwardProp: (prop) => !['searchTextLarge'].includes(prop),
+})`
   // background: rgba(0, 0, 0, .2);
   // display: 'inherit';
   // height: 100%;
   // width: 1px;
 `;
 
-const SearchWrapper = styled('div', {
+const SearchWrapper = styled('div').withConfig({
   shouldForwardProp: (prop) => !['searchTextLarge'].includes(prop),
 })(({ searchTextLarge }) => (`
   display: flex;

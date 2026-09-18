@@ -364,7 +364,7 @@ const CardTitleToday = styled('h1')(({ theme }) => (`
   }
 `));
 
-const CardSubTitle = styled('h3', {
+const CardSubTitle = styled('h3').withConfig({
   shouldForwardProp: (prop) => !['desktopMode', 'center'].includes(prop),
 })(({ desktopMode, center }) => (`
   font-size: ${desktopMode ? '18px' : '22px'};

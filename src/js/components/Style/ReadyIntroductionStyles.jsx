@@ -23,7 +23,7 @@ export const InnerWrapper = styled('div')`
   width: 100%;
 `;
 
-export const IntroHeader = styled('div', {
+export const IntroHeader = styled('div').withConfig({
   shouldForwardProp: (prop) => !['titleCentered', 'titleLarge'].includes(prop),
 })(({ titleCentered, titleLarge, theme }) => (`
   color: #2e3c5d;

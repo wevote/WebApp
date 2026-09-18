@@ -96,7 +96,7 @@ function ComposerSkeleton () {
       <ComposerMain>
         {/* ModalDisplayTemplateB CommentContainer + InputBox: ~56–64px tall on desktop */}
         <Skeleton variant="rounded" height={56} sx={{ borderRadius: 2, width: '100%' }} />
-        <Box display="flex" gap={1} sx={{ mt: 0.25 }}>
+        <Box sx={{ display: 'flex', gap: 1, mt: 0.25 }}>
           <Skeleton variant="rounded" width={100} height={36} sx={{ borderRadius: 2 }} />
           <Skeleton variant="rounded" width={100} height={36} sx={{ borderRadius: 2 }} />
         </Box>
@@ -114,7 +114,7 @@ function EndorsementCardSkeleton () {
           <NameAndActions>
             <Skeleton variant="text" width={160} height={24} />
           </NameAndActions>
-          <Box display="flex" gap={0.5}>
+          <Box sx={{ display: 'flex', gap: 0.5 }}>
             <Skeleton variant="rounded" width={32} height={32} sx={{ borderRadius: 1 }} />
             <Skeleton variant="rounded" width={32} height={32} sx={{ borderRadius: 1 }} />
           </Box>

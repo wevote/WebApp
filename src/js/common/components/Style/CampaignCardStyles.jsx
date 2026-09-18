@@ -19,8 +19,8 @@ export const CampaignActionButtonsWrapper = styled('div')`
   justify-content: flex-end;
 `;
 
-export const CandidateCardForListWrapper = styled('div', {
-  shouldForwardProp: (prop) => !['limitCardWidth'].includes(prop),
+export const CandidateCardForListWrapper = styled('div').withConfig({
+  shouldForwardProp: (prop) => !['hideCardMargins', 'limitCardWidth'].includes(prop),
 })(({ limitCardWidth }) => (`
   ${limitCardWidth ? 'width: 315px;' : ''}
   white-space: normal;
@@ -41,8 +41,8 @@ export const CampaignImageDesktopSharedStyles = css`
   margin: 0;
 `;
 
-export const CampaignImageDesktopPlaceholder = styled('div', {
-  shouldForwardProp: (prop) => !['limitCardWidth', 'profileImageBackgroundColor', 'useVerticalCard'].includes(prop),
+export const CampaignImageDesktopPlaceholder = styled('div').withConfig({
+  shouldForwardProp: (prop) => !['hideCardMargins', 'limitCardWidth', 'profileImageBackgroundColor', 'useVerticalCard'].includes(prop),
 })(({ limitCardWidth, profileImageBackgroundColor, useVerticalCard }) => (`
   align-items: center;
   background-color: ${profileImageBackgroundColor ||  DesignTokenColors.neutralUI50};
@@ -56,8 +56,8 @@ export const CampaignImageDesktopPlaceholder = styled('div', {
   ${CampaignImageDesktopSharedStyles}
 `));
 
-export const CampaignImageDesktop = styled('img', {
-  shouldForwardProp: (prop) => !['limitCardWidth'].includes(prop),
+export const CampaignImageDesktop = styled('img').withConfig({
+  shouldForwardProp: (prop) => !['fetchpriority', 'limitCardWidth'].includes(prop),
 })(({ limitCardWidth }) => (`
   // We don't want to set height/width here because this component is also used for very large versions of this image
   // ${limitCardWidth ? 'height: 157px;' : 'height: 117px;'}
@@ -71,7 +71,7 @@ export const CampaignImageMobileSharedStyles = css`
   max-width: 100%;
 `;
 
-export const CampaignImageMobilePlaceholder = styled('div', {
+export const CampaignImageMobilePlaceholder = styled('div').withConfig({
   shouldForwardProp: (prop) => !['profileImageBackgroundColor', 'useVerticalCard'].includes(prop),
 })(({ profileImageBackgroundColor, useVerticalCard }) => (`
   align-items: center;
@@ -92,13 +92,15 @@ export const CampaignImagePlaceholderText = styled('div')`
   margin-top: 0;
 `;
 
-export const CampaignImageMobile = styled('img')`
+export const CampaignImageMobile = styled('img').withConfig({
+  shouldForwardProp: (prop) => !['fetchpriority'].includes(prop),
+})`
   max-height: 157px;
   ${CampaignImageMobileSharedStyles}
 `;
 
-export const CampaignPoliticianImageDesktop = styled('img', {
-  shouldForwardProp: (prop) => !['limitCardWidth'].includes(prop),
+export const CampaignPoliticianImageDesktop = styled('img').withConfig({
+  shouldForwardProp: (prop) => !['fetchpriority', 'limitCardWidth'].includes(prop),
 })(({ limitCardWidth }) => (`
   // We don't want to set height/width here because this component is also used for very large versions of this image
   // ${limitCardWidth ? 'height: 157px;' : 'height: 117px;'}
@@ -106,7 +108,9 @@ export const CampaignPoliticianImageDesktop = styled('img', {
   ${CampaignImageDesktopSharedStyles}
 `));
 
-export const CampaignPoliticianImageMobile = styled('img')`
+export const CampaignPoliticianImageMobile = styled('img').withConfig({
+  shouldForwardProp: (prop) => !['fetchpriority'].includes(prop),
+})`
   max-height: 157px;
   ${CampaignImageMobileSharedStyles}
 `;
@@ -123,7 +127,7 @@ export const CardRowsWrapper = styled('div')`
   margin-top: 2px;
 `;
 
-export const ElectionYear = styled('div', {
+export const ElectionYear = styled('div').withConfig({
   shouldForwardProp: (prop) => !['largeDisplay'].includes(prop),
 })(({ largeDisplay }) => (`
   color: ${DesignTokenColors.neutralUI500};
@@ -131,7 +135,7 @@ export const ElectionYear = styled('div', {
   ${largeDisplay ? 'font-size: 20px;' : 'font-size: 12px;'}
 `));
 
-export const ListWrapper = styled('div', {
+export const ListWrapper = styled('div').withConfig({
   shouldForwardProp: (prop) => !['useVerticalCard'].includes(prop),
 })(({ useVerticalCard }) => (`
   display: flex;
@@ -156,7 +160,7 @@ export const OneCampaignDescription = styled('div')`
 `;
 
 // https://css-tricks.com/snippets/css/css-box-shadow/
-export const OneCampaignInnerWrapper = styled('div', {
+export const OneCampaignInnerWrapper = styled('div').withConfig({
   shouldForwardProp: (prop) => !['hideCardMargins', 'useVerticalCard'].includes(prop),
 })(({ hideCardMargins, useVerticalCard }) => (`
   // background-color: #fff;
@@ -168,15 +172,15 @@ export const OneCampaignInnerWrapper = styled('div', {
   ${hideCardMargins ? '' : '&:hover { box-shadow: 0 20px 50px -16px rgba(46,55,77,.7); }'}
 `));
 
-export const OneCampaignOuterWrapper = styled('div', {
+export const OneCampaignOuterWrapper = styled('div').withConfig({
   shouldForwardProp: (prop) => !['limitCardWidth'].includes(prop),
 })(({ limitCardWidth }) => (`
   ${limitCardWidth ? 'margin-right: 15px;' : ''} // margin-bottom: 15px;
   ${limitCardWidth ? 'height: 400px;' : ''}
 `));
 
-export const OneCampaignPhotoDesktopColumn = styled('div', {
-  shouldForwardProp: (prop) => !['limitCardWidth', 'profileImageBackgroundColor', 'useVerticalCard'].includes(prop),
+export const OneCampaignPhotoDesktopColumn = styled('div').withConfig({
+  shouldForwardProp: (prop) => !['hideCardMargins', 'limitCardWidth', 'profileImageBackgroundColor', 'useVerticalCard'].includes(prop),
 })(({ hideCardMargins, limitCardWidth, profileImageBackgroundColor, useVerticalCard }) => (`
   align-items: center;
   ${profileImageBackgroundColor ? `background-color: ${profileImageBackgroundColor};` : 'background-color: #fff;'}
@@ -205,7 +209,7 @@ export const OneCampaignPhotoWrapperMobile = styled('div')(({ theme }) => (`
   }
 `));
 
-export const OneCampaignTextColumn = styled('div', {
+export const OneCampaignTextColumn = styled('div').withConfig({
   shouldForwardProp: (prop) => !['hideCardMargins'].includes(prop),
 })(({ hideCardMargins }) => (`
   ${hideCardMargins ? 'padding: 0 0 10px 0;' : 'padding: 0 10px;'}
@@ -260,7 +264,7 @@ export const SupportersWrapper = styled('div')`
   margin-bottom: 6px;
 `;
 
-export const TitleAndTextWrapper = styled('div', {
+export const TitleAndTextWrapper = styled('div').withConfig({
   shouldForwardProp: (prop) => !['hideCardMargins'].includes(prop),
 })(({ hideCardMargins }) => (`
   ${hideCardMargins ? '' : 'height: 60px;'}

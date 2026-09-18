@@ -52,7 +52,7 @@ class VoterGuideChooseElectionWithPositionsModal extends Component {
     return (
       <Dialog
         classes={{ paper: classes.dialogPaper }}
-        open={show}
+        open={Boolean(show)}
         onClose={() => { this.props.toggleFunction(); }}
       >
         <DialogTitle>

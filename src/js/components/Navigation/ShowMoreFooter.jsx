@@ -55,7 +55,7 @@ const styles = (theme) => ({
   },
 });
 
-const ShowMoreFooterStyled = styled('div', {
+const ShowMoreFooterStyled = styled('div').withConfig({
   shouldForwardProp: (prop) => !['textAlign'].includes(prop),
 })(({ textAlign, theme }) => (`
   border: 0 !important;
@@ -82,7 +82,7 @@ const ShowMoreFooterStyled = styled('div', {
   }
 `));
 
-const ShowMoreFooterText = styled('div', {
+const ShowMoreFooterText = styled('div').withConfig({
   shouldForwardProp: (prop) => !['textAlign'].includes(prop),
 })(({ textAlign, theme }) => (`
   margin-top: 8px !important;

@@ -75,7 +75,7 @@ const InfoWrapper = styled('div')`
   width: 100%;
 `;
 
-const JoinedInfoWrapper = styled('div', {
+const JoinedInfoWrapper = styled('div').withConfig({
   shouldForwardProp: (prop) => !['borderSwitcher', 'padding'].includes(prop),
 })(({ borderSwitcher, padding }) => `
   align-items: center;

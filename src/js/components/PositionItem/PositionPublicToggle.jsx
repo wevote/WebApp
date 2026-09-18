@@ -307,13 +307,17 @@ const styles = (theme) => ({
   },
 });
 
-const PositionPublicToggleOuterWrapper = styled('div')`
+const PositionPublicToggleOuterWrapper = styled('div').withConfig({
+  shouldForwardProp: (prop) => !['preventStackedButtons'].includes(prop),
+})`
   // margin-left: auto;
   width: fit-content;
   //padding-top: 12px;
 `;
 
-const PositionPublicToggleInnerWrapper = styled('div')(({ theme }) => (`
+const PositionPublicToggleInnerWrapper = styled('div').withConfig({
+  shouldForwardProp: (prop) => !['preventStackedButtons'].includes(prop),
+})(({ theme }) => (`
   padding-left: 15px;
   ${theme.breakpoints.down('md')} {
     padding-top: 4px;
@@ -321,7 +325,7 @@ const PositionPublicToggleInnerWrapper = styled('div')(({ theme }) => (`
   }
 `));
 
-const RadioItem = styled('div', {
+const RadioItem = styled('div').withConfig({
   shouldForwardProp: (prop) => !['preventStackedButtons'].includes(prop),
 })(({ preventStackedButtons, theme }) => (`
   ${!preventStackedButtons && theme.breakpoints.down('xs') ? (`
@@ -332,7 +336,7 @@ const RadioItem = styled('div', {
   `) : ''}
 `));
 
-const RadioGroup = styled('div', {
+const RadioGroup = styled('div').withConfig({
   shouldForwardProp: (prop) => !['preventStackedButtons'].includes(prop),
 })(({ preventStackedButtons, theme }) => (`
   display: flex;

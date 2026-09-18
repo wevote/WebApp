@@ -113,7 +113,7 @@ const PartyAndOfficeHeldWrapper = styled('div')`
   line-height: 17px;
 `;
 
-const YearStateWrapper = styled('div', {
+const YearStateWrapper = styled('div').withConfig({
   shouldForwardProp: (prop) => !['inCard'].includes(prop),
 })(({ inCard }) => (`
   ${inCard ? '' : 'margin-top: 6px;'}
