@@ -1,4 +1,4 @@
-import { $, $$, driver } from '@wdio/globals';
+import { $, $$ } from '@wdio/globals';
 import PageBrowser from './page.browser';
 
 // Page object for the WeVote Credits & Thanks page.
@@ -19,7 +19,8 @@ class CreditsBrowser extends PageBrowser {
   // ─── Intro section ───────────────────────────────────────────────────────────
 
   get openSourceInlineLink () {
-    return $('a[href*="open-source"]');
+    // WDIO partial link text selector: first <a> whose visible text contains this phrase
+    return $('*=open source software');
   }
 
   // ─── Organization logos ──────────────────────────────────────────────────────
@@ -28,8 +29,11 @@ class CreditsBrowser extends PageBrowser {
     return $$('img');
   }
 
-  get allLogoLinks () {
-    return $$('a img');
+  get orgLogoLinks () {
+    // <a> tags that wrap an image and point to an external (non-WeVote) site.
+    // Note: the previous selector ('a img') returned the <img> elements themselves,
+    // which have no href or target, so TC-010 and TC-011 could never pass.
+    return $$("//a[.//img][starts-with(@href, 'http')][not(contains(@href, 'wevote'))]");
   }
 
   // ─── Volunteers section ──────────────────────────────────────────────────────
@@ -91,8 +95,9 @@ class CreditsBrowser extends PageBrowser {
   }
 
   async scrollToFooter () {
-    await browser.execute(() => window.scrollTo(0, document.body.scrollHeight));
-    await driver.pause(3000);
+    // Wait for the footer to exist, then scroll it into view (no fixed pause needed)
+    await this.footerGetStarted.waitForExist({ timeout: 10000 });
+    await this.footerGetStarted.scrollIntoView();
   }
 }
 
