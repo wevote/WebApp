@@ -51,9 +51,10 @@ describe('Credits & Thanks Page', () => {
   });
 
 
-  // TC-007: Key organizations are listed on the page (as visible text or logo alt text)
-  it('verify key organizations are present on the Credits page', async () => {
-    console.log('TC: Credits_007 — key org names present');
+  
+  // TC-007: All credited organizations are present on the page
+  it('verify all credited organizations are present on the Credits page', async () => {
+    console.log('TC: Credits_007 — all org names present');
     const bodyText = await $('body').getText();
     const altTexts = [];
     for (const img of await CreditsPage.allImages) {
@@ -61,15 +62,25 @@ describe('Credits & Thanks Page', () => {
     }
     const pageText = `${bodyText} ${altTexts.join(' ')}`.toLowerCase();
 
+    // Distinctive fragment of each org name, so minor wording changes
+    // (e.g. "Amazon Web Services" vs "AWS") don't break the test
     const expectedOrgs = [
-      'Amazon Web Services',
-      'Atlassian',
-      'Ballotpedia',
-      'BrowserStack',
-      'Google',
+      'amazon', 'atlassian', 'ballotpedia', 'browserstack', 'civic life',
+      'civicmakers', 'code for america', 'dla piper', 'eleven labs', 'facebook',
+      'fast forward', 'fastly', 'google', 'greenberg', 'league of women voters',
+      'maplight', 'microsoft', 'turbovote', 'twilio', 'twitter',
+      'vote smart', 'vote usa', 'pew', 'we vote education', 'wikipedia',
     ];
-    const missing = expectedOrgs.filter((org) => !pageText.includes(org.toLowerCase()));
+    const missing = expectedOrgs.filter((org) => !pageText.includes(org));
     expect(missing).toEqual([]);
+  });
+
+  // TC-007b: The organization logo section renders in full
+  it('verify the organization logo section renders in full', async () => {
+    console.log('TC: Credits_007b — org logo count');
+    const logoLinks = await CreditsPage.orgLogoLinks;
+    console.log(`Found ${logoLinks.length} organization logo links`);
+    expect(logoLinks.length).toBeGreaterThanOrEqual(20);
   });
 
   // TC-010: Org logo links point to external sites
