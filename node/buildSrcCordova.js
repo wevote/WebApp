@@ -93,6 +93,15 @@ function fileRewriterForCordova (path, versions) {
     // Remove all lazy loading
     newValue = newValue.replace(/(?:const )(.*?) = React\.lazy.*?import\((?:\/\*.*?\*\/ )*(.*?)\).*?$/gim,
       'import $1 from $2;  // rewritten from lazy');
+    // Remove import of ReactPlayer
+    newValue = newValue.replace(/^(import ReactPlayer from.*?)$/gim, '{/* removed react-player from Cordova */}');
+    // Remove ReactPlayer instance
+    newValue = newValue.replace(/^(.*)<ReactPlayer className=.*?$/gim, '$1<></> {/*  removed react-player from Cordova */}');
+    // Remove import of loadable
+    newValue = newValue.replace(/^(import loadable from.*?)$/gim, '');
+    // Remove all loadable loading calls
+    newValue = newValue.replace(/(?:const )(.*?) = loadable.*?import\((?:\/\*.*?\*\/ )*(.*?)\).*?$/gim,
+      'import $1 from $2;  // rewritten from load~able');
     // Remove multi-line Suspense Fallback marked with '{/* CORDOVA_TOKEN_AT_CLOSE_OF_A_MULTI_LINE_FALLBACK_DO_NOT_REMOVE */}'
     newValue = newValue.replace(/^(\s*)<Suspense fallback={\($([\s\S]*?)CORDOVA_TOKEN_AT.*?_REMOVE \*\/\}/gm, '$1<>');
     // Crash  out on multi-line Suspense that are not marked with '{/* CORDOVA_TOKEN_AT_CLOSE_OF_A_MULTI_LINE_FALLBACK_DO_NOT_REMOVE */}'
@@ -210,7 +219,7 @@ fs.remove('./build').then(() => {
     try {
       fs.copy('./src', './srcCordova', () => {
         console.log('> Cordova: Copied the /src dir to a newly created /srcCordova directory');
-        exec('egrep -rl "React.lazy|BrowserRouter|initializeMoment|Suspense|u-show-desktop-tablet|u-show-mobile|uShowMobile|uShowDesktopTablet|window.weVoteAppVersion|OverlayTrigger" ./srcCordova', (error, stdout, stderr) => {
+        exec('egrep -rl "React.lazy|loadable|BrowserRouter|initializeMoment|Suspense|u-show-desktop-tablet|u-show-mobile|uShowMobile|uShowDesktopTablet|window.weVoteAppVersion|OverlayTrigger" ./srcCordova', (error, stdout, stderr) => {
           if (error) {
             console.log(`> Cordova bldSrcCordova error: ${error.message}`);
             return;
@@ -230,11 +239,11 @@ fs.remove('./build').then(() => {
             }
           }
           console.log(`> Cordova: ${listOfFiles.length} files in ./srcCordova, rewritten without React.lazy`);
-          exec('egrep -r "React.lazy|Suspense" ./srcCordova | grep -v "//" | grep -v "" | grep -v "(factory)"',
+          exec('egrep -r "React.lazy|Suspense|loadable" ./srcCordova | grep -v "//" | grep -v "" | grep -v "(factory)"',
             (error2, stdout2) => {
               const out = stdout2.split('\n');
               if (!(out.length === 1 && out[1] === undefined)) {
-                console.log('> Cordova: Files that (incorrectly) still contain React.lazy: ');
+                console.log('> Cordova: Files that (incorrectly) still contain React.lazy|Suspense|loadable: ');
                 console.log(out);
                 console.error('> Cordova: The files listed above, need to be fixed before proceeding!');  // Or the regex needs adjustment
               } else {

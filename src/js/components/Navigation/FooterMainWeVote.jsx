@@ -5,7 +5,7 @@ import TagManager from 'react-gtm-module';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import AppObservableStore from '../../common/stores/AppObservableStore';
-import { isWebApp } from '../../common/utils/isCordovaOrWebApp';
+import { isAndroid, isWebApp } from '../../common/utils/isCordovaOrWebApp';
 import webAppConfig from '../../config';
 import VoterStore from '../../stores/VoterStore';
 import lookupPageNameAndPageTypeDict, { getPageDetails } from '../../utils/lookupPageNameAndPageTypeDict';
@@ -227,6 +227,18 @@ class FooterMainWeVote extends Component {
                 </>
               )}
             </OneRow>
+            {isAndroid() && (
+              <OneRow>
+                <Link
+                  id="footerLinkGovernmentWebsites"
+                  to="/election-data"
+                  className={classes.link}
+                  onClick={() => this.pushDataLayer('/election-data', 'footerLinkGovernmentWebsites')}
+                >
+                  Government Information Sources
+                </Link>
+              </OneRow>
+            )}
             {isWebApp() && (
               <OneRow>
                 <Suspense fallback={<></>}>
