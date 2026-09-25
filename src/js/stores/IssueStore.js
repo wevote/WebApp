@@ -1,4 +1,4 @@
-import { ReduceStore } from 'flux/utils';
+import { ReduceStore } from '../common/dispatcher/ReduceStore';
 import IssueActions from '../actions/IssueActions';
 import VoterActions from '../actions/VoterActions'; // eslint-disable-line import/no-cycle
 import VoterConstants from '../constants/VoterConstants';

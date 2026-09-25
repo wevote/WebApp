@@ -1,4 +1,4 @@
-import { ReduceStore } from 'flux/utils';
+import { ReduceStore } from '../common/dispatcher/ReduceStore';
 import Dispatcher from '../common/dispatcher/Dispatcher';
 import stringContains from '../common/utils/stringContains';
 import { extractNumberOfPositionsFromPositionList } from '../utils/positionFunctions'; // eslint-disable-line import/no-cycle

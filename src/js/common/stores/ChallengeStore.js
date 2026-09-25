@@ -1,4 +1,4 @@
-import { ReduceStore } from 'flux/utils';
+import { ReduceStore } from '../dispatcher/ReduceStore';
 import { avatarGeneric } from '../../utils/applicationUtils';
 import Dispatcher from '../dispatcher/Dispatcher';
 import arrayContains from '../utils/arrayContains';

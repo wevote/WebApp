@@ -1,4 +1,4 @@
-import { ReduceStore } from 'flux/utils';
+import { ReduceStore } from '../common/dispatcher/ReduceStore';
 import BallotActions from '../actions/BallotActions'; // eslint-disable-line import/no-cycle
 import FacebookActions from '../actions/FacebookActions'; // eslint-disable-line import/no-cycle
 import FriendActions from '../actions/FriendActions'; // eslint-disable-line import/no-cycle

@@ -1,4 +1,4 @@
-import { ReduceStore } from 'flux/utils';
+import { ReduceStore } from '../dispatcher/ReduceStore';
 import Dispatcher from '../dispatcher/Dispatcher';
 
 class CampaignNewsItemStore extends ReduceStore {

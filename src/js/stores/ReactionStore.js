@@ -1,4 +1,4 @@
-import { ReduceStore } from 'flux/utils';
+import { ReduceStore } from '../common/dispatcher/ReduceStore';
 import ReactionActions from '../actions/ReactionActions';
 import Dispatcher from '../common/dispatcher/Dispatcher';
 import removeValueFromArray from '../common/utils/removeValueFromArray';

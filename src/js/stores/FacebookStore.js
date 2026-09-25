@@ -1,4 +1,4 @@
-import { ReduceStore } from 'flux/utils';
+import { ReduceStore } from '../common/dispatcher/ReduceStore';
 import FacebookActions from '../actions/FacebookActions';
 import FriendActions from '../actions/FriendActions';
 import VoterActions from '../actions/VoterActions';

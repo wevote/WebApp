@@ -1,4 +1,4 @@
-import { ReduceStore } from 'flux/utils';
+import { ReduceStore } from '../common/dispatcher/ReduceStore';
 import Dispatcher from '../common/dispatcher/Dispatcher';
 import { arrayReplaceObjectMatchingPropertyValue } from '../common/utils/textFormat';
 

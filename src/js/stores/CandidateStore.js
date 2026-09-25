@@ -1,4 +1,4 @@
-import { ReduceStore } from 'flux/utils';
+import { ReduceStore } from '../common/dispatcher/ReduceStore';
 import OfficeActions from '../actions/OfficeActions';
 import Dispatcher from '../common/dispatcher/Dispatcher';
 

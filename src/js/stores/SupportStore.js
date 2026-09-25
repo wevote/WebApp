@@ -1,5 +1,5 @@
-import { ReduceStore } from 'flux/utils';
 import assign from 'object-assign';
+import { ReduceStore } from '../common/dispatcher/ReduceStore';
 import CandidateActions from '../actions/CandidateActions';
 import MeasureActions from '../actions/MeasureActions';
 import SupportActions from '../actions/SupportActions';

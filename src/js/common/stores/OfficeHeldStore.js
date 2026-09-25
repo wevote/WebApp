@@ -1,5 +1,5 @@
-import { ReduceStore } from 'flux/utils';
 import assign from 'object-assign';
+import { ReduceStore } from '../dispatcher/ReduceStore';
 import Dispatcher from '../dispatcher/Dispatcher';
 
 class OfficeHeldStore extends ReduceStore {
