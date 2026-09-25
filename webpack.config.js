@@ -15,7 +15,7 @@ const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 const port = process.env.PORT || 3000;
 const isHTTPS = process.env.PROTOCOL && process.env.PROTOCOL === 'HTTPS';
 const isWebApp = !process.env.npm_lifecycle_script.includes('CORDOVA=1');
-const isCordova = !isWebApp
+const isCordova = !isWebApp;
 const useRealCerts = process.env.npm_lifecycle_script.includes('USE_REAL_CERTS=1');
 const isProduction = process.env.npm_lifecycle_script.includes('PRODUCTION=1');
 const source = isWebApp ? 'src' : 'srcCordova';
