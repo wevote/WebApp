@@ -25,12 +25,18 @@ import {
 import DesignTokenColors from './Style/DesignTokenColors';
 import { renderLog } from '../utils/logging';
 import extractPoliticianDetailsFromUrl from '../utils/extractPoliticianDetailsFromUrl';
+import { isPoliticianSEOFriendlyURL } from '../utils/isSEOFriendlyURL';
 
 function CardForListBodyPlaceholder (props) {
   renderLog('CardForListBodyPlaceholder functional component');
-  const { hideCardMargins, limitCardWidth, useVerticalCard } = props;
+  const { hideCardMargins, limitCardWidth, namePreviewText, useVerticalCard } = props;
   const location = useLocation();
-  const { state: stateFromUrl, name: nameFromUrl } = extractPoliticianDetailsFromUrl(location.pathname);
+  const urlDetails = isPoliticianSEOFriendlyURL(location.pathname)
+    ? extractPoliticianDetailsFromUrl(location.pathname)
+    : { state: null, name: null };
+  const stateFromUrl = urlDetails.state;
+  const nameFromUrl = urlDetails.name;
+  const previewName = namePreviewText || nameFromUrl;
   return (
     <CardForListBodyPlaceholderWrapper>
       <CandidateCardForListWrapper>
@@ -46,7 +52,7 @@ function CardForListBodyPlaceholder (props) {
                   &nbsp;
                 </StateName>
                 <OneCampaignTitle>
-                  {nameFromUrl}
+                  {previewName}
                   &nbsp;
                 </OneCampaignTitle>
                 <YearAndHeartDiv>
@@ -110,6 +116,7 @@ function CardForListBodyPlaceholder (props) {
 CardForListBodyPlaceholder.propTypes = {
   hideCardMargins: PropTypes.bool,
   limitCardWidth: PropTypes.bool,
+  namePreviewText: PropTypes.string,
   useVerticalCard: PropTypes.bool,
 };
 

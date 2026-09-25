@@ -179,7 +179,7 @@ class PoliticianCardForList extends Component {
     renderLog('PoliticianCardForList');  // Set LOG_RENDER_EVENTS to log all renders
     const {
       hideCardMargins, hideItemActionBar,
-      limitCardWidth, politicianWeVoteId, searchText, showPoliticianOpenInNewWindow,
+      limitCardWidth, namePreviewText, politicianWeVoteId, searchText, showPoliticianOpenInNewWindow,
       useCampaignSupportThermometer, useVerticalCard,
     } = this.props;
     const { campaignSupported, candidate, candidateWeVoteId, linkedCampaignXWeVoteId, politician } = this.state;
@@ -189,6 +189,7 @@ class PoliticianCardForList extends Component {
           useVerticalCard={useVerticalCard}
           hideCardMargins
           limitCardWidth={limitCardWidth}
+          namePreviewText={namePreviewText}
           hideItemActionBar={hideItemActionBar}
           showPoliticianOpenInNewWindow={showPoliticianOpenInNewWindow}
         />
@@ -267,6 +268,7 @@ class PoliticianCardForList extends Component {
         useVerticalCard
         hideCardMargins
         limitCardWidth={limitCardWidth}
+        namePreviewText={namePreviewText}
         hideItemActionBar={hideItemActionBar}
         showPoliticianOpenInNewWindow={showPoliticianOpenInNewWindow}
       />
@@ -276,6 +278,7 @@ class PoliticianCardForList extends Component {
         <CardForListBody
           source="PoliticianCardForList"
           ballotItemDisplayName={ballotItemDisplayName || ''}
+          namePreviewText={namePreviewText}
           campaignSupported={campaignSupported}
           candidateWeVoteId={candidateWeVoteId}
           districtName={districtName}
@@ -314,6 +317,7 @@ PoliticianCardForList.propTypes = {
   hideCardMargins: PropTypes.bool,
   hideItemActionBar: PropTypes.bool,
   limitCardWidth: PropTypes.bool,
+  namePreviewText: PropTypes.string,
   politicianWeVoteId: PropTypes.string,
   searchText: PropTypes.string,
   showPoliticianOpenInNewWindow: PropTypes.bool,
