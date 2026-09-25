@@ -878,21 +878,21 @@ class Ballot extends Component {
     });
   }
 
-  getEmptyMessageByFilterType (completionLevelFilterType) {
-    switch (completionLevelFilterType) {
-      case 'filterRemaining':
-        return 'You have chosen a candidate for every office and decided on all measures.';
-      case 'filterDecided':
-        return 'You haven\'t chosen any candidates or decided on any measures yet.';
-      default:
-        return '';
-    }
-  }
+  // getEmptyMessageByFilterType (completionLevelFilterType) {
+  //   switch (completionLevelFilterType) {
+  //     case 'filterRemaining':
+  //       return 'You have chosen a candidate for every office and decided on all measures.';
+  //     case 'filterDecided':
+  //       return 'You haven\'t chosen any candidates or decided on any measures yet.';
+  //     default:
+  //       return '';
+  //   }
+  // }
 
-  setRaceLevelFilterType (raceLevelFilterType) {
-    BallotActions.raceLevelFilterTypeSave(raceLevelFilterType);
-    this.setState({ raceLevelFilterType });
-  }
+  // setRaceLevelFilterType (raceLevelFilterType) {
+  //   BallotActions.raceLevelFilterTypeSave(raceLevelFilterType);
+  //   this.setState({ raceLevelFilterType });
+  // }
 
   showAllBallotItems = () => {
     BallotActions.completionLevelFilterTypeSave('filterAllBallotItems');
@@ -1840,13 +1840,13 @@ const LoadingItemsWheel = styled('div')`
   justify-content: center;
 `;
 
-const LoadingWrapper = styled('div')`
-  align-items: center;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  width: 100%;
-`;
+// const LoadingWrapper = styled('div')`
+//   align-items: center;
+//   display: flex;
+//   flex-direction: column;
+//   justify-content: center;
+//   width: 100%;
+// `;
 
 const ShowMoreItemsWrapper = styled('div')`
   margin-bottom: 16px;

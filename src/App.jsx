@@ -76,7 +76,7 @@ const ElectionReminder = React.lazy(() => import(/* webpackChunkName: 'ElectionR
 const Elections = React.lazy(() => import(/* webpackChunkName: 'Elections' */ './js/pages/More/Elections'));
 const ExtensionSignIn = React.lazy(() => import(/* webpackChunkName: 'ExtensionSignIn' */ './js/pages/More/ExtensionSignIn'));
 const FAQ = React.lazy(() => import(/* webpackChunkName: 'FAQ' */ './js/pages/More/FAQ'));
-const FacebookInvitableFriends = React.lazy(() => import(/* webpackChunkName: 'FacebookInvitableFriends' */ './js/pages/FacebookInvitableFriends'));
+// const FacebookInvitableFriends = React.lazy(() => import(/* webpackChunkName: 'FacebookInvitableFriends' */ './js/pages/FacebookInvitableFriends'));
 const FacebookLandingProcess = React.lazy(() => import(/* webpackChunkName: 'FacebookLandingProcess' */ './js/pages/Process/FacebookLandingProcess'));
 const FacebookRedirectToWeVote = React.lazy(() => import(/* webpackChunkName: 'FacebookRedirectToWeVote' */ './js/pages/More/FacebookRedirectToWeVote'));
 const Footer = React.lazy(() => import(/* webpackChunkName: 'Footer' */ './js/components/Navigation/Footer'));
@@ -552,7 +552,7 @@ class App extends Component {
                   <Route path="/donate" component={(isNotWeVoteMarketingSite) ? ReadyRedirect : Donate} />
                   <Route path="/donatefaq" component={(isNotWeVoteMarketingSite) ? ReadyRedirect : DonateFaq} />
                   <Route path="/election-data" component={ElectionData} />
-                  <Route path="/facebook_invitable_friends" component={FacebookInvitableFriends} />
+                  {/*<Route path="/facebook_invitable_friends" component={FacebookInvitableFriends} />*/}
                   <Route path="/findfriends/:set_up_page" exact component={FindFriendsRoot} />
                   <Route path="/findfriends" exact><FindFriendsRoot /></Route>
                   <Route path="/friends" exact component={Friends} />

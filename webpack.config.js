@@ -15,6 +15,7 @@ const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 const port = process.env.PORT || 3000;
 const isHTTPS = process.env.PROTOCOL && process.env.PROTOCOL === 'HTTPS';
 const isWebApp = !process.env.npm_lifecycle_script.includes('CORDOVA=1');
+const isCordova = !isWebApp;
 const useRealCerts = process.env.npm_lifecycle_script.includes('USE_REAL_CERTS=1');
 const isProduction = process.env.npm_lifecycle_script.includes('PRODUCTION=1');
 const source = isWebApp ? 'src' : 'srcCordova';
@@ -31,166 +32,184 @@ if (useRealCerts) console.log('useRealCerts in webpack.config.js ', useRealCerts
 // console.log('crt: ', fs.readFileSync(`./${source}/cert/wevotedeveloper.com.crt`).toString());
 // console.log('key: ', fs.readFileSync(`./${source}/cert/wevotedeveloper.com_key.txt`).toString());
 
-module.exports = (env, argv) => ({
-  entry: path.resolve(__dirname, `./${source}/index.jsx`),
-  module: {
-    rules: [
-      {
-        test: /\.(js|jsx)$/,
-        exclude: /node_modules|srcDeprecated/,
-        use: ['babel-loader'],
+module.exports = (env, argv) => {
+  return ({
+    entry: path.resolve(__dirname, `./${source}/index.jsx`),
+    module: {
+      rules: [
+        {
+          test: /\.(js|jsx)$/,
+          exclude: /node_modules|srcDeprecated/,
+          use: ['babel-loader'],
+        },
+        {
+          test: /\.(png|jp(e*)g|svg|eot|woff|ttf)$/,
+          use: [
+            {
+              loader: 'file-loader',
+              options: {
+                publicPath: '/',
+                exclude: /srcDeprecated/,
+                name: '[path][name].[ext]',
+              },
+            },
+          ],
+        },
+      ],
+    },
+    optimization: {
+      minimize: minimized,
+      minimizer: [
+        ...(minimized ? [
+          new TerserPlugin({
+            parallel: true,
+            terserOptions: {
+              // https://github.com/webpack-contrib/terser-webpack-plugin#terseroptions
+              format: {
+                comments: false,
+              },
+            },
+          }),
+        ] : []),
+      ],
+    },
+    resolve: {
+      modules: [path.resolve(__dirname, source), 'node_modules'],
+      extensions: ['.*', '.js', '.jsx'],
+      alias: {
+        '@mui/styled-engine': '@mui/styled-engine-sc',
       },
-      {
-        test: /\.(png|jp(e*)g|svg|eot|woff|ttf)$/,
-        use: [
+    },
+    output: {
+      path: path.resolve(__dirname, './build'),
+      filename: isWebApp ? '[name].[contenthash].js' : 'bundle.js',
+      publicPath: isWebApp ? '/' : undefined,
+    },
+    infrastructureLogging: {
+      level: 'verbose',
+    },
+    // source-map is for OpenReplay and DevTools
+    devtool: isWebApp ? 'source-map' : false,
+    plugins: [
+      new ESLintPlugin({
+        failOnError: false,
+        failOnWarning: false
+      }),
+      new HtmlWebpackPlugin({
+        title: 'WeVote Sample Ballot',
+        template: path.resolve(__dirname, `./${source}/index.html`),
+      }),
+      ...(bundleAnalysis ? [
+        new UnusedWebpackPlugin({  // Set ANALYSIS to true to list (likely) unused files
+          directories: [path.join(__dirname, source)],
+          exclude: [
+            '/**/cert/',
+            '/**/global/svg-icons/',
+            '/*.test.js',
+            '/**/config*.*',
+            'extension.html',
+            '/sass/',
+            '/robots.txt',
+            '/app-ads.txt',
+            'srcDeprecated',
+          ],
+          root: __dirname,
+        }),
+        new BundleAnalyzerPlugin(),
+      ] : []),
+      new CopyPlugin({
+        patterns: [
+          { from: `${source}/robots.txt`,  to: '.' },
+          { from: `${source}/app-ads.txt`,  to: '.' },
           {
-            loader: 'file-loader',
-            options: {
-              publicPath: '/',
-              exclude: /srcDeprecated/,
-              name: '[path][name].[ext]',
-            },
+            from: `${source}/css/`,
+            to: 'css/',
+            globOptions: { ignore: ['**/mainPreBeautified.css', '**/mainSubtract.css']},
           },
+          { from: `${source}/javascript`, to: 'javascript/' },
+          { from: `${source}/extension.html`, to: '.' },
+          {
+            from: `${source}/img`,
+            to: 'img/',
+            globOptions: { ignore: ['**/DO-NOT-BUNDLE/**']},
+          },
+          ...(isProduction ? [
+            { from: 'node/STORYBOOK-README.TXT', to: './storybook-static/STORYBOOK-README.TXT' },
+            { from: 'storybook-static', to: './storybook-static' },
+          ] : []),
         ],
-      },
-    ],
-  },
-  optimization: {
-    minimize: minimized,
-    minimizer: [
-      ...(minimized ? [
-        new TerserPlugin({
+      }),
+      new MomentLocalesPlugin(),
+      new WebpackShellPluginNext({
+        onBuildEnd: {
+          scripts: ['node ./src/js/common/node/webPackPostBuild.js'],
+          blocking: false,
           parallel: true,
-          terserOptions: {
-            // https://github.com/webpack-contrib/terser-webpack-plugin#terseroptions
-            format: {
-              comments: false,
-            },
+        },
+      }),
+      ...(isProduction ? [
+        new webpack.DefinePlugin({
+          // We need to get webpack into production mode, to make it include the much smaller minimized libraries
+          // especially for React itself.
+          // PRODUCTION: JSON.stringify(true),
+          'process.env.NODE_ENV': JSON.stringify('production'),
+          'REACT.FILE': JSON.stringify(path.basename(__filename)), // Injects the current file's basename
+        }),
+      ] : []),
+      ...(isWebApp ? [
+        new SourceMapDevToolPlugin({
+          filename: isWebApp ? null : '[file].map', // if no value is provided the sourcemap is inlined
+          exclude: [/node_modules/, /css/],
+        }),
+      ] : []),
+      ...(isCordova ? [
+        new SourceMapDevToolPlugin({
+          filename: isWebApp ? null : '[file].map', // if no value is provided the sourcemap is inlined
+          exclude: [/node_modules/, /css/],
+          moduleFilenameTemplate: info => {
+            // Forces absolute or structured disk paths so DevTools can map them on your machine
+            return path.resolve(info.absoluteResourcePath)
+            .replace(/\\/g, '/');
           },
+          append: '\n//# sourceMappingURL=[url]'
         }),
       ] : []),
     ],
-  },
-  resolve: {
-    modules: [path.resolve(__dirname, source), 'node_modules'],
-    extensions: ['.*', '.js', '.jsx'],
-    alias: {
-      '@mui/styled-engine': '@mui/styled-engine-sc',
-    },
-  },
-  output: {
-    path: path.resolve(__dirname, './build'),
-    filename: isWebApp ? '[name].[contenthash].js' : 'bundle.js',
-    publicPath: isWebApp ? '/' : undefined,
-  },
-  infrastructureLogging: {
-    level: 'verbose',
-  },
-  // source-map is for OpenReplay
-  devtool: 'source-map',
-  plugins: [
-    new ESLintPlugin({ failOnError: false, failOnWarning: false  }),
-    new HtmlWebpackPlugin({
-      title: 'WeVote Sample Ballot',
-      template: path.resolve(__dirname, `./${source}/index.html`),
-    }),
-    ...(bundleAnalysis ? [
-      new UnusedWebpackPlugin({  // Set ANALYSIS to true to list (likely) unused files
-        directories: [path.join(__dirname, source)],
-        exclude: [
-          '/**/cert/',
-          '/**/global/svg-icons/',
-          '/*.test.js',
-          '/**/config*.*',
-          'extension.html',
-          '/sass/',
-          '/robots.txt',
-          '/app-ads.txt',
-          'srcDeprecated',
-        ],
-        root: __dirname,
-      }),
-      new BundleAnalyzerPlugin(),
-    ] : []),
-    new CopyPlugin({
-      patterns: [
-        { from: `${source}/robots.txt`,  to: '.' },
-        { from: `${source}/app-ads.txt`,  to: '.' },
-        {
-          from: `${source}/css/`,
-          to: 'css/',
-          globOptions: { ignore: ['**/mainPreBeautified.css', '**/mainSubtract.css']},
-        },
-        { from: `${source}/javascript`, to: 'javascript/' },
-        { from: `${source}/extension.html`, to: '.' },
-        {
-          from: `${source}/img`,
-          to: 'img/',
-          globOptions: { ignore: ['**/DO-NOT-BUNDLE/**']},
-        },
-        ...(isProduction ? [
-          { from: 'node/STORYBOOK-README.TXT', to: './storybook-static/STORYBOOK-README.TXT' },
-          { from: 'storybook-static', to: './storybook-static' },
-        ] : []),
-      ],
-    }),
-    new MomentLocalesPlugin(),
-    new WebpackShellPluginNext({
-      onBuildEnd: {
-        scripts: ['node ./src/js/common/node/webPackPostBuild.js'],
-        blocking: false,
-        parallel: true,
+    devServer: {
+      allowedHosts: ['wevotedeveloper.com', 'localhost'],
+      static: {
+        directory: path.join(__dirname, './build/index.html'),
       },
-    }),
-    ...(argv.mode === 'production' ? [
-      new webpack.DefinePlugin({
-        // We need to get webpack into production mode, to make it include the much smaller minimized libraries
-        // especially for React itself.
-        // PRODUCTION: JSON.stringify(true),
-        'process.env.NODE_ENV': JSON.stringify('production'),
-        'REACT.FILE': JSON.stringify(path.basename(__filename)), // Injects the current file's basename
-      }),
-    ] : [
-      new SourceMapDevToolPlugin({
-        filename: isWebApp ? null : '[file].map', // if no value is provided the sourcemap is inlined
-        exclude: [/node_modules/, /css/],
-      }),
-    ]),
-  ],
-  devServer: {
-    allowedHosts: ['wevotedeveloper.com', 'localhost'],
-    static: {
-      directory: path.join(__dirname, './build/index.html'),
-    },
-    host: (useRealCerts ? 'wevotedeveloper.com' : 'localhost'),
-    port,
-    historyApiFallback: true,
-    ...(isHTTPS ? {
-      server: {
-        type: 'https',
-        options: {
-          ...(useRealCerts ? {
-            // For testing with Cordova and real authoritative certs
-            key: fs.readFileSync(`./${source}/cert/wevotedeveloper.com_key.txt`),
-            cert: fs.readFileSync(`./${source}/cert/wevotedeveloper.com.crt`),
-            // requestCert: true,
-            // passphrase: 'webpack-dev-server',
-          } : {
-            key: fs.readFileSync(`./${source}/cert/server.key`),
-            cert: fs.readFileSync(`./${source}/cert/server.crt`),
-          }),
+      host: (useRealCerts ? 'wevotedeveloper.com' : 'localhost'),
+      port,
+      historyApiFallback: true,
+      ...(isHTTPS ? {
+        server: {
+          type: 'https',
+          options: {
+            ...(useRealCerts ? {
+              // For testing with Cordova and real authoritative certs
+              key: fs.readFileSync(`./${source}/cert/wevotedeveloper.com_key.txt`),
+              cert: fs.readFileSync(`./${source}/cert/wevotedeveloper.com.crt`),
+              // requestCert: true,
+              // passphrase: 'webpack-dev-server',
+            } : {
+              key: fs.readFileSync(`./${source}/cert/server.key`),
+              cert: fs.readFileSync(`./${source}/cert/server.crt`),
+            }),
+          },
         },
-      },
-    } : {}),
-    client: {
-      overlay: {
-        runtimeErrors: (error) => {
-          if (error.message.includes('ResizeObserver loop')) {
-            return false;
-          }
-          return true;
+      } : {}),
+      client: {
+        overlay: {
+          runtimeErrors: (error) => {
+            if (error.message.includes('ResizeObserver loop')) {
+              return false;
+            }
+            return true;
+          },
         },
       },
     },
-  },
-});
+  });
+};
