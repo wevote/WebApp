@@ -4,7 +4,7 @@ import React, { Component, Suspense } from 'react';
 import TagManager from 'react-gtm-module';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import { officialWebsites } from '../../../../srcCordova/js/common/constants/electionDataSources';
+import { officialWebsites } from '../../common/constants/electionDataSources';
 import AppObservableStore from '../../common/stores/AppObservableStore';
 import { isAndroid, isWebApp } from '../../common/utils/isCordovaOrWebApp';
 import webAppConfig from '../../config';
