@@ -9,6 +9,7 @@ import { openSnackbar } from '../../common/components/Widgets/SnackNotifier';
 import AppObservableStore, { messageService } from '../../common/stores/AppObservableStore';
 import { renderLog } from '../../common/utils/logging';
 import VoterStore from '../../stores/VoterStore';
+import BallotStore from '../../stores/BallotStore';
 import { getPageDetails } from '../../utils/lookupPageNameAndPageTypeDict';
 import { generateShareLinks } from './sharedLinks';
 
@@ -96,6 +97,9 @@ class ShareModalOption extends Component {
     if (this.props.onClickFunction) {
       this.props.onClickFunction();
     }
+    const { currentFullUrlToShare } = generateShareLinks();
+    const howMuchToShareMap = { ballotShareOptions: 'ballotOnly', ballotShareOptionsAllOpinions: 'ballotWithChoices' };
+    const whatAndHowMuchToShare = AppObservableStore.getWhatAndHowMuchToShare();
     const dataLayerObject = {
       actionDetails: {
         actionType: 'share',
@@ -104,13 +108,18 @@ class ShareModalOption extends Component {
       event: 'ShareModalCopyLinkClick',
       shareDetails: {
         shareType: 'ballot',
-        shareDestination: this.props.title || 'copyLink',
-        urlShared: this.props.urlToShare || '',
-        howMuchToShare: AppObservableStore.getWhatAndHowMuchToShare(),
+        shareDestination: 'copyLink',
+        urlShared: currentFullUrlToShare || '',
+        urlShortcut: this.props.urlToShare || '',
+        howMuchToShare: howMuchToShareMap[whatAndHowMuchToShare] || whatAndHowMuchToShare,
       },
       pageDetails: getPageDetails(),
       userDetails: VoterStore.getAnalyticsUserDetails(),
     };
+    const electionDetails = BallotStore.getAnalyticsElectionDetails();
+    if (electionDetails && electionDetails.electionDate) {
+      dataLayerObject.electionDetails = electionDetails;
+    }
     // console.log('DataLayer for ShareModal Copy Link:', dataLayerObject);
     TagManager.dataLayer({ dataLayer: dataLayerObject });
   };

@@ -5,6 +5,7 @@ import React from 'react';
 import { useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import isMobileScreenSize from '../utils/isMobileScreenSize';
+import { isPoliticianSEOFriendlyURL } from '../utils/isSEOFriendlyURL';
 import extractPoliticianDetailsFromUrl from '../utils/extractPoliticianDetailsFromUrl';
 import {
   CampaignActionButtonsWrapper,
@@ -45,10 +46,24 @@ const SvgImageWrapper = styled('div')`
 
 function CardForListBodySkeleton (props) {
   renderLog('CardForListBodySkeleton');
-  const { hideCardMargins, hideItemActionBar, limitCardWidth, showPoliticianOpenInNewWindow, useVerticalCard } = props;
+  const { 
+    hideCardMargins,
+    hideItemActionBar,
+    limitCardWidth,
+    namePreviewText,
+    showPoliticianOpenInNewWindow,
+    useVerticalCard,
+  } = props;
   const useVerticalLayout = limitCardWidth || useVerticalCard || isMobileScreenSize();
   const location = useLocation();
-  const { state: stateFromUrl, name: nameFromUrl } = extractPoliticianDetailsFromUrl(location.pathname);
+  const urlDetails = isPoliticianSEOFriendlyURL(location.pathname)
+    ? extractPoliticianDetailsFromUrl(location.pathname)
+    : { state: null, name: null };
+  const stateFromUrl = urlDetails.state;
+  const nameFromUrl = urlDetails.name;
+
+  const previewName = namePreviewText || nameFromUrl;
+  const previewState = stateFromUrl;
 
   return (
     <CandidateCardForListWrapper limitCardWidth={limitCardWidth}>
@@ -60,18 +75,18 @@ function CardForListBodySkeleton (props) {
           <OneCampaignTextColumn hideCardMargins={hideCardMargins}>
             <TitleAndTextWrapper hideCardMargins={hideCardMargins}>
               {/* State: prefer URL-derived text while API is still loading */}
-              {stateFromUrl ? (
+              {previewState ? (
                 <StateName>
-                  {stateFromUrl}
+                  {previewState}
                 </StateName>
               ) : (
                 <Skeleton variant="text" width={80} height={12} sx={{ mb: 0.5 }} />
               )}
               {/* Name + optional Launch icon */}
               <Box display="flex" alignItems="center" gap={0.5} sx={{ mb: 0.5 }}>
-                {nameFromUrl ? (
+                {previewName ? (
                   <OneCampaignTitle>
-                    {nameFromUrl}
+                    {previewName}
                   </OneCampaignTitle>
                 ) : (
                   <Skeleton variant="text" width={200} height={24} />
@@ -162,6 +177,7 @@ CardForListBodySkeleton.propTypes = {
   hideCardMargins: PropTypes.bool,
   hideItemActionBar: PropTypes.bool,
   limitCardWidth: PropTypes.bool,
+  namePreviewText: PropTypes.string,
   showPoliticianOpenInNewWindow: PropTypes.bool,
   useVerticalCard: PropTypes.bool,
 };

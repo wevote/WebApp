@@ -229,6 +229,7 @@ class CandidateCardForList extends Component {
           useVerticalCard
           hideCardMargins
           limitCardWidth
+          namePreviewText={ballotItemDisplayName}
           profileImageBackgroundColor
         />
       </span>
@@ -238,6 +239,7 @@ class CandidateCardForList extends Component {
         <CardForListBody
           source="CandidateCardForList"
           ballotItemDisplayName={ballotItemDisplayName}
+          namePreviewText={ballotItemDisplayName}
           campaignSupported={campaignSupported}
           candidateWeVoteId={candidateWeVoteId}
           districtName={districtName}

@@ -23,6 +23,7 @@ import SvgImage from './Widgets/SvgImage';
 import extractPoliticianDetailsFromUrl from '../utils/extractPoliticianDetailsFromUrl';
 import lookupPageNameAndPageTypeDict from '../../utils/lookupPageNameAndPageTypeDict';
 import ClaimedProfileIcon from './Widgets/ClaimedProfileIcon';
+import { isPoliticianSEOFriendlyURL } from '../utils/isSEOFriendlyURL';
 
 const CampaignSupportThermometer = React.lazy(() => import(/* webpackChunkName: 'CampaignSupportThermometer' */ './CampaignSupport/CampaignSupportThermometer'));
 const ItemActionBar = React.lazy(() => import(/* webpackChunkName: 'ItemActionBar' */ '../../components/Widgets/ItemActionBar/ItemActionBar'));
@@ -35,7 +36,7 @@ function CardForListBody (props) {
   renderLog('CardForListBody');  // Set LOG_RENDER_EVENTS to log all renders
   const {
     ballotItemDisplayName,
-    candidateWeVoteId, classes, districtName, finalElectionDateInPast, hideCardMargins,
+    candidateWeVoteId, classes, districtName, finalElectionDateInPast, hideCardMargins, namePreviewText,
     hideItemActionBar, isClaimedProfile, limitCardWidth, linkedCampaignXWeVoteId, officeName,
     onDisplayNameClick, photoLargeUrl, politicalParty, politicianBasePath,
     politicianDescription, politicianWeVoteId, profileImageBackgroundColor,
@@ -73,7 +74,12 @@ function CardForListBody (props) {
   // console.log('politicianBasePath:', politicianBasePath);
   // console.log('CardForListBody politicianDetailsURL:', politicianDetailsURL, ', destinationPage: ', destinationPage);
   const location = useLocation();
-  const { state: stateFromUrl, name: nameFromUrl } = extractPoliticianDetailsFromUrl(location.pathname);
+  const urlDetails = isPoliticianSEOFriendlyURL(location.pathname)
+    ? extractPoliticianDetailsFromUrl(location.pathname)
+    : { state: null, name: null };
+  const stateFromUrl = urlDetails.state;
+  const nameFromUrl = urlDetails.name;
+  const displayName = ballotItemDisplayName || namePreviewText || nameFromUrl;
 
   // /////////////////////// START OF DISPLAY
   return (
@@ -92,7 +98,7 @@ function CardForListBody (props) {
               )}
               {hideCardMargins && isWebApp() ? (
                 <OneCampaignTitle>
-                  {highlightSearchText(ballotItemDisplayName || nameFromUrl, searchText)}
+                  {highlightSearchText(displayName, searchText)}
                   {showPoliticianOpenInNewWindow && (
                     <LaunchIconWrapper>
                       <Suspense fallback={<Skeleton variant="rounded" width={16} height={14} sx={{ display: 'inline-block', borderRadius: 0.5 }} />}>
@@ -140,7 +146,7 @@ function CardForListBody (props) {
                       }
                     }}
                   >
-                    {highlightSearchText(ballotItemDisplayName || nameFromUrl, searchText)}
+                    {highlightSearchText(displayName, searchText)}
                   </Link>
                 </OneCampaignTitleLink>
               )}
@@ -518,6 +524,7 @@ CardForListBody.propTypes = {
   isClaimedProfile: PropTypes.bool,
   limitCardWidth: PropTypes.bool,
   linkedCampaignXWeVoteId: PropTypes.string,
+  namePreviewText: PropTypes.string,
   officeName: PropTypes.string,
   onDisplayNameClick: PropTypes.func,
   photoLargeUrl: PropTypes.string,

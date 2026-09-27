@@ -243,6 +243,7 @@ class HeaderBar extends Component {
     const page = normalizedHrefPage();
     switch (page) {
       case 'ballot':
+      case 'ready':
         return 1;
       case 'candidatelist':
       case 'politicianpage':

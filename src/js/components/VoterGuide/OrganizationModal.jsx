@@ -33,12 +33,13 @@ import { Candidate, CandidateNameAndPartyWrapper, CandidateNameH4, CandidatePart
 import { DrawerHeaderAnimateDownInnerContainer, DrawerHeaderAnimateDownOuterContainer } from '../Style/drawerLayoutStyles';
 import ShowMoreButtons from '../Widgets/ShowMoreButtons';
 
-function OrganizationModalPoliticianCardSkeleton () {
+function OrganizationModalPoliticianCardSkeleton ({ namePreviewText }) {
   return (
     <CardForListBodySkeleton
       hideCardMargins
       hideItemActionBar
       limitCardWidth={false}
+      namePreviewText={namePreviewText}
       showPoliticianOpenInNewWindow
       useVerticalCard
     />
@@ -140,6 +141,7 @@ class OrganizationModal extends Component {
         ballotItemDisplayName,
         politicalParty,
         politicianImageUrlLarge,
+        politicianWeVoteId,
       });
       AnalyticsActions.saveActionCandidate(VoterStore.electionId(), ballotItemWeVoteId);
     }
@@ -478,10 +480,11 @@ class OrganizationModal extends Component {
         </DrawerHeaderAnimateDownOuterContainer>
         {((isCandidate || isPolitician) && !hideBallotItemInfo) && (
           <PoliticianCardForListWrapper>
-            <Suspense fallback={<OrganizationModalPoliticianCardSkeleton />}>
+            <Suspense fallback={<OrganizationModalPoliticianCardSkeleton namePreviewText={ballotItemDisplayName} />}>
               <PoliticianCardForList
                 hideCardMargins
                 hideItemActionBar
+                namePreviewText={ballotItemDisplayName}
                 politicianWeVoteId={politicianWeVoteId}
                 showPoliticianOpenInNewWindow
                 useCampaignSupportThermometer
