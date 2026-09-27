@@ -4,6 +4,7 @@ import React, { Component, Suspense } from 'react';
 import TagManager from 'react-gtm-module';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
+import { officialWebsites } from '../../../../srcCordova/js/common/constants/electionDataSources';
 import AppObservableStore from '../../common/stores/AppObservableStore';
 import { isAndroid, isWebApp } from '../../common/utils/isCordovaOrWebApp';
 import webAppConfig from '../../config';
@@ -91,6 +92,7 @@ class FooterMainWeVote extends Component {
   render () {
     const { classes } = this.props;
     const { voterContactEmailListCount } = this.state;
+    const govOnlyOfficialWebsites = officialWebsites.filter(linkUrl => linkUrl.includes('.gov/'));
 
     return (
       <Wrapper>
@@ -127,6 +129,28 @@ class FooterMainWeVote extends Component {
               </SearchEngineOptimizationColumn>
             </SearchEngineOptimizationRow>
           </SearchEngineOptimizationSection>
+        )}
+        {isAndroid() && (
+          <CordovaGovernmentOuterWrapper>
+            <h1>Government Information, Source Links</h1>
+            This app does not represent a government entity, it is published by
+            WeVote, a 501(c)(3) nonprofit organization that collects, organizes and displays nationwide ballot information from the official government sources listed below.
+            <CordovaGovernmentInnerWrapper>
+              <ul>
+                {govOnlyOfficialWebsites.map((item) => (
+                  <div key={item}>
+                    <li style={{fontSize: '16px'}}>
+                      <OpenExternalWebSite
+                        url={item}
+                        target="_blank"
+                        body={item}
+                      />
+                    </li>
+                  </div>
+                ))}
+              </ul>
+            </CordovaGovernmentInnerWrapper>
+          </CordovaGovernmentOuterWrapper>
         )}
         <TopSectionOuterWrapper>
           <TopSectionInnerWrapper>
@@ -227,18 +251,18 @@ class FooterMainWeVote extends Component {
                 </>
               )}
             </OneRow>
-            {isAndroid() && (
-              <OneRow>
-                <Link
-                  id="footerLinkGovernmentWebsites"
-                  to="/election-data"
-                  className={classes.link}
-                  onClick={() => this.pushDataLayer('/election-data', 'footerLinkGovernmentWebsites')}
-                >
-                  Government Information Sources
-                </Link>
-              </OneRow>
-            )}
+            {/*{isAndroid() && (*/}
+            {/*  <OneRow>*/}
+            {/*    <Link*/}
+            {/*      id="footerLinkGovernmentWebsites"*/}
+            {/*      to="/election-data"*/}
+            {/*      className={classes.link}*/}
+            {/*      onClick={() => this.pushDataLayer('/election-data', 'footerLinkGovernmentWebsites')}*/}
+            {/*    >*/}
+            {/*      Government Information Sources*/}
+            {/*    </Link>*/}
+            {/*  </OneRow>*/}
+            {/*)}*/}
             {isWebApp() && (
               <OneRow>
                 <Suspense fallback={<></>}>
@@ -408,6 +432,25 @@ const WeVoteName = styled('span')`
 `;
 
 const Wrapper = styled('div')`
+`;
+
+const CordovaGovernmentOuterWrapper = styled('div')`
+  background-color: #f6f2f4;
+  border-top: 1px solid darkgrey;
+  border-bottom: 1px solid darkgrey;
+  width: 100%;
+  padding: 24px 0;
+  margin-bottom: 24px;
+`;
+
+const CordovaGovernmentInnerWrapper = styled('div')`
+  display: grid;
+  grid-auto-flow: column;       /* Forces grid items into columns instead of rows */
+  grid-auto-columns: 300px;     /* Sets a fixed size for each pane */
+  gap: 16px;                    /* Adds spacing between panes */
+  overflow-x: auto;             /* Enables horizontal scrolling when content overflows */
+  overflow-y: hidden;           /* Hides vertical overflow */
+  padding: 10px;
 `;
 
 export default withStyles(styles)(FooterMainWeVote);

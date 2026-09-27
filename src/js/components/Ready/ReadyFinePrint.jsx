@@ -60,7 +60,13 @@ function ReadyFinePrint ({ contentUnfurledOnLoad, showStep3WhenCompressed, title
                 <StepText id="readyFinePrintStepTextb">
                   We Vote is a 501(c)(3) nonprofit organization (FEIN 47-2691544) that collects, organizes and displays nationwide ballot information collected from
                   {' '}
-                  <Link to="/election-data" className="u-link-color">official government websites</Link>
+                  {isAndroid() ? (
+                    <>
+                      official government websites.
+                    </>
+                  ) : (
+                      <Link to="/election-data" className="u-link-color">official government websites</Link>
+                  )}
                   . We work to include 100% of the items on your official ballot, but we can’t guarantee complete coverage.
                   WeVote should not be considered official government information.
                   WeVote strives to provide a balanced selection of clearly identified voting guides from newspapers, media, and nonpartisan sources.
