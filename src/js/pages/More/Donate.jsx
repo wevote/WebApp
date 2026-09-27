@@ -6,7 +6,6 @@ import React, { Component, Suspense } from 'react';
 import { GoogleReCaptcha, GoogleReCaptchaProvider } from 'react-google-recaptcha-v3';
 import TagManager from 'react-gtm-module';
 import { Helmet } from 'react-helmet-async';
-import { Link } from 'react-router-dom';
 import styled, { createGlobalStyle } from 'styled-components';
 import AnalyticsActions from '../../actions/AnalyticsActions';
 import DonateActions from '../../common/actions/DonateActions';
@@ -28,6 +27,7 @@ import { getPageDetails } from '../../utils/lookupPageNameAndPageTypeDict';
 
 const DonorboxEmbed = React.lazy(() => import(/* webpackChunkName: 'DonorboxEmbed' */ '../../common/components/Donation/DonorboxEmbed'));
 const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ '../../common/components/Widgets/OpenExternalWebSite'));
+const DonateFaqModal = React.lazy(() => import(/* webpackChunkName: 'DonateFaqModal' */ '../../components/More/DonateFaqModal'));
 
 /* global $ */
 
@@ -52,6 +52,7 @@ class Donate extends Component {
       // showWaiting: false,
       value: '7.00',
       readMore: false,
+      showDonateFaqModal: false,
       windowWidth: window.innerWidth,
       dataLayerSent: false,
     };
@@ -63,6 +64,7 @@ class Donate extends Component {
     this.onSuccessfulDonation = this.onSuccessfulDonation.bind(this);
     this.onVerifyCaptcha = this.onVerifyCaptcha.bind(this);
     this.onVoterStoreChange = this.onVoterStoreChange.bind(this);
+    this.toggleDonateFaqModal = this.toggleDonateFaqModal.bind(this);
   }
 
   componentDidMount () {
@@ -312,25 +314,21 @@ class Donate extends Component {
       </DonationDescription>
       {readMore && (
         <OpenExternalWebSiteWrapper>
-          <StyledLink
-            to="/donatefaq"
-            target="_blank"
-            rel="noopener noreferrer"
+          <DonateFaqButton
+            id="openDonateFaqModal"
+            type="button"
+            onClick={this.toggleDonateFaqModal}
           >
             Questions about donating?
-            <Launch
-              style={{
-                height: 14,
-                marginLeft: 2,
-                marginTop: '-3px',
-                width: 14,
-              }}
-            />
-          </StyledLink>
+          </DonateFaqButton>
         </OpenExternalWebSiteWrapper>
       )}
     </DonationDescriptionContainer>
   );
+
+  toggleDonateFaqModal () {
+    this.setState((prevState) => ({ showDonateFaqModal: !prevState.showDonateFaqModal }));
+  }
 
   changeValue (newValue) {
     const { joining } = this.state;
@@ -347,7 +345,7 @@ class Donate extends Component {
   render () {
     renderLog('Donate');  // Set LOG_RENDER_EVENTS to log all renders
     const { classes } = this.props;
-    const { isC4Donation, isSignedin, joining, value, isMonthly, preDonation, okToDonateWithoutAuth, windowWidth } = this.state;
+    const { isC4Donation, isSignedin, joining, value, isMonthly, preDonation, okToDonateWithoutAuth, showDonateFaqModal, windowWidth } = this.state;
 
     // Default donation goes to c3, unless we specify a donation to the c4
     let c3DonationHtml = '';
@@ -606,6 +604,14 @@ class Donate extends Component {
     return (
       <DonatePageContentContainer>
         {isC4Donation ? c4DonationHtml : c3DonationHtml}
+        {showDonateFaqModal && (
+          <Suspense fallback={<></>}>
+            <DonateFaqModal
+              show={showDonateFaqModal}
+              toggleModal={this.toggleDonateFaqModal}
+            />
+          </Suspense>
+        )}
       </DonatePageContentContainer>
     );
   }
@@ -889,8 +895,13 @@ const DonateParagraph = styled('p')`
     margin-bottom: ${isMobileScreenSize() ? '6px' : ''};
 `;
 
-const StyledLink = styled(Link)`
+const DonateFaqButton = styled('button')`
+  background-color: transparent;
+  border: none;
   color: ${DesignTokenColors.primary600};
+  cursor: pointer;
+  font: inherit;
+  padding: 0;
   text-decoration: none;
 
   &:hover {
