@@ -10,7 +10,8 @@ const initializejQuery = (afterFunction) => {
     if (isCordova()) {
       console.log('WARNING: jQuery was not loaded from index.html');
     }
-    import(/* webpackChunkName: 'jquery' */ 'jquery').then(({ default: jquery }) => {
+    // Do not put this in a chunk, it is always needed for basic operation, and MUST be present on startup in Cordova
+    import('jquery').then(({ default: jquery }) => {
       window.jQuery = jquery;
       window.$ = jquery;
       // console.log('jquery loaded');

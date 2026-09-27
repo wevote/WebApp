@@ -4,7 +4,7 @@ import React, { Component, Suspense } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { organizationalDonors, teamOfVolunteers } from '../constants/people';
-import { isWebApp } from '../utils/isCordovaOrWebApp';
+import { isAndroid, isWebApp } from '../utils/isCordovaOrWebApp';
 import { renderLog } from '../utils/logging';
 import AppObservableStore from '../stores/AppObservableStore';
 
@@ -35,13 +35,18 @@ class Credits extends Component {
               summary of open source software
             </Link>
             {' '}
-            WeVote uses, and the list of
-            {' '}
-            <Link to="/election-data" id="election-data" className="u-link-color">
-              official government websites
-            </Link>
-            {' '}
-            where we get ballot data.
+            WeVote uses
+            {!isAndroid() && (
+              <>
+              , and the list of
+              {' '}
+              <Link to="/election-data" id="election-data" className="u-link-color">
+                official government websites
+              </Link>
+              {' '}
+              where we get ballot data.
+              </>
+            )}
           </span>
           <CompanyWrapper>
             { organizationalDonors.map((item) => {
