@@ -284,14 +284,8 @@ class VoterPhoneVerificationEntry extends Component {
       });
       if (!shiftTabKeyPressed) {
         if (isMobileScreenSize()) {
-          if (this.props.showEmailOnlySignIn) {
-            this.props.showEmailOnlySignIn();
-            setTimeout(() => {
-              const nextField = document.getElementById('enterVoterEmailAddress');
-              if (nextField) {
-                nextField.focus();
-              }
-            }, 100);
+          if (this.props.showAllSignInOptions) {
+            this.props.showAllSignInOptions();
           }
         } else {
           const nextField = document.getElementById('enterVoterEmailAddress') || document.getElementById('openTermsOfService');
@@ -334,12 +328,14 @@ class VoterPhoneVerificationEntry extends Component {
     this.setState({ displayIncorrectPhoneNumberError: false });
     const textField = document.getElementById('enterVoterPhone');
     textField.innerText = '';
-    setTimeout(() => {
-      const nextField = document.getElementById('enterVoterEmailAddress');
-      if (nextField) {
-        nextField.focus();
-      }
-    }, 100);
+    if (!isMobileScreenSize()) {
+      setTimeout(() => {
+        const nextField = document.getElementById('enterVoterEmailAddress');
+        if (nextField) {
+          nextField.focus();
+        }
+      }, 100);
+    }
   };
 
   onFocus = () => {

@@ -270,7 +270,7 @@ export default class SignInOptionsPanel extends Component {
     // console.log('SignInOptionsPanel showEmailOnlySignIn');
     this.setState({
       hideAppleSignInButton: true,
-      hideCurrentlySignedInHeader: true,
+      hideCurrentlySignedInHeader: false,
       hideVoterEmailAddressEntry: false,
       hideFacebookSignInButton: true,
       hideTwitterSignInButton: true,
@@ -290,7 +290,7 @@ export default class SignInOptionsPanel extends Component {
     // console.log('SignInOptionsPanel showPhoneOnlySignIn');
     this.setState({
       hideAppleSignInButton: true,
-      hideCurrentlySignedInHeader: true,
+      hideCurrentlySignedInHeader: false,
       hideFacebookSignInButton: true,
       hideTwitterSignInButton: true,
       hideVoterEmailAddressEntry: true,
