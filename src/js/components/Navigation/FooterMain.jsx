@@ -49,13 +49,13 @@ class FooterMain extends Component {
 
     return (
       <OuterWrapper>
-        <InnerWrapper>
+        <FooterMainInnerWrapper>
           {inPrivateLabelMode ? (
             <FooterMainPrivateLabeled />
           ) : (
             <FooterMainWeVote />
           )}
-        </InnerWrapper>
+        </FooterMainInnerWrapper>
       </OuterWrapper>
     );
   }
@@ -67,7 +67,7 @@ FooterMain.propTypes = {
 const styles = () => ({
 });
 
-const InnerWrapper = styled('div')`
+const FooterMainInnerWrapper = styled('div')`
   align-items: center;
   display: flex;
   flex-flow: column;

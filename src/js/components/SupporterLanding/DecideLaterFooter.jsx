@@ -7,11 +7,11 @@ import DesignTokenColors from '../../common/components/Style/DesignTokenColors';
 // label vary per step.
 export default function DecideLaterFooter ({ prompt, linkText, onGoToNextStep }) {
   return (
-    <FooterWrapper>
+    <DecideLaterFooterWrapper>
       {prompt}
       {' - '}
       <GoLink type="button" onClick={onGoToNextStep}>{linkText}</GoLink>
-    </FooterWrapper>
+    </DecideLaterFooterWrapper>
   );
 }
 DecideLaterFooter.propTypes = {
@@ -24,7 +24,7 @@ DecideLaterFooter.defaultProps = {
   linkText: 'Go to Step 2',
 };
 
-const FooterWrapper = styled.div`
+const DecideLaterFooterWrapper = styled.div`
   color: ${DesignTokenColors.neutral800};
   font-size: 18px;
   padding: 8px 0;
