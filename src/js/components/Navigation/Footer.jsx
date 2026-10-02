@@ -1,10 +1,10 @@
 import withStyles from '@mui/styles/withStyles';
 import React, { Component, Suspense } from 'react';
 import styled from 'styled-components';
-import { normalizedHref } from '../../common/utils/hrefUtils';
-import { isWebApp } from '../../common/utils/isCordovaOrWebApp';
-import { handleResize } from '../../common/utils/isMobileScreenSize';
 import AppObservableStore, { messageService } from '../../common/stores/AppObservableStore';
+import { normalizedHref } from '../../common/utils/hrefUtils';
+import { isAndroid, isWebApp } from '../../common/utils/isCordovaOrWebApp';
+import { handleResize } from '../../common/utils/isMobileScreenSize';
 import { getApplicationViewBooleans } from '../../utils/applicationUtils';
 // importRemoveCordovaListenersToken2  -- Do not remove this line!
 
@@ -159,7 +159,7 @@ const FooterMainWrapper = styled('div')`
 `;
 
 const FooterWrapper = styled('div')`
-  // In Cordova, display=none, can be set in prepareForCordovaKeyboard()
+  ${isAndroid() && 'margin-top: -200px'}   // Remove gap when displaying CordovaGovernmentOuterWrapper
 `;
 
 export default withStyles(styles)(Footer);
