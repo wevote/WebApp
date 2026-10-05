@@ -1,22 +1,9 @@
 import PropTypes from 'prop-types';
 import React, { useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { isAndroid } from '../../common/utils/isCordovaOrWebApp';
 import { renderLog } from '../../common/utils/logging';
-import {
-  Dot,
-  InnerWrapper,
-  IntroHeader,
-  ListMaxWidth,
-  ListRow,
-  ListTitleRow,
-  ListWrapper,
-  OuterWrapper,
-  ShowMoreWrapper,
-  StepNumber,
-  StepNumberPlaceholder,
-  StepText,
-  StepTitle,
-} from '../Style/ReadyIntroductionStyles';
+import { Dot, InnerWrapper, IntroHeader, ListMaxWidth, ListRow, ListTitleRow, ListWrapper, OuterWrapper, ShowMoreWrapper, StepNumber, StepNumberPlaceholder, StepText, StepTitle, } from '../Style/ReadyIntroductionStyles';
 import ShowMoreButtons from '../Widgets/ShowMoreButtons';
 
 function ReadyFinePrint ({ contentUnfurledOnLoad, showStep3WhenCompressed, titleCentered, titleLarge }) {
