@@ -13,6 +13,7 @@ import { isAndroid } from '../../common/utils/isCordovaOrWebApp';
 import BallotStore from '../../stores/BallotStore';
 import OrganizationStore from '../../stores/OrganizationStore';
 import ballotSearchPriority from '../../utils/ballotSearchPriority';
+import { measureMatchesSearch, normalizedSearchTokens } from '../../utils/measureSearch';
 import opinionsAndBallotItemsSearchPriority from '../../utils/opinionsAndBallotItemsSearchPriority';
 import positionSearchPriority from '../../utils/positionSearchPriority';
 import voterGuidePositionSearchPriority from '../../utils/voterGuidePositionSearchPriority';
@@ -86,7 +87,10 @@ class FilterBaseSearch extends Component {
       this.setState({ searchText });
     }
     // If search value is empty, exit
-    if (!searchText.length) return [];
+    if (!searchText.length) {
+      this.props.onFilterBaseSearch('', []);
+      return [];
+    }
 
     this.timer = setTimeout(() => {
       if (!searchText) {
@@ -131,22 +135,21 @@ class FilterBaseSearch extends Component {
       addVoterGuideMode,
     } = this.props;
 
-    const searchWords = search.toLowerCase().match(/\b(\w+)\b/g) || [];
+    const searchWords = normalizedSearchTokens(search);
 
     return this.props.allItems.map((item) => {
-      // If no candidate list, return item as-is. If removed creates filter error
-      if (!item.candidate_list || item.candidate_list.length === 0) {
-        return item;
-      }
-      const filteredCandidates = item.candidate_list.filter(
+      const candidateList = item.candidate_list || [];
+      const filteredCandidates = candidateList.filter(
         (candidate) => searchWords.every(
           (searchWord) => candidate.ballot_item_display_name.toLowerCase().includes(searchWord),
         ),
       );
       const candidateMatchFound = filteredCandidates.length > 0;
-      const ballotItemNameMatch = searchWords.every(
-        (searchWord) => item.ballot_item_display_name.toLowerCase().includes(searchWord),
-      );
+      const ballotItemNameMatch = item.kind_of_ballot_item === 'MEASURE' ?
+        measureMatchesSearch(search, item) :
+        searchWords.every(
+          (searchWord) => item.ballot_item_display_name.toLowerCase().includes(searchWord),
+        );
 
       let searchResults;
       if (opinionsAndBallotItemsSearchMode) {
