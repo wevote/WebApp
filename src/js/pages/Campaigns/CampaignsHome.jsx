@@ -79,6 +79,8 @@ class CampaignsHome extends Component {
       numberOfRepresentativeResults: 99,
       numberOfRepresentativeSearchResults: 0,
       politicianWeVoteIdsAlreadyShown: [],
+      politicianWeVoteIdsShownAsCandidates: [],
+      politicianWeVoteIdsShownAsRepresentatives: [],
       representativeListOnYourBallot: [],
       representativeListShownAsRepresentatives: [],
       representativeListTimeStampOfChange: 0,
@@ -115,23 +117,25 @@ class CampaignsHome extends Component {
     // Note: sorting is being done in CandidateListRoot
     const candidateList = CandidateStore.getCandidateList();
     // console.log('ComponentDidMount candidateList', candidateList);
-    const { candidateListOnYourBallot, candidateListIsBattleground, candidateListOther } = this.splitUpCandidateList(candidateList);
-    // console.log('ComponentDidMount candidateListOther', candidateListOther);
+    const { candidateListOnYourBallot, candidateListIsBattleground, candidateListTopRow, politicianWeVoteIdsShownAsCandidates } = this.splitUpCandidateList(candidateList);
+    // console.log('ComponentDidMount candidateListTopRow', candidateListTopRow);
     this.setState({
       candidateList,
       candidateListIsBattleground,
       candidateListOnYourBallot,
-      candidateListOther,
+      candidateListTopRow,
       candidateListTimeStampOfChange: Date.now(),
+      politicianWeVoteIdsShownAsCandidates,
     }, () => this.onIncomingCandidateListChange(true));
 
     // /////////////////////////
     // Pulled from onRepresentativeStoreChange
     const representativeList = RepresentativeStore.getRepresentativeList();
     // Note: sorting is being done in RepresentativeListRoot
-    const { politicianWeVoteIdsAlreadyShown, representativeListOnYourBallot, representativeListShownAsRepresentatives } = this.splitUpRepresentativeList(representativeList); // representativeListIsBattleground
+    const { politicianWeVoteIdsShownAsRepresentatives, representativeListOnYourBallot, representativeListShownAsRepresentatives } = this.splitUpRepresentativeList(representativeList); // representativeListIsBattleground
     this.setState({
-      politicianWeVoteIdsAlreadyShown,
+      // politicianWeVoteIdsAlreadyShown,
+      politicianWeVoteIdsShownAsRepresentatives,
       representativeList,
       representativeListOnYourBallot,
       representativeListShownAsRepresentatives,
@@ -261,7 +265,7 @@ class CampaignsHome extends Component {
 
   onBallotStoreChange () {
     const { battlegroundDataFoundByStateDict, candidateList, stateCode } = this.state;
-    const { candidateListOnYourBallot, candidateListIsBattleground, candidateListOther } = this.splitUpCandidateList(candidateList);
+    const { candidateListOnYourBallot, candidateListIsBattleground, candidateListTopRow, politicianWeVoteIdsShownAsCandidates } = this.splitUpCandidateList(candidateList);
     const battlegroundDataFound = !!(candidateListIsBattleground && candidateListIsBattleground.length > 0);
     if (battlegroundDataFound) {
       battlegroundDataFoundByStateDict[stateCode] = true;
@@ -275,9 +279,13 @@ class CampaignsHome extends Component {
     this.setState({
       candidateListIsBattleground,
       candidateListOnYourBallot,
-      candidateListOther,
+      candidateListTopRow,
       candidateListTimeStampOfChange: Date.now(),
-    }, () => this.onIncomingCandidateListChange());
+      politicianWeVoteIdsShownAsCandidates,
+    }, () => {
+      this.onIncomingCandidateListChange();
+      this.refreshPoliticianListToShow();
+    });
   }
 
   onCampaignStoreChange () {
@@ -294,7 +302,7 @@ class CampaignsHome extends Component {
     const { battlegroundDataFoundByStateDict } = this.state;
     // console.log('onCandidateStoreChange candidateList', candidateList);
     // Note: sorting is being done in CandidateListRoot
-    const { candidateListOnYourBallot, candidateListIsBattleground, candidateListOther, stateCode } = this.splitUpCandidateList(candidateList);
+    const { candidateListOnYourBallot, candidateListIsBattleground, candidateListTopRow, stateCode, politicianWeVoteIdsShownAsCandidates } = this.splitUpCandidateList(candidateList);
     const battlegroundDataFound = !!(candidateListIsBattleground && candidateListIsBattleground.length > 0);
     if (battlegroundDataFound) {
       battlegroundDataFoundByStateDict[stateCode] = true;
@@ -309,9 +317,13 @@ class CampaignsHome extends Component {
       candidateList,
       candidateListIsBattleground,
       candidateListOnYourBallot,
-      candidateListOther,
+      candidateListTopRow,
       candidateListTimeStampOfChange: Date.now(),
-    }, () => this.onIncomingCandidateListChange());
+      politicianWeVoteIdsShownAsCandidates,
+    }, () => {
+      this.onIncomingCandidateListChange();
+      this.refreshPoliticianListToShow();
+    });
   }
 
   onPoliticianStoreChange () {
@@ -319,26 +331,24 @@ class CampaignsHome extends Component {
     // state/search) rather than getPoliticianList (every politician ever cached client-side). Otherwise, opening a
     // candidate's side drawer -- which triggers a one-off politicianRetrieve so the drawer has full profile data --
     // would cause that politician to unexpectedly appear in this page's "Politicians" row.
-    const politicianList = PoliticianStore.getPoliticianQueryResultsList();
-    // Note: sorting is being done in PoliticianListRoot
-    const { politicianListToShow } = this.splitUpPoliticianList(politicianList);  // representativeListIsBattleground
-    this.setState({
-      politicianListToShow,
-      politicianListTimeStampOfChange: Date.now(),
-    }, () => this.onIncomingPoliticianListChange());
+    this.refreshPoliticianListToShow();
   }
 
   onRepresentativeStoreChange () {
     const representativeList = RepresentativeStore.getRepresentativeList();
     // Note: sorting is being done in RepresentativeListRoot
-    const { politicianWeVoteIdsAlreadyShown, representativeListOnYourBallot, representativeListShownAsRepresentatives } = this.splitUpRepresentativeList(representativeList);  // representativeListIsBattleground
+    const { politicianWeVoteIdsShownAsRepresentatives, representativeListOnYourBallot, representativeListShownAsRepresentatives } = this.splitUpRepresentativeList(representativeList);  // representativeListIsBattleground
     this.setState({
-      politicianWeVoteIdsAlreadyShown,
+      // politicianWeVoteIdsAlreadyShown,
+      politicianWeVoteIdsShownAsRepresentatives,
       representativeList,
       representativeListOnYourBallot,
       representativeListShownAsRepresentatives,
       representativeListTimeStampOfChange: Date.now(),
-    }, () => this.onIncomingRepresentativeListChange());
+    }, () => {
+      this.onIncomingRepresentativeListChange();
+      this.refreshPoliticianListToShow();
+    });
   }
 
   onVoterStoreChange () {
@@ -393,11 +403,23 @@ class CampaignsHome extends Component {
     }, () => this.updateActiveFilters(setDefaultListMode));
   }
 
+  refreshPoliticianListToShow = () => {
+    // Note: We deliberately use getPoliticianQueryResultsList ... (keep existing comment)
+    const politicianList = PoliticianStore.getPoliticianQueryResultsList();
+    // Note: sorting is being done in PoliticianListRoot
+    const { politicianListToShow } = this.splitUpPoliticianList(politicianList);
+    this.setState({
+      politicianListToShow,
+      politicianListTimeStampOfChange: Date.now(),
+    }, () => this.onIncomingPoliticianListChange());
+  };
+
   orderByFilterOrder = (firstFilter, secondFilter) => firstFilter.filterOrder - secondFilter.filterOrder;
 
   splitUpCandidateList = (candidateList) => {
-    const { politicianWeVoteIdsAlreadyShown } = this.state;
+    const { politicianWeVoteIdsAlreadyShown, politicianWeVoteIdsShownAsRepresentatives } = this.state;
     // console.log('splitUpCandidateList, politicianWeVoteIdsAlreadyShown:', politicianWeVoteIdsAlreadyShown);
+    // console.log('splitUpCandidateList, politicianWeVoteIdsShownAsRepresentatives:', politicianWeVoteIdsShownAsRepresentatives);
     const candidateListOnYourBallot = BallotStore.getAllBallotItemsFlattened();
     // console.log('splitUpCandidateList, candidateListOnYourBallot:', candidateListOnYourBallot);
     const weVoteIdsOnYourBallot = extractAttributeValueListFromObjectList('we_vote_id', candidateListOnYourBallot);
@@ -405,36 +427,41 @@ class CampaignsHome extends Component {
     const candidateListIsBattleground = candidateListRemaining.filter((oneCandidate) => oneCandidate.is_battleground_race);
     const weVoteIdsIsBattlegroundRace = extractAttributeValueListFromObjectList('we_vote_id', candidateListIsBattleground);
     const candidateMinusBattleground = candidateListRemaining.filter((oneCandidate) => !arrayContains(oneCandidate.we_vote_id, weVoteIdsIsBattlegroundRace));
-    const candidateListOther = candidateMinusBattleground.filter((oneCandidate) => !arrayContains(oneCandidate.politician_we_vote_id, politicianWeVoteIdsAlreadyShown));
-
-    // console.log('------ candidateList.length: ', candidateList.length);
-    // console.log('------ candidateListOther.length: ', candidateListOther.length);
-
-    // Ok to remove once https://wevoteusa.atlassian.net/jira/software/projects/WV/issues/WV-282 is fixed
-    // console.log('------ candidateList biden: ', candidateList.find((x) => x.ballot_item_display_name === 'Joe Biden'));
-    // console.log('------ candidateList trump: ', candidateList.find((x) => x.ballot_item_display_name === 'Donald Trump'));
-    // console.log('candidateListOnYourBallot biden: ', candidateListOnYourBallot.find((x) => x.ballot_item_display_name === 'Joe Biden')?.ballot_item_display_name);
-    // console.log('weVoteIdsOnYourBallot: ', weVoteIdsOnYourBallot);
-    // console.log('candidateListRemaining biden: ', candidateListRemaining.find((x) => x.ballot_item_display_name === 'Joe Biden')?.ballot_item_display_name);
-    // console.log('politicianWeVoteIdsAlreadyShown: ', politicianWeVoteIdsAlreadyShown);
-    // console.log('candidateMinusBattleground biden: ', candidateMinusBattleground.find((x) => x.ballot_item_display_name === 'Joe Biden')?.ballot_item_display_name);
-    // console.log('candidateMinusBattleground trump: ', candidateMinusBattleground.find((x) => x.ballot_item_display_name === 'Donald Trump')?.ballot_item_display_name);
-    // console.log('candidateListOther candidate id biden: ', candidateListOther.find((x) => x.ballot_item_display_name === 'Joe Biden')?.politician_we_vote_id);
-    // console.log('candidateListOther candidate id trump: ', candidateListOther.find((x) => x.ballot_item_display_name === 'Donald Trump')?.politician_we_vote_id);
-    // console.log('candidateListOther biden: ', candidateListOther.find((x) => x.ballot_item_display_name === 'Joe Biden')?.ballot_item_display_name);
-    // console.log('candidateListOther trump: ', candidateListOther.find((x) => x.ballot_item_display_name === 'Donald Trump')?.ballot_item_display_name);
+    const politicianWeVoteIdsOnYourBallot = extractAttributeValueListFromObjectList('politician_we_vote_id', candidateListOnYourBallot);
+    const excludedIds = new Set([
+      ...politicianWeVoteIdsAlreadyShown,
+      ...politicianWeVoteIdsOnYourBallot,
+      ...politicianWeVoteIdsShownAsRepresentatives,
+    ]);
+    const candidateListTopRow = excludedIds.size > 0 ?
+      candidateMinusBattleground.filter((onePolitician) => !excludedIds.has(onePolitician.politician_we_vote_id)) :
+      candidateMinusBattleground;
+    const politicianWeVoteIdsShownAsCandidates = extractAttributeValueListFromObjectList('politician_we_vote_id', candidateListTopRow);
 
     return {
       candidateListOnYourBallot,
       candidateListIsBattleground,
-      candidateListOther,
+      candidateListTopRow,
+      politicianWeVoteIdsShownAsCandidates,
     };
   };
 
   splitUpPoliticianList = (politicianList) => {
     // console.log('politicianList = ', politicianList);
-    const { politicianWeVoteIdsAlreadyShown } = this.state;
-    const politicianListToShow = politicianList.filter((onePolitician) => !arrayContains(onePolitician.politician_we_vote_id, politicianWeVoteIdsAlreadyShown));
+    // console.log('splitUpPoliticianList START politicianList.length', politicianList.length);
+    // const startLength = politicianList.length;
+    const { politicianWeVoteIdsAlreadyShown, politicianWeVoteIdsShownAsCandidates, politicianWeVoteIdsShownAsRepresentatives } = this.state;
+    const candidateListOnYourBallot = BallotStore.getAllBallotItemsFlattened();
+    const politicianWeVoteIdsOnYourBallot = extractAttributeValueListFromObjectList('politician_we_vote_id', candidateListOnYourBallot);
+    const excludedIds = new Set([
+      ...politicianWeVoteIdsAlreadyShown,
+      ...politicianWeVoteIdsOnYourBallot,
+      ...politicianWeVoteIdsShownAsCandidates,
+      ...politicianWeVoteIdsShownAsRepresentatives,
+    ]);
+    const politicianListToShow = excludedIds.size > 0 ?
+      politicianList.filter((onePolitician) => !excludedIds.has(onePolitician.politician_we_vote_id)) :
+      politicianList;
     return {
       politicianListToShow,
     };
@@ -447,9 +474,10 @@ class CampaignsHome extends Component {
     const representativeListOnYourBallot = representativeList.filter((oneRepresentative) => arrayContains(oneRepresentative.politician_we_vote_id, politicianWeVoteIdsOnYourBallot));
     const representativeListShownAsRepresentatives = representativeList.filter((oneRepresentative) => !arrayContains(oneRepresentative.politician_we_vote_id, politicianWeVoteIdsOnYourBallot));
     const politicianWeVoteIdsShownAsRepresentatives = extractAttributeValueListFromObjectList('politician_we_vote_id', representativeListShownAsRepresentatives);
-    const politicianWeVoteIdsAlreadyShown = politicianWeVoteIdsOnYourBallot.concat(politicianWeVoteIdsShownAsRepresentatives);
+    // const politicianWeVoteIdsAlreadyShown = politicianWeVoteIdsOnYourBallot.concat(politicianWeVoteIdsShownAsRepresentatives);
     return {
-      politicianWeVoteIdsAlreadyShown,
+      // politicianWeVoteIdsAlreadyShown,
+      politicianWeVoteIdsShownAsRepresentatives,
       representativeListOnYourBallot,
       representativeListShownAsRepresentatives,
     };
@@ -557,9 +585,9 @@ class CampaignsHome extends Component {
   candidatesQueryInitiatedLocal = () => {
     // This gets fired after a state-specific request happens in FirstCandidateListController
     // console.log('CampaignsHome.candidatesQueryInitiatedLocal reset battlegroundWaitingForData to true');
-    this.setState({
-      // battlegroundWaitingForData: true,
-    });
+    // this.setState({
+    //   battlegroundWaitingForData: true,
+    // });
     const howLongWeWaitForData = 1000;
     this.timer = setTimeout(() => {
       const { battlegroundDataFoundByStateDict, battlegroundDataNotReturnedInTimeByStateDict, candidateListIsBattleground, stateCode } = this.state;
@@ -768,8 +796,8 @@ class CampaignsHome extends Component {
     renderLog('CampaignsHome');  // Set LOG_RENDER_EVENTS to log all renders
     const {
       campaignList, campaignListTimeStampOfChange,
-      campaignsShowing,
-      candidateListOther, candidateListTimeStampOfChange,
+      // campaignsShowing,
+      candidateListTopRow, candidateListTimeStampOfChange,
       candidateListIsBattleground, candidateListOnYourBallot,
       detailsListMode, filterYear,
       isSearching, listModeFiltersAvailable, listModeFiltersTimeStampOfChange,
@@ -780,7 +808,8 @@ class CampaignsHome extends Component {
       numberOfPoliticiansResults, numberOfPoliticiansSearchResults,
       numberOfRepresentativeResults, numberOfRepresentativeSearchResults,
       politicianListToShow, politicianListTimeStampOfChange,
-      representativeListOnYourBallot, representativeListShownAsRepresentatives, representativeListTimeStampOfChange,
+      representativeListShownAsRepresentatives, representativeListTimeStampOfChange,
+      // representativeListOnYourBallot,
       searchText, stateCode,
     } = this.state;
     // const numberOfAnyResults = numberOfCampaignResults + numberOfCandidatesOnBallotResults + numberOfCloseRacesResults + numberOfMorePoliticiansResults + numberOfRepresentativeResults;
@@ -826,8 +855,8 @@ class CampaignsHome extends Component {
       );
     }
 
-    const representativesShowing = (representativeListOnYourBallot && representativeListOnYourBallot.length > 0) || (representativeListShownAsRepresentatives && representativeListShownAsRepresentatives.length > 0);
-    const otherTitlesShown = (campaignsShowing && nextReleaseFeaturesEnabled) || (candidateListOnYourBallot && candidateListOnYourBallot.length > 0) || (candidateListIsBattleground && candidateListIsBattleground.length > 0) || representativesShowing;
+    // const representativesShowing = (representativeListOnYourBallot && representativeListOnYourBallot.length > 0) || (representativeListShownAsRepresentatives && representativeListShownAsRepresentatives.length > 0);
+    // const otherTitlesShown = (campaignsShowing && nextReleaseFeaturesEnabled) || (candidateListOnYourBallot && candidateListOnYourBallot.length > 0) || (candidateListIsBattleground && candidateListIsBattleground.length > 0) || representativesShowing;
     // const useMinimumBattlegroundHeight = this.useMinimumBattlegroundHeightForState(stateCode);
     // const displayBattlegroundPlaceholder = this.displayBattlegroundPlaceholderForState(stateCode);
     // console.log('CampaignsHome render politicianListToShow:', politicianListToShow);
@@ -875,17 +904,18 @@ class CampaignsHome extends Component {
         )}
         <WhatIsHappeningSection useMinimumHeight={!isSearching && numberOfMorePoliticiansResults > 0}>
           <Suspense fallback={<span><CandidateListRootPlaceholder /></span>}>
-            {(candidateListOther && candidateListOther.length > 0) && (
+            {(candidateListTopRow && candidateListTopRow.length > 0) && (
               <CandidateListRoot
                 hideIfNoResults
                 handleNumberOfResults={this.handleNumberOfMorePoliticiansResults}
-                incomingList={candidateListOther}
+                incomingList={candidateListTopRow}
                 incomingListTimeStampOfChange={candidateListTimeStampOfChange}
                 listModeFilters={listModeFiltersAvailable}
                 listModeFiltersTimeStampOfChange={listModeFiltersTimeStampOfChange}
                 searchText={searchText}
                 stateCode={stateCode}
-                titleTextForList={otherTitlesShown ? 'More Politicians' : 'Candidates'}
+                // titleTextForList={otherTitlesShown ? 'More Politicians' : 'Candidates'}
+                // titleTextForList="TEMP CandidateListRoot"
               />
             )}
           </Suspense>
@@ -902,7 +932,7 @@ class CampaignsHome extends Component {
                 listModeFiltersTimeStampOfChange={listModeFiltersTimeStampOfChange}
                 searchText={searchText}
                 stateCode={stateCode}
-                titleTextForList=""
+                // titleTextForList="TEMP PoliticianListRoot"
               />
             </Suspense>
           </WhatIsHappeningSection>
