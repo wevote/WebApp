@@ -562,7 +562,7 @@ class VoterEmailAddressEntry extends Component {
         return (
           <div key={voterEmailAddressFromList.email_we_vote_id}>
             <FirstRowPhoneOrEmail>
-              <span className="u-no-break">{voterEmailAddressFromList.normalized_email_address}</span>
+              <span className="u-wrap-links">{voterEmailAddressFromList.normalized_email_address}</span>
             </FirstRowPhoneOrEmail>
             <SecondRowPhoneOrEmail>
               {isPrimaryEmailAddress ? (
