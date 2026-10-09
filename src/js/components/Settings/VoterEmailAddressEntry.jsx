@@ -1,5 +1,14 @@
 import { Delete, Mail } from '@mui/icons-material';
-import { Button, InputAdornment, TextField } from '@mui/material';
+import {
+  Button,
+  InputAdornment,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableRow,
+  TextField,
+} from '@mui/material';
 import Alert from '@mui/material/Alert';
 import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
@@ -16,7 +25,7 @@ import { isCordova, isWebApp } from '../../common/utils/isCordovaOrWebApp';
 import isMobileScreenSize from '../../common/utils/isMobileScreenSize';
 import { renderLog } from '../../common/utils/logging';
 import VoterStore from '../../stores/VoterStore';
-import { FirstRowPhoneOrEmail, SecondRowPhoneOrEmail, SecondRowPhoneOrEmailDiv, AllPhoneOrEmailTypes } from '../Style/pageLayoutStyles';
+import { AllPhoneOrEmailTypes } from '../Style/pageLayoutStyles';
 import { ButtonContainerHorizontal } from '../Welcome/sectionStyles';
 import SettingsVerifySecretCode from '../../common/components/Settings/SettingsVerifySecretCode';
 import { validateEmail } from '../../utils/regex-checks';
@@ -46,6 +55,7 @@ class VoterEmailAddressEntry extends Component {
         verification_email_sent: false,
         movedInitialFocus: false,
       },
+      expandedEmailIds: {},
       hideExistingEmailAddresses: false,
       loading: false,
       // movedInitialFocus: false,
@@ -389,6 +399,13 @@ class VoterEmailAddressEntry extends Component {
     TagManager.dataLayer({ dataLayer: dataLayerObject });
   };
 
+  toggleEmailExpansion = (emailWeVoteId) => {
+    const { expandedEmailIds } = this.state;
+    this.setState({
+      expandedEmailIds: { ...expandedEmailIds, [emailWeVoteId]: !expandedEmailIds?.[emailWeVoteId] },
+    });
+  };
+
   render () {
     renderLog('VoterEmailAddressEntry');  // Set LOG_RENDER_EVENTS true to log all renders
     const { doNotRender } = this.props;
@@ -403,7 +420,7 @@ class VoterEmailAddressEntry extends Component {
     const { classes, hideEverythingButSignInWithEmailForm, hideSignInWithEmailForm, lockOpenEmailVerificationButton } = this.props;
     const {
       disableEmailVerificationButton, displayEmailVerificationButton,
-      displayIncorrectEmailError, emailAddressStatus, hideExistingEmailAddresses,
+      displayIncorrectEmailError, emailAddressStatus, expandedEmailIds, hideExistingEmailAddresses,
       secretCodeSystemLocked, showVerifyModal, signInCodeEmailSentAndWaitingForResponse,
       voterEmailAddress, voterEmailAddressList, voterEmailAddressListCount,
     } = this.state;
@@ -559,60 +576,71 @@ class VoterEmailAddressEntry extends Component {
         allowRemoveEmail = voterEmailAddressFromList.primary_email_address !== true;
         isPrimaryEmailAddress = voterEmailAddressFromList.primary_email_address === true;
 
+        const isExpanded = !!(expandedEmailIds && expandedEmailIds[voterEmailAddressFromList.email_we_vote_id]);
+
         return (
-          <div key={voterEmailAddressFromList.email_we_vote_id}>
-            <FirstRowPhoneOrEmail>
-              <span className="u-no-break">{voterEmailAddressFromList.normalized_email_address}</span>
-            </FirstRowPhoneOrEmail>
-            <SecondRowPhoneOrEmail>
+          <TableRow key={voterEmailAddressFromList.email_we_vote_id} classes={{ root: classes.tableRow }}>
+            <TableCell classes={{ root: classes.emailTableCell }}>
+              <EmailAddressWrapper
+                onClick={() => this.toggleEmailExpansion(voterEmailAddressFromList.email_we_vote_id)}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    this.toggleEmailExpansion(voterEmailAddressFromList.email_we_vote_id);
+                  }
+                }}
+                role="button"
+                tabIndex={0}
+                title={isExpanded ? 'Click to collapse' : voterEmailAddressFromList.normalized_email_address}
+              >
+                <EmailAddressText isExpanded={isExpanded}>
+                  {voterEmailAddressFromList.normalized_email_address}
+                </EmailAddressText>
+              </EmailAddressWrapper>
+            </TableCell>
+            <TableCell align="right" classes={{ root: classes.statusTableCell }}>
               {isPrimaryEmailAddress ? (
-                <SecondRowPhoneOrEmailDiv>
-                  <span>
-                    Primary
-                  </span>
-                  <span>
-                    <OverlayTrigger
-                      placement="right"
-                      overlay={(
-                        <Tooltip id="tooltip-top">
-                          You must add a new primary email before removing this one.
-                        </Tooltip>
-                      )}
-                    >
-                      <div>
-                        <span
-                          className="u-gray-border"
-                        >
-                          <Delete />
-                        </span>
-                      </div>
-                    </OverlayTrigger>
-                  </span>
-                </SecondRowPhoneOrEmailDiv>
+                <span className="u-no-break">
+                  Primary
+                </span>
               ) : (
-                <SecondRowPhoneOrEmailDiv key={`${voterEmailAddressFromList.email_we_vote_id}-internal`}>
-                  <span
-                    className="u-link-color u-cursor--pointer u-no-break"
-                    onClick={() => this.setAsPrimaryEmailAddress(voterEmailAddressFromList.email_we_vote_id)}
-                  >
-                    Make Primary
-                  </span>
-                  {allowRemoveEmail && (
-                  <span>
-                    <div>
-                      <span
-                        className="u-link-color u-cursor--pointer"
-                        onClick={() => this.removeVoterEmailAddress(voterEmailAddressFromList.email_we_vote_id)}
-                      >
-                        <Delete />
-                      </span>
-                    </div>
-                  </span>
-                  )}
-                </SecondRowPhoneOrEmailDiv>
+                <span
+                  className="u-link-color u-cursor--pointer u-no-break"
+                  onClick={() => this.setAsPrimaryEmailAddress(voterEmailAddressFromList.email_we_vote_id)}
+                >
+                  Make Primary
+                </span>
               )}
-            </SecondRowPhoneOrEmail>
-          </div>
+            </TableCell>
+            <TableCell align="right" classes={{ root: classes.deleteTableCell }}>
+              {isPrimaryEmailAddress ? (
+                <OverlayTrigger
+                  placement="top"
+                  overlay={(
+                    <Tooltip id={`tooltip-delete-${voterEmailAddressFromList.email_we_vote_id}`}>
+                      You must add a new primary email before removing this one.
+                    </Tooltip>
+                  )}
+                >
+                  <div>
+                    <span className="u-gray-border">
+                      <Delete />
+                    </span>
+                  </div>
+                </OverlayTrigger>
+              ) : (
+                allowRemoveEmail && (
+                  <div>
+                    <span
+                      className="u-link-color u-cursor--pointer"
+                      onClick={() => this.removeVoterEmailAddress(voterEmailAddressFromList.email_we_vote_id)}
+                    >
+                      <Delete />
+                    </span>
+                  </div>
+                )
+              )}
+            </TableCell>
+          </TableRow>
         );
       } else {
         return null;
@@ -627,39 +655,49 @@ class VoterEmailAddressEntry extends Component {
       if (!emailOwnershipIsVerified) {
         unverifiedEmailsFound = true;
         allowRemoveEmail = !voterEmailAddressFromList.primary_email_address;
-        isPrimaryEmailAddress = !!voterEmailAddressFromList.primary_email_address;
+        const isExpanded = !!(expandedEmailIds && expandedEmailIds[voterEmailAddressFromList.email_we_vote_id]);
+
         return (
-          <div key={voterEmailAddressFromList.email_we_vote_id}>
-            <div>
-              <FirstRowPhoneOrEmail>
-                {voterEmailAddressFromList.normalized_email_address}
-              </FirstRowPhoneOrEmail>
-              {voterEmailAddressFromList.email_ownership_is_verified ?
-                null : (
-                  <SecondRowPhoneOrEmail>
-                    <SecondRowPhoneOrEmailDiv key={`${voterEmailAddressFromList.email_we_vote_id}-internal`}>
-                      <span
-                        className="u-link-color u-cursor--pointer u-no-break"
-                        onClick={() => this.reSendSignInCodeEmail(voterEmailAddressFromList.normalized_email_address)}
-                        id="sendVerificationCodeAgain"
-                      >
-                        Send verification again
-                      </span>
-                      {allowRemoveEmail && (
-                        <span>
-                          <div
-                            className="u-link-color u-cursor--pointer"
-                            onClick={() => this.removeVoterEmailAddress(voterEmailAddressFromList.email_we_vote_id)}
-                          >
-                            <Delete />
-                          </div>
-                        </span>
-                      )}
-                    </SecondRowPhoneOrEmailDiv>
-                  </SecondRowPhoneOrEmail>
-                )}
-            </div>
-          </div>
+          <TableRow key={voterEmailAddressFromList.email_we_vote_id} classes={{ root: classes.tableRow }}>
+            <TableCell classes={{ root: classes.emailTableCell }}>
+              <EmailAddressWrapper
+                onClick={() => this.toggleEmailExpansion(voterEmailAddressFromList.email_we_vote_id)}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    this.toggleEmailExpansion(voterEmailAddressFromList.email_we_vote_id);
+                  }
+                }}
+                role="button"
+                tabIndex={0}
+                title={isExpanded ? 'Click to collapse' : voterEmailAddressFromList.normalized_email_address}
+              >
+                <EmailAddressText isExpanded={isExpanded}>
+                  {voterEmailAddressFromList.normalized_email_address}
+                </EmailAddressText>
+              </EmailAddressWrapper>
+            </TableCell>
+            <TableCell align="right" classes={{ root: classes.statusTableCell }}>
+              <span
+                className="u-link-color u-cursor--pointer"
+                onClick={() => this.reSendSignInCodeEmail(voterEmailAddressFromList.normalized_email_address)}
+                id="sendVerificationCodeAgain"
+              >
+                Send verification again
+              </span>
+            </TableCell>
+            <TableCell align="right" classes={{ root: classes.deleteTableCell }}>
+              {allowRemoveEmail && (
+                <div>
+                  <span
+                    className="u-link-color u-cursor--pointer"
+                    onClick={() => this.removeVoterEmailAddress(voterEmailAddressFromList.email_we_vote_id)}
+                  >
+                    <Delete />
+                  </span>
+                </div>
+              )}
+            </TableCell>
+          </TableRow>
         );
       } else {
         return null;
@@ -681,7 +719,13 @@ class VoterEmailAddressEntry extends Component {
                   {voterEmailAddressListCount > 1 ? 's' : ''}
                 </span>
                 {emailAddressStatusHtml}
-                {verifiedEmailListHtml}
+                <TableContainer className={classes.tableContainer}>
+                  <Table className={classes.table} aria-label="Verified email addresses">
+                    <TableBody>
+                      {verifiedEmailListHtml}
+                    </TableBody>
+                  </Table>
+                </TableContainer>
               </EmailSection>
             ) : (
               <span>
@@ -691,7 +735,13 @@ class VoterEmailAddressEntry extends Component {
             {unverifiedEmailsFound && (
               <EmailSection isWeb={isWebApp()}>
                 <span className="h3" id="emailVerifyTitle">Emails to Verify</span>
-                {toVerifyEmailListHtml}
+                <TableContainer className={classes.tableContainer}>
+                  <Table className={classes.table} aria-label="Emails to verify">
+                    <TableBody>
+                      {toVerifyEmailListHtml}
+                    </TableBody>
+                  </Table>
+                </TableContainer>
               </EmailSection>
             )}
           </AllPhoneOrEmailTypes>
@@ -745,7 +795,58 @@ const styles = {
       paddingRight: 10,
     },
   },
+  tableContainer: {
+    boxShadow: 'none',
+    marginBottom: 8,
+    marginTop: 8,
+    width: '100%',
+  },
+  table: {
+    tableLayout: 'fixed',
+    width: '100%',
+  },
+  tableRow: {
+    '&:last-child td': {
+      borderBottom: 0,
+    },
+  },
+  emailTableCell: {
+    padding: isWebApp() ? '8px 4px 8px 0' : '6px 2px 6px 0',
+  },
+  statusTableCell: {
+    padding: isWebApp() ? '8px 4px' : '6px 2px',
+    textAlign: 'right',
+    whiteSpace: 'normal',
+    width: isWebApp() ? '32%' : '35%',
+  },
+  deleteTableCell: {
+    padding: isWebApp() ? '8px 0 8px 4px' : '6px 0 6px 2px',
+    textAlign: 'right',
+    width: isWebApp() ? '13%' : '15%',
+  },
 };
+
+const EmailAddressWrapper = styled('div')`
+  cursor: pointer;
+  display: block;
+  outline: none;
+`;
+
+const EmailAddressText = styled('span', {
+  shouldForwardProp: (prop) => !['isExpanded'].includes(prop),
+})(({ isExpanded }) => (`
+  cursor: pointer;
+  display: block;
+  ${isExpanded ? `
+    white-space: normal;
+    word-break: break-all;
+  ` : `
+    max-width: ${isWebApp() ? '100%' : '140px'};
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  `}
+`));
 
 const ButtonsHiddenSpacer = styled('div')`
   height: 44px;
@@ -767,6 +868,7 @@ const EmailSection = styled('div', {
   shouldForwardProp: (prop) => !['isWeb'].includes(prop),
 })(({ isWeb }) => (`
   margin-top: ${isWeb ? '0' : '0'};
+  width: 100%;
 `));
 
 const Wrapper = styled('div', {
