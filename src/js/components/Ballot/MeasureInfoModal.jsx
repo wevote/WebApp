@@ -7,23 +7,30 @@ import ModalDisplayTemplateA2 from '../Widgets/ModalDisplayTemplateA2';
 export default function MeasureInfoModal ({
   initialTab, isOpen, measureText, measureSubtitle, measureTitle,
   measureUrl, measureWeVoteId, noVoteDescription, onClose, onTabChange,
-  yesVoteDescription,
+  referendumCon, referendumPro, yesVoteDescription,
 }) {
   const tabs = [
-    { label: 'Description' },
     {
       label: (
         <>
-          <span className="u-show-mobile">YES</span>
-          <span className="u-show-desktop-tablet">YES means</span>
+          <span className="u-show-mobile">Description</span>
+          <span className="u-show-desktop-tablet">Description</span>
         </>
       ),
     },
     {
       label: (
         <>
-          <span className="u-show-mobile">NO</span>
-          <span className="u-show-desktop-tablet">NO means</span>
+          <span className="u-show-mobile">Yes</span>
+          <span className="u-show-desktop-tablet">Yes means</span>
+        </>
+      ),
+    },
+    {
+      label: (
+        <>
+          <span className="u-show-mobile">No</span>
+          <span className="u-show-desktop-tablet">No means</span>
         </>
       ),
     },
@@ -61,6 +68,17 @@ export default function MeasureInfoModal ({
           <SourceBody>No description available.</SourceBody>
         </SourceBlock>
       )}
+      <IndependentSourcesHeader>FROM INDEPENDENT SOURCES</IndependentSourcesHeader>
+      <GreenBold>PRO</GreenBold>
+      {referendumPro ? (
+        <SourceBlock>
+          <SourceBody>{referendumPro}</SourceBody>
+        </SourceBlock>
+      ) : (
+        <SourceBlock>
+          <SourceBody>No argument available.</SourceBody>
+        </SourceBlock>
+      )}
     </TabContent>,
 
     // Tab 2 — NO means
@@ -72,6 +90,17 @@ export default function MeasureInfoModal ({
       ) : (
         <SourceBlock>
           <SourceBody>No description available.</SourceBody>
+        </SourceBlock>
+      )}
+      <IndependentSourcesHeader>FROM INDEPENDENT SOURCES</IndependentSourcesHeader>
+      <RedBold>CON</RedBold>
+      {referendumCon ? (
+        <SourceBlock>
+          <SourceBody>{referendumCon}</SourceBody>
+        </SourceBlock>
+      ) : (
+        <SourceBlock>
+          <SourceBody>No argument available.</SourceBody>
         </SourceBlock>
       )}
     </TabContent>,
@@ -110,6 +139,8 @@ MeasureInfoModal.propTypes = {
   noVoteDescription: PropTypes.string,
   onClose: PropTypes.func.isRequired,
   onTabChange: PropTypes.func,
+  referendumCon: PropTypes.string,
+  referendumPro: PropTypes.string,
   yesVoteDescription: PropTypes.string,
 };
 
@@ -121,6 +152,23 @@ const DescriptionTitle = styled.div`
   font-weight: 400;
   line-height: 1.2;
   margin: 0 0 4px 0;
+`;
+
+const GreenBold = styled('span')`
+  color: ${DesignTokenColors.confirmation700};
+  font-weight: bold;
+`;
+
+const IndependentSourcesHeader = styled('div')`
+  border-top: 1px solid #ddd;
+  padding-top: 12px;
+  color: ${DesignTokenColors.neutralUI400};
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  margin-bottom: 8px;
+  margin-top: 12px;
+  text-transform: uppercase;
 `;
 
 const ModalLink = styled.a`
@@ -148,7 +196,7 @@ const ModalSubtitle = styled.div`
 
 const ModalText = styled.div`
   color: ${DesignTokenColors.neutralUI700};
-  font-size: 14px;
+  // font-size: 14px;
   line-height: 1.5;
   white-space: pre-wrap;
 `;
@@ -162,13 +210,18 @@ const ModalTitle = styled.div`
   margin: 0 0 2px 0;
 `;
 
+const RedBold = styled('span')`
+  color: ${DesignTokenColors.alert700};
+  font-weight: bold;
+`;
+
 const SourceBlock = styled.div`
   margin-bottom: 16px;
 `;
 
 const SourceBody = styled.div`
   color: ${DesignTokenColors.neutralUI700};
-  font-size: 14px;
+  // font-size: 14px;
   line-height: 1.5;
   &::first-letter {
     text-transform: uppercase;
