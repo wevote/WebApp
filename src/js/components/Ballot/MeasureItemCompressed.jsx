@@ -93,6 +93,8 @@ class MeasureItemCompressed extends Component {
       measureUrl: measure.measure_url || '',
       measureWeVoteId,
       noVoteDescription: stripHtmlFromString(measure.no_vote_description),
+      referendumCon: stripHtmlFromString(measure.referendum_con),
+      referendumPro: stripHtmlFromString(measure.referendum_pro),
       yesVoteDescription: stripHtmlFromString(measure.yes_vote_description),
     });
     this.measureStoreListener = MeasureStore.addListener(this.onMeasureStoreChange.bind(this));
@@ -154,6 +156,8 @@ class MeasureItemCompressed extends Component {
       measureText: stripHtmlFromString(measure.measure_text),
       measureUrl: measure.measure_url || '',
       noVoteDescription: stripHtmlFromString(measure.no_vote_description),
+      referendumCon: stripHtmlFromString(measure.referendum_con),
+      referendumPro: stripHtmlFromString(measure.referendum_pro),
       yesVoteDescription: stripHtmlFromString(measure.yes_vote_description),
     });
   }
@@ -242,7 +246,7 @@ class MeasureItemCompressed extends Component {
       externalUniqueId, localUniqueId, measureSubtitle, measureText,
       measureUrl, measureWeVoteId, noVoteDescription, openOpinionModal,
       showInfoModal, infoModalActiveTab,
-      yesVoteDescription,
+      referendumCon, referendumPro, yesVoteDescription,
     } = this.state;
     let { ballotItemDisplayName } = this.state;
     if (!measureWeVoteId) {
@@ -298,7 +302,7 @@ class MeasureItemCompressed extends Component {
               </MeasureText>
             </MeasureDescriptionColumn>
 
-            {/* Middle column: endorsements + FROM INDEPENDENT SOURCES */}
+            {/* Middle column: endorsements + WHAT YOUR VOTE MEANS */}
             <EndorsementsAndSourcesColumn>
               {/* Support and Oppose endorsements side by side */}
               <EndorsementRow>
@@ -320,11 +324,11 @@ class MeasureItemCompressed extends Component {
                 </EndorsementColumn>
               </EndorsementRow>
 
-              {/* FROM INDEPENDENT SOURCES section */}
-              <IndependentSourcesSection>
-                <IndependentSourcesHeader>FROM INDEPENDENT SOURCES</IndependentSourcesHeader>
-                <IndependentSourcesColumns>
-                  <YesMeansColumn>
+              {/* WHAT YOUR VOTE MEANS section */}
+              <WhatYourVoteMeansSection>
+                <WhatYourVoteMeansHeader>WHAT YOUR VOTE MEANS</WhatYourVoteMeansHeader>
+                <WhatYourVoteMeansColumns>
+                  <YesMeansColumn onClick={() => this.openInfoModal(1)}>
                     <YesMeansTitle>
                       <GreenBold>YES</GreenBold>
                       {' means:'}
@@ -337,12 +341,12 @@ class MeasureItemCompressed extends Component {
                       <SourceDescription>No description available.</SourceDescription>
                     )}
                     {!!(yesVoteDescription) && (
-                      <SeeMoreLink onClick={() => this.openInfoModal(1)}>
+                      <SeeMoreLink>
                         See more
                       </SeeMoreLink>
                     )}
                   </YesMeansColumn>
-                  <NoMeansColumn>
+                  <NoMeansColumn onClick={() => this.openInfoModal(2)}>
                     <NoMeansTitle>
                       <RedBold>NO</RedBold>
                       {' means:'}
@@ -355,13 +359,13 @@ class MeasureItemCompressed extends Component {
                       <SourceDescription>No description available.</SourceDescription>
                     )}
                     {!!(noVoteDescription) && (
-                      <SeeMoreLink onClick={() => this.openInfoModal(2)}>
+                      <SeeMoreLink>
                         See more
                       </SeeMoreLink>
                     )}
                   </NoMeansColumn>
-                </IndependentSourcesColumns>
-              </IndependentSourcesSection>
+                </WhatYourVoteMeansColumns>
+              </WhatYourVoteMeansSection>
             </EndorsementsAndSourcesColumn>
 
             {/* Opinions column */}
@@ -369,6 +373,7 @@ class MeasureItemCompressed extends Component {
               <MeasureOpinionsColumn
                 measureWeVoteId={measureWeVoteId}
                 onModalClose={this.handleOpinionModalClose}
+                openInfoModal={this.openInfoModal}
                 openEditModalOnLoad={openOpinionModal}
               />
             </OpinionsColumn>
@@ -405,6 +410,8 @@ class MeasureItemCompressed extends Component {
           noVoteDescription={noVoteDescription}
           onClose={this.toggleInfoModal}
           onTabChange={this.handleInfoModalTabChange}
+          referendumCon={referendumCon}
+          referendumPro={referendumPro}
           yesVoteDescription={yesVoteDescription}
         />
 
@@ -474,24 +481,6 @@ const GreenBold = styled('span')`
   font-weight: bold;
 `;
 
-const IndependentSourcesColumns = styled('div')`
-  display: flex;
-  flex-direction: row;
-  gap: 24px;
-`;
-
-const IndependentSourcesHeader = styled('div')`
-  color: #999;
-  font-size: 12px;
-  font-weight: 600;
-  letter-spacing: 0.5px;
-  margin-bottom: 8px;
-  text-transform: uppercase;
-`;
-
-const IndependentSourcesSection = styled('div')`
-`;
-
 const ItemActionBarOutsideWrapper = styled('div')`
   align-items: center;
   box-sizing: border-box;
@@ -551,6 +540,7 @@ const MeasureTitleItem = styled('h1')`
 `;
 
 const NoMeansColumn = styled('div')`
+  cursor: pointer;
   flex: 1 1 0;
   min-width: 0;
 `;
@@ -610,7 +600,26 @@ const SubTitle = styled('h3')`
   ${constrainedTextMobileStyles}
 `;
 
+const WhatYourVoteMeansColumns = styled('div')`
+  display: flex;
+  flex-direction: row;
+  gap: 24px;
+`;
+
+const WhatYourVoteMeansHeader = styled('div')`
+  color: #999;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  margin-bottom: 8px;
+  text-transform: uppercase;
+`;
+
+const WhatYourVoteMeansSection = styled('div')`
+`;
+
 const YesMeansColumn = styled('div')`
+  cursor: pointer;
   flex: 1 1 0;
   min-width: 0;
 `;

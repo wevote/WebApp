@@ -28,6 +28,10 @@ export default function ballotSearchPriority (originalString, item, ignoreDescri
       oneWordScore += countMatches(searchNeedleString, item.ballot_item_display_name) * 10;
       foundInThisOfficeOrMeasure = true;
     }
+    if (countMatches(searchNeedleString, item.measure_subtitle)) {
+      oneWordScore += countMatches(searchNeedleString, item.measure_subtitle) * 5;
+      foundInThisOfficeOrMeasure = true;
+    }
     if (!ignoreDescriptionFields && countMatches(searchNeedleString, item.yes_vote_description)) {
       oneWordScore += countMatches(searchNeedleString, item.yes_vote_description) * 3;
       foundInThisOfficeOrMeasure = true;
@@ -43,7 +47,7 @@ export default function ballotSearchPriority (originalString, item, ignoreDescri
       <span>
         <strong>{item.ballot_item_display_name}</strong>
         {' '}
-        (name or description)
+        {item.measure_subtitle ? '(name, subtitle, or description)' : '(name or description)'}
       </span>
     );
     foundInArray.push(officeOrMeasureElement);
