@@ -15,6 +15,7 @@ import { stripHtmlFromString } from '../../common/utils/textFormat';
 import toTitleCase from '../../common/utils/toTitleCase';
 import BallotStore from '../../stores/BallotStore';
 import MeasureStore from '../../stores/MeasureStore';
+import SupportStore from '../../stores/SupportStore';
 import { constrainedTextMobileStyles } from '../Style/BallotStyles';
 import MeasureInfoModal from './MeasureInfoModal';
 import MeasureOpinionsColumn from './MeasureOpinionsColumn';
@@ -96,8 +97,9 @@ class MeasureItemCompressed extends Component {
       referendumCon: stripHtmlFromString(measure.referendum_con),
       referendumPro: stripHtmlFromString(measure.referendum_pro),
       yesVoteDescription: stripHtmlFromString(measure.yes_vote_description),
-    });
+    }, () => this.onSupportStoreChange());
     this.measureStoreListener = MeasureStore.addListener(this.onMeasureStoreChange.bind(this));
+    this.supportStoreListener = SupportStore.addListener(this.onSupportStoreChange.bind(this));
     this.resizeObserver = new ResizeObserver(() => {
       this.checkArrowVisibility();
     });
@@ -117,6 +119,7 @@ class MeasureItemCompressed extends Component {
 
   componentWillUnmount () {
     this.measureStoreListener.remove();
+    this.supportStoreListener.remove();
     if (this.resizeObserver) {
       this.resizeObserver.disconnect();
     }
@@ -160,6 +163,24 @@ class MeasureItemCompressed extends Component {
       referendumPro: stripHtmlFromString(measure.referendum_pro),
       yesVoteDescription: stripHtmlFromString(measure.yes_vote_description),
     });
+    this.onSupportStoreChange();
+  }
+
+  onSupportStoreChange () {
+    const { ballotItemDisplayName, measureWeVoteId } = this.state;
+    const ballotItemStatSheet = SupportStore.getBallotItemStatSheet(measureWeVoteId, '');
+    // console.log('MeasureItemCompressed onSupportStoreChange, ballotItemDisplayName:', ballotItemDisplayName, ', measureWeVoteId: ', measureWeVoteId, ', ballotItemStatSheet:', ballotItemStatSheet);
+    if (ballotItemStatSheet) {
+      const {
+        voterOpposesBallotItem,
+        voterSupportsBallotItem,
+      } = ballotItemStatSheet;
+
+      this.setState({
+        voterOpposesBallotItem,
+        voterSupportsBallotItem,
+      });
+    }
   }
 
   onClickShowOrganizationModalWithBallotItemInfo () {
@@ -246,7 +267,7 @@ class MeasureItemCompressed extends Component {
       externalUniqueId, localUniqueId, measureSubtitle, measureText,
       measureUrl, measureWeVoteId, noVoteDescription, openOpinionModal,
       showInfoModal, infoModalActiveTab,
-      referendumCon, referendumPro, yesVoteDescription,
+      referendumCon, referendumPro, voterOpposesBallotItem, voterSupportsBallotItem, yesVoteDescription,
     } = this.state;
     let { ballotItemDisplayName } = this.state;
     if (!measureWeVoteId) {
@@ -258,9 +279,10 @@ class MeasureItemCompressed extends Component {
     }
     const measureSubtitleCapitalized = toTitleCase(measureSubtitle);
     ballotItemDisplayName = toTitleCase(ballotItemDisplayName);
+    // console.log('MeasureItemCompressed render, ballotItemDisplayName: ', ballotItemDisplayName, ', voterOpposesBallotItem:', voterOpposesBallotItem, ', voterSupportsBallotItem: ', voterSupportsBallotItem);
 
     return (
-      <MeasureItemCompressedWrapper>
+      <MeasureItemCompressedWrapper votingNo={voterOpposesBallotItem} votingYes={voterSupportsBallotItem}>
         <MeasureTitleItem onClick={this.onClickShowOrganizationModalWithBallotItemInfoAndPositions}>
           {ballotDisplay[0]}
         </MeasureTitleItem>
@@ -500,22 +522,30 @@ const MeasureDescriptionColumn = styled('div')`
   padding: 0 16px 8px 8px;
 `;
 
-const MeasureItemCompressedWrapper = styled('div')`
+const MeasureItemCompressedWrapper = styled('div', {
+  shouldForwardProp: (prop) => !['votingNo, votingYes'].includes(prop),
+})(({ votingNo, votingYes }) => `
+  ${votingNo ? `background-color: ${DesignTokenColors.alert50}` : ''};
+  ${votingYes ? `background-color: ${DesignTokenColors.confirmation50}` : ''};
   border: none;
   display: flex;
   flex-direction: column;
   margin-bottom: 60px;
+  ${votingNo ? `border-left: 5px solid ${DesignTokenColors.alert700}` : ''};
+  ${votingYes ? `border-left: 5px solid ${DesignTokenColors.confirmation900}` : ''};
+  padding-left: 8px;
+  padding-top: 8px;
   position: relative;
   transition: box-shadow 0.2s ease, background-color 0.3s ease;
   &:hover {
-    background-color: ${DesignTokenColors.neutral50};
+    ${(!votingNo && !votingYes) ? `background-color: ${DesignTokenColors.neutral50}` : ''};
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.12);
   }
   ${LeftArrowOuterWrapper},
   ${RightArrowOuterWrapper} {
     background: transparent;
   }
-`;
+`);
 
 const MeasureText = styled('div')`
   color: #777;
