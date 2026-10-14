@@ -169,6 +169,7 @@ function VerifyWithEmailModal ({ closeVerifyWithEmailModal, politicianName, poli
 
   const closeSignInModalFromVerifySecretCode = () => {
     // console.log('VoterEmailAddressEntry closeSignInModalFromVerifySecretCode');
+    AppObservableStore.setShowClaimProfileWithEmailModal(false);
     setTimeout(() => {
       VoterActions.clearSecretCodeVerificationStatusAndEmail();
     }, 1000);
@@ -177,10 +178,10 @@ function VerifyWithEmailModal ({ closeVerifyWithEmailModal, politicianName, poli
 
   const closeVerifyModalFromVerifySecretCode = () => {
     // console.log('VoterEmailAddressEntry closeVerifyModalFromVerifySecretCode');
+    AppObservableStore.setShowClaimProfileWithEmailModal(false);
     setTimeout(() => {
       // A timer hack to prevent a "React state update on an unmounted component"
       VoterActions.clearSecretCodeVerificationStatusAndEmail();
-      AppObservableStore.setShowClaimProfileWithEmailModal(false);
     }, 1000);
     setShowVerifyModal(false);
   };
