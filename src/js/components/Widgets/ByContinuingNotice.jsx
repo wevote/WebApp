@@ -1,43 +1,53 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import { isCordova, isWebApp } from '../../common/utils/isCordovaOrWebApp';
+import React, { useState } from 'react';
+import styled from 'styled-components';
+import LegalPoliciesModal from '../More/LegalPoliciesModal';
 
-
-
-const ByContinuingNotice = (params) => {
-  const { cordovaClose } = params;
-
-  const closeModal = () => {
-    if (isCordova() && cordovaClose) {
-      cordovaClose();
-    }
-  }
+const ByContinuingNotice = () => {
+  const [legalModalTab, setLegalModalTab] = useState(null);
 
   return (
     <>
       By continuing, you accept WeVote.US&apos;s
       <br />
       {' '}
-      <Link className="open-web-site"
-            id="ByContinuingNoticeTerms"
-            to="/more/terms"
-            onClick={closeModal}
-            target={isWebApp() ? "_blank" : ""}>
+      <LinkButton
+        className="open-web-site"
+        id="ByContinuingNoticeTerms"
+        type="button"
+        onClick={() => setLegalModalTab('terms')}
+      >
         <span className="u-no-break">Terms of Service</span>
-      </Link>
+      </LinkButton>
       {' '}
       and
       {' '}
-      <Link className="open-web-site"
-            id="ByContinuingNoticePrivacy"
-            to="/privacy"
-            onClick={closeModal}
-            target={isWebApp() ? "_blank" : ""}>
+      <LinkButton
+        className="open-web-site"
+        id="ByContinuingNoticePrivacy"
+        type="button"
+        onClick={() => setLegalModalTab('privacy')}
+      >
         <span className="u-no-break">Privacy Policy</span>
-      </Link>
+      </LinkButton>
       .
+      {legalModalTab && (
+        <LegalPoliciesModal
+          isOpen={!!legalModalTab}
+          onClose={() => setLegalModalTab(null)}
+          initialTab={legalModalTab}
+        />
+      )}
     </>
-  )
-}
+  );
+};
+
+const LinkButton = styled.button`
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  font: inherit;
+  text-decoration: none;
+`;
 
 export default ByContinuingNotice;
