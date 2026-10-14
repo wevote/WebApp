@@ -10,8 +10,8 @@ export default class BallotItemCompressed extends PureComponent {
     const {
       ballotItemDisplayName, candidateList, candidatesToShowForSearchResults,
       foundInSearchWords,
-      isFirstBallotItem, isMeasure, primaryParty,
-      useHelpDefeatOrHelpWin, weVoteId,
+      isFirstBallotItem, isMeasure, officeExplanation, primaryParty,
+      useHelpDefeatOrHelpWin, videoUrlHorizontal, videoUrlVertical, weVoteId,
     } = this.props;
     return (
       <div id={weVoteId}>
@@ -28,9 +28,12 @@ export default class BallotItemCompressed extends PureComponent {
             // disableAutoRollUp
             foundInSearchWords={foundInSearchWords}
             isFirstBallotItem={isFirstBallotItem}
+            officeExplanation={officeExplanation}
             officeWeVoteId={weVoteId}
             primaryParty={primaryParty}
             useHelpDefeatOrHelpWin={useHelpDefeatOrHelpWin}
+            videoUrlHorizontal={videoUrlHorizontal}
+            videoUrlVertical={videoUrlVertical}
           />
         )}
       </div>
@@ -44,7 +47,10 @@ BallotItemCompressed.propTypes = {
   foundInSearchWords: PropTypes.bool,
   isFirstBallotItem: PropTypes.bool,
   isMeasure: PropTypes.bool,
+  officeExplanation: PropTypes.string,
   primaryParty: PropTypes.string,
   useHelpDefeatOrHelpWin: PropTypes.bool,
+  videoUrlHorizontal: PropTypes.string,
+  videoUrlVertical: PropTypes.string,
   weVoteId: PropTypes.string.isRequired,
 };

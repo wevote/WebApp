@@ -339,9 +339,12 @@ function Office () {
                 // id={chipLabelText(item.ballot_item_display_name)}
                 // isFirstBallotItem={isFirstBallotItem}
                 // isMeasure={item.kind_of_ballot_item === TYPES.MEASURE}
+                officeExplanation={office.office_explanation_text}
                 // primaryParty={item.primary_party}
                 // totalNumberOfBallotItems={totalNumberOfBallotItems}
                 useHelpDefeatOrHelpWin
+                videoUrlHorizontal={office.video_url_horizontal}
+                videoUrlVertical={office.video_url_vertical}
                 weVoteId={office.we_vote_id}
               // key={key}
               />

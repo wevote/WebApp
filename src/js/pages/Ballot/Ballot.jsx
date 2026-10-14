@@ -1585,9 +1585,12 @@ class Ballot extends Component {
                                         id={chipLabelText(item.ballot_item_display_name)}
                                         isFirstBallotItem={isFirstBallotItem}
                                         isMeasure={item.kind_of_ballot_item === TYPES.MEASURE}
+                                        officeExplanation={item.office_explanation_text}
                                         primaryParty={item.primary_party}
                                         totalNumberOfBallotItems={totalNumberOfBallotItems}
                                         useHelpDefeatOrHelpWin
+                                        videoUrlHorizontal={item.video_url_horizontal}
+                                        videoUrlVertical={item.video_url_vertical}
                                         weVoteId={item.we_vote_id}
                                         key={key}
                                       />
