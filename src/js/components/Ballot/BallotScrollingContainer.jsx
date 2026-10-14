@@ -401,6 +401,7 @@ const CandidateCardWrapper = styled('div', {
   display: flex;
   flex-direction: column;
   background-color: ${$isChosen ? DesignTokenColors.confirmation50 : ''};
+  border-left: ${$isChosen ? `5px solid ${DesignTokenColors.confirmation900}` : ''};
   box-shadow: ${$isChosen ? '0 2px 4px rgba(0, 0, 0, 0.12)' : 'none'};
   transition: box-shadow 0.2s ease, background-color 0.3s ease;
   border-bottom: 1px solid #ddd;

@@ -43,6 +43,7 @@ class SupportStore extends ReduceStore {
       allCachedPositions = CandidateStore.getAllCachedPositionsByCandidateWeVoteId(ballotItemWeVoteId);
     } else if (isMeasure) {
       allCachedPositions = MeasureStore.getAllCachedPositionsByMeasureWeVoteId(ballotItemWeVoteId);
+      // console.log('getBallotItemStatSheet isMeasure:, ', ballotItemWeVoteId, ', allCachedPositions:', allCachedPositions);
     } else if (isPolitician) {
       allCachedPositions = CandidateStore.getAllCachedPositionsByPoliticianWeVoteId(politicianWeVoteId);
       // console.log('getBallotItemStatSheet isPolitician:, ', politicianWeVoteId, ', allCachedPositions:', allCachedPositions);
