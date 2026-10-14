@@ -150,12 +150,15 @@ class OfficeItemCompressed extends Component {
     // console.log('OfficeItemCompressed render');
 
     let { ballotItemDisplayName } = this.props;
-    const { hideOfficeHeader, isFirstBallotItem, officeWeVoteId, primaryParty, useHelpDefeatOrHelpWin } = this.props;
+    const {
+      hideOfficeHeader, isFirstBallotItem, officeWeVoteId, officeExplanation,
+      primaryParty, useHelpDefeatOrHelpWin, videoUrlHorizontal, videoUrlVertical,
+    } = this.props;
     const { candidateListLength, showAllCandidates, totalNumberOfCandidates, moreInfoIconHovered } = this.state;
     ballotItemDisplayName = toTitleCase(ballotItemDisplayName).replace('(Unexpired)', '(Remainder)');
     const candidatesToRenderCount = this.getCandidatesToRenderCount();
     const moreCandidatesToDisplay = candidatesToRenderCount < totalNumberOfCandidates;
-    const officeExplanationExists = false; // TODO: Add logic to check if officeExplanation exists
+    const officeExplanationExists = !!officeExplanation;
 
     return (
       <OfficeItemCompressedWrapper>
@@ -234,8 +237,11 @@ class OfficeItemCompressed extends Component {
             <OfficeInfoModal
               isOpen={this.state.officeInfoModalOpen}
               onClose={this.closeOfficeInfoModal}
+              officeExplanation={officeExplanation}
               officeName={ballotItemDisplayName}
               officeWeVoteId={officeWeVoteId}
+              videoUrlHorizontal={videoUrlHorizontal}
+              videoUrlVertical={videoUrlVertical}
             />
           </Suspense>
         )}
@@ -250,9 +256,12 @@ OfficeItemCompressed.propTypes = {
   disableAutoRollUp: PropTypes.bool,
   hideOfficeHeader: PropTypes.bool,
   isFirstBallotItem: PropTypes.bool,
+  officeExplanation: PropTypes.string,
   organizationWeVoteId: PropTypes.string,
   primaryParty: PropTypes.string,
   useHelpDefeatOrHelpWin: PropTypes.bool,
+  videoUrlHorizontal: PropTypes.string,
+  videoUrlVertical: PropTypes.string,
 };
 
 // OneOfficeCandidateList takes the list of candidates from props, renders them.

@@ -29,7 +29,7 @@ class ModalDisplayTemplateA extends Component {
   render () {
     renderLog('ModalDisplayTemplateA');  // Set LOG_RENDER_EVENTS to log all renders
     const {
-      classes, dialogTitleJSX, externalUniqueId, show, tallMode, textFieldJSX,
+      classes, dialogTitleJSX, disableEnforceFocus, externalUniqueId, show, tallMode, textFieldJSX,
     } = this.props;
     const { isContentScrolled } = this.state;
     let dialogPaperCombined;
@@ -42,6 +42,7 @@ class ModalDisplayTemplateA extends Component {
     return (
       <Dialog
         classes={{ paper: dialogPaperCombined }}
+        disableEnforceFocus={disableEnforceFocus}
         onClose={() => this.props.toggleModal()}
         open={show}
         style={{ paddingTop: `${isCordova() ? '75px' : 'undefined'}` }}
@@ -85,6 +86,7 @@ class ModalDisplayTemplateA extends Component {
 ModalDisplayTemplateA.propTypes = {
   classes: PropTypes.object,
   dialogTitleJSX: PropTypes.object,
+  disableEnforceFocus: PropTypes.bool,
   externalUniqueId: PropTypes.string,
   show: PropTypes.bool,
   tallMode: PropTypes.bool,
