@@ -7,8 +7,7 @@ phases:
     on-failure: ABORT
     commands:
       - echo "Purging Fastly Cache"
-      - |
-        curl -f -i -X POST \
+      - curl -f -i -X POST \
           -H "Fastly-Key: $FASTLY_API_KEY" \
           -H "fastly-soft-purge: 1" \
           -H "Accept: application/json" \
