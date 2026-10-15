@@ -8,4 +8,8 @@ phases:
     commands:
       - echo "Purging Fastly Cache"
       - |
-        curl -i -X POST -H "Fastly-Key: $FASTLY_API_KEY" -H "Accept: application/json" https://api.fastly.com/purge/wevote.us/
+        curl -i -X POST \
+          -H "Fastly-Key: $FASTLY_API_KEY" \
+          -H "Fastly-Soft-Purge: 1" \
+          -H "Accept: application/json" \
+          https://api.fastly.com/service/$FASTLY_SERVICE_ID/purge/wv-app-shell
