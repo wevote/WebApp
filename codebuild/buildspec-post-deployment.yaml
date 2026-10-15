@@ -10,6 +10,6 @@ phases:
       - |
         curl -i -X POST \
           -H "Fastly-Key: $FASTLY_API_KEY" \
-          -H "Fastly-Soft-Purge: 1" \
+          -H "fastly-soft-purge: 1" \
           -H "Accept: application/json" \
           https://api.fastly.com/service/$FASTLY_SERVICE_ID/purge/wv-app-shell
