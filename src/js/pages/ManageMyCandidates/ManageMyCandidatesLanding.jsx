@@ -120,6 +120,14 @@ export default function ManageMyCandidatesLanding () {
     handleNavScroll();
   }, []);
 
+  useEffect(() => {
+  if (politiciansToManage.length === 1) {
+    setSelectedPoliticianWeVoteId(
+      politiciansToManage[0].politician_we_vote_id
+    );
+  }
+}, [politiciansToManage]);
+
   // Main render
   const handleClaimEdit = () => history.push(`/candidate/${selectedPoliticianWeVoteId}/edit`);
   const handleClaimImport = () => history.push('/managecandidates');
@@ -135,6 +143,7 @@ export default function ManageMyCandidatesLanding () {
           <PageKicker>Manage my candidates</PageKicker>
           <TitleRow>
             <Title>{selectedPolitician?.politician_name || 'Select candidate'}</Title>
+            { politiciansToManage.length > 1 &&(
             <CandidatePicker
               type="button"
               aria-haspopup="listbox"
@@ -155,6 +164,7 @@ export default function ManageMyCandidatesLanding () {
                 ))}
               </PickerMenu>
             </CandidatePicker>
+            )}
           </TitleRow>
         </div>
       </HeaderRow>
