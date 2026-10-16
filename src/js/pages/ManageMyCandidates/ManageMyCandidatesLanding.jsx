@@ -6,9 +6,11 @@ import { useHistory, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import TagManager from 'react-gtm-module';
 import DesignTokenColors from '../../common/components/Style/DesignTokenColors';
+import PoliticianActions from '../../common/actions/PoliticianActions';
 import PoliticianStore from '../../common/stores/PoliticianStore';
 import { ImportInviteIcon } from '../../components/More/ImportInviteIcon';
 import { PageContentContainer } from '../../components/Style/pageLayoutStyles';
+import AppObservableStore from '../../common/stores/AppObservableStore';
 import VoterStore from '../../stores/VoterStore';
 import { getPageDetails } from '../../utils/lookupPageNameAndPageTypeDict';
 
@@ -65,7 +67,7 @@ export default function ManageMyCandidatesLanding () {
   const selectedPolitician = politiciansToManage.find((politician) => politician.politician_we_vote_id === selectedPoliticianWeVoteId) || null;
 
   useEffect(() => {
-    if (!selectedPoliticianWeVoteId && politiciansToManage.length > 0) {
+    if ((!selectedPoliticianWeVoteId && politiciansToManage.length > 0) || politiciansToManage.length === 1) {
       setSelectedPoliticianWeVoteId(politiciansToManage[0].politician_we_vote_id);
     }
   }, [politiciansToManage, selectedPoliticianWeVoteId]);
@@ -120,16 +122,18 @@ export default function ManageMyCandidatesLanding () {
     handleNavScroll();
   }, []);
 
-  useEffect(() => {
-  if (politiciansToManage.length === 1) {
-    setSelectedPoliticianWeVoteId(
-      politiciansToManage[0].politician_we_vote_id
-    );
-  }
-}, [politiciansToManage]);
 
   // Main render
-  const handleClaimEdit = () => history.push(`/candidate/${selectedPoliticianWeVoteId}/edit`);
+  const handleClaimEdit = useCallback(() => {
+    const politician = PoliticianStore.getPoliticianByWeVoteId(selectedPoliticianWeVoteId);
+    if (!politician?.politician_we_vote_id) return;
+    PoliticianActions.politicianRetrieve(politician.politician_we_vote_id);
+    AppObservableStore.setPoliticianWeVoteIdBeingViewed(selectedPoliticianWeVoteId);
+    AppObservableStore.setDrawerOpen('politicianSelfEditDrawerOpen', true);
+
+  }, [selectedPoliticianWeVoteId]);
+
+
   const handleClaimImport = () => history.push('/managecandidates');
   const handleClaimTracking = () => history.push('/managecandidates/tracking');
   const handleClaimAnalytics = () => history.push('/managecandidates/analytics');
@@ -219,7 +223,7 @@ export default function ManageMyCandidatesLanding () {
 
           <SideDivider />
 
-          <NavPill id="editCandidateProfileNavButton-desktop" as="button" $active={false} onClick={() => { pushDataLayer('editCandidateProfileNavButton-desktop', selectedPoliticianWeVoteId); handleClaimEdit(); }}>
+          <NavPill id="editCandidateProfileNavButton-desktop" as="button" $active={false} onClick={() => { pushDataLayer('editCandidateProfileNavButton-desktop', selectedPoliticianWeVoteId);handleClaimEdit(); }}>
             <PillIcon><EditIcon fontSize="small" /></PillIcon>
             Edit candidate profile
           </NavPill>
