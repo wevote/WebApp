@@ -17,7 +17,7 @@ import { isIPad } from '../../common/utils/cordovaUtils';
 import { formatDateToMonthDayYear, timeFromDate } from '../../common/utils/dateFormat';
 import historyPush from '../../common/utils/historyPush';
 import { isCordova } from '../../common/utils/isCordovaOrWebApp';
-import { displayNoneIfSmallerThanDesktop } from '../../common/utils/isMobileScreenSize';
+import isMobileScreenSize, { displayNoneIfSmallerThanDesktop } from '../../common/utils/isMobileScreenSize';
 import { renderLog } from '../../common/utils/logging';
 import normalizedImagePath from '../../common/utils/normalizedImagePath';
 import ActivityCommentAdd from '../../components/Activity/ActivityCommentAdd';
@@ -321,7 +321,7 @@ class News extends Component {
     return (
       <Suspense fallback={<LoadingWheelComp />}>
         <PageContentContainer>
-          <div className="container-fluid">
+          <div className="container-fluid" style={isCordova() && isMobileScreenSize() ? {padding: 0} : {}}>
             <Helmet title="Discuss - WeVote" />
             <BrowserPushMessage incomingProps={this.props} />
             <div className="row" style={unsetSomeRowStylesIfCordova}>

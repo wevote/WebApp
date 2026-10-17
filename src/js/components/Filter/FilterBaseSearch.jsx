@@ -8,8 +8,6 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 import BallotActions from '../../actions/BallotActions';
 import OrganizationActions from '../../actions/OrganizationActions';
-import { blurTextFieldAndroid, focusTextFieldAndroid, isAndroidSizeWide } from '../../common/utils/cordovaUtils';
-import { isAndroid } from '../../common/utils/isCordovaOrWebApp';
 import BallotStore from '../../stores/BallotStore';
 import OrganizationStore from '../../stores/OrganizationStore';
 import ballotSearchPriority from '../../utils/ballotSearchPriority';
@@ -222,15 +220,8 @@ class FilterBaseSearch extends Component {
       searchTextAlreadyRetrieved.push(searchText);
       this.setState({ searchTextAlreadyRetrieved });
     }
-    // }
   };
 
-  bigAndroidClick = (isSearching, alwaysOpen) => {
-    // console.log('bigAndroidClick ------------------');
-    if (isAndroid() && !isSearching && !alwaysOpen) {
-      this.toggleSearch();
-    }
-  };
 
   sendSearchDataLayer (searchText, buttonId) {
     const dataLayerObject = {
@@ -258,7 +249,7 @@ class FilterBaseSearch extends Component {
     const searchIconClasses = searchTextLarge ? classes.iconRootLarge : classes.iconRoot;
     if (isSearching) {
       inputBaseInputClasses = searchTextLarge ? classes.inputSearchingLarge : classes.inputSearching;
-      inputBaseInputClasses = isAndroidSizeWide() ? classes.inputDefaultFold : inputBaseInputClasses;
+      inputBaseInputClasses = inputBaseInputClasses;
     } else if (alwaysOpen) {
       inputBaseInputClasses = searchTextLarge ? classes.inputDefaultLarge : classes.inputDefault;
     } else {
@@ -266,7 +257,7 @@ class FilterBaseSearch extends Component {
     }
     // console.log('FilterBaseSearch render');
     return (
-      <BigAndroidClickableTarget id="androidClickableTarget" onClick={() => this.bigAndroidClick(isSearching, alwaysOpen)}>
+
         <SearchWrapper
           brandBlue={theme.palette.primary.main}
           isSearching={isSearching}
@@ -276,7 +267,7 @@ class FilterBaseSearch extends Component {
           <IconButton
             classes={{ root: classes.iconButtonRoot }}
             id="searchIcon"
-            onClick={(!isAndroid() && !alwaysOpen) ? this.toggleSearch : undefined}
+            onClick={!alwaysOpen ? this.toggleSearch : undefined}
             size="large"
             aria-label="Search Button"
             tabIndex={0}
@@ -291,8 +282,6 @@ class FilterBaseSearch extends Component {
             inputRef={(input) => { this.searchInput = input; }}
             onChange={(event) => this.handleSearch(event, 'searchInput')}
             value={searchText}
-            onFocus={() => focusTextFieldAndroid('FilterBaseSearch')}
-            onBlur={blurTextFieldAndroid}
             placeholder="Search"
             tabIndex={isSearching ? 0 : -1}
           />
@@ -308,7 +297,6 @@ class FilterBaseSearch extends Component {
             </IconButton>
           </Closer>
         </SearchWrapper>
-      </BigAndroidClickableTarget>
     );
   }
 }
@@ -432,13 +420,6 @@ const Separator = styled('div', {
   // width: 1px;
   // background: rgba(0, 0, 0, .3);
 `));
-
-const BigAndroidClickableTarget = styled.div`
-  padding: ${() => (isAndroid() ? '10px' : '')};
-  position: ${() => (isAndroid() ? 'relative' : '')};
-  top: ${() => (isAndroid() ? '-10px' : '')};
-`;
-/* For diagnosis: background-color: ${() => (isAndroid() ? 'lightgoldenrodyellow' : '')}; */
 
 const SearchWrapper = styled('div', {
   shouldForwardProp: (prop) => !['isSearching', 'brandBlue', 'searchTextLarge'].includes(prop),
