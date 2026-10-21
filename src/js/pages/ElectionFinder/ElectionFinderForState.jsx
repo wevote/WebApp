@@ -74,15 +74,12 @@ function sortByDateAsc (a, b) {
 // 'NA' must be matched explicitly: an empty state_code_list does not imply national,
 // since some state-level elections come back without state_code_list populated.
 function matchesStateCode (election, stateCode) {
-  let stateCodeUpper = '';
-  if (stateCode) {
-    stateCodeUpper = stateCode.toUpperCase();
-  }
-  // console.log('election.state_code_list:', election.state_code_list);
+  const stateCodeUpper = (stateCode || '').toUpperCase();
+  const electionState = (election.state_code || '').toUpperCase();
   if (stateCodeUpper === 'NA') {
-    return election.state_code === 'NA' || (election.state_code_list && election.state_code_list.includes('NA'));
+    return electionState === 'NA' || (election.state_code_list && election.state_code_list.includes('NA'));
   }
-  return election.state_code_list && election.state_code_list.includes(stateCodeUpper);
+  return electionState === stateCodeUpper;
 }
 
 function getBreadcrumbTabLabel (filterTab) {

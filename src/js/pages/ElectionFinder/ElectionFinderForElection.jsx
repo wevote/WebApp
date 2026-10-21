@@ -70,7 +70,7 @@ function ElectionFinderForElection () {
   const isUpcoming = ElectionStore.isElectionUpcoming(googleCivicElectionId);
   const electionList = ElectionStore.getElectionList();
   const stateElections = electionList.filter(
-    (el) => el.state_code_list && el.state_code_list.includes(selectedStateCode),
+    (el) => (el.state_code || '').toUpperCase() === selectedStateCode,
   );
   const upcomingCount = stateElections.filter((el) => el.election_is_upcoming).length;
   const pastCount = stateElections.filter((el) => !el.election_is_upcoming).length;
