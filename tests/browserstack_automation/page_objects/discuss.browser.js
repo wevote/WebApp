@@ -33,11 +33,11 @@ class DiscussBrowser extends PageBrowser {
   }
 
   get openTermsOfService () {
-    return $('a[id=\'ByContinuingNoticeTerms\']');
+    return $('#ByContinuingNoticeTerms');
   }
 
   get openPrivacyPolicy () {
-    return $('a[id=\'ByContinuingNoticePrivacy\']');
+    return $('#ByContinuingNoticePrivacy');
   }
 
   get avatarCard () {
@@ -49,7 +49,7 @@ class DiscussBrowser extends PageBrowser {
   }
 
   get voterEmailAddressVerificationButton () {
-    return $('.ButtonContainerHorizontal-sc-11fswbh-8.gbbyEi Button');
+    return $('#voterEmailAddressEntrySendCode');
   }
 
   get inviteFriendsNextsButton () {
