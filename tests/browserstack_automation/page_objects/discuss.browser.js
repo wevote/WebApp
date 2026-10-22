@@ -33,15 +33,15 @@ class DiscussBrowser extends PageBrowser {
   }
 
   get openTermsOfService () {
-    return $('#openTermsOfService');
+    return $('#ByContinuingNoticeTerms');
   }
 
   get openPrivacyPolicy () {
-    return $('#openPrivacyPolicy');
+    return $('#ByContinuingNoticePrivacy');
   }
 
   get avatarCard () {
-   return $('#card_main_avatar');//
+    return $('#card_main_avatar');//
   }
 
   get emailAddressSidebarFriendsTextBox () {
@@ -76,7 +76,7 @@ class DiscussBrowser extends PageBrowser {
     await this.voterEmailAddressVerificationButton.findAndClick();
   }
 
-  async tabToSelectElement(driver, targetElementId) {
+  async tabToSelectElement (driver, targetElementId) {
     // Max number of iterations to find target element.
     // Prevents waiting for a timeout when the element is missing or unreachable.
     const maxCount = 100;
