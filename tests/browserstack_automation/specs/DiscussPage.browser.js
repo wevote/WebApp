@@ -2,7 +2,7 @@
 import { browser, driver, expect } from '@wdio/globals';
 import DiscussPage from '../page_objects/discuss.browser';
 
-const waitTime = 10000;
+const waitTime = 5000;
 const email = 'wevote@wevote.us';
 const errorMessage = 'Enter valid email address';
 beforeEach(async () => {
