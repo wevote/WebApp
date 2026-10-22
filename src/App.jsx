@@ -77,8 +77,8 @@ const Elections = React.lazy(() => import(/* webpackChunkName: 'Elections' */ '.
 const ExtensionSignIn = React.lazy(() => import(/* webpackChunkName: 'ExtensionSignIn' */ './js/pages/More/ExtensionSignIn'));
 const FAQ = React.lazy(() => import(/* webpackChunkName: 'FAQ' */ './js/pages/More/FAQ'));
 // const FacebookInvitableFriends = React.lazy(() => import(/* webpackChunkName: 'FacebookInvitableFriends' */ './js/pages/FacebookInvitableFriends'));
-const FacebookLandingProcess = React.lazy(() => import(/* webpackChunkName: 'FacebookLandingProcess' */ './js/pages/Process/FacebookLandingProcess'));
-const FacebookRedirectToWeVote = React.lazy(() => import(/* webpackChunkName: 'FacebookRedirectToWeVote' */ './js/pages/More/FacebookRedirectToWeVote'));
+// const FacebookLandingProcess = React.lazy(() => import(/* webpackChunkName: 'FacebookLandingProcess' */ './js/pages/Process/FacebookLandingProcess'));
+// const FacebookRedirectToWeVote = React.lazy(() => import(/* webpackChunkName: 'FacebookRedirectToWeVote' */ './js/pages/More/FacebookRedirectToWeVote'));
 const Footer = React.lazy(() => import(/* webpackChunkName: 'Footer' */ './js/components/Navigation/Footer'));
 const FindFriendsRoot = React.lazy(() => import(/* webpackChunkName: 'FindFriendsRoot' */ './js/pages/Friends/FindFriendsRoot'));
 const FriendIntroLanding = React.lazy(() => import(/* webpackChunkName: 'FriendIntroLanding' */ './js/pages/FriendIntro/FriendIntroLanding'));
@@ -603,8 +603,8 @@ class App extends Component {
                   <Route path="/election-finder" exact component={ElectionFinderHome} />
                   <Route path="/more/elections" component={Elections} />
                   <Route path="/more/extensionsignin" component={ExtensionSignIn} />
-                  <Route path="/more/facebooklandingprocess" component={FacebookLandingProcess} />
-                  <Route path="/more/facebookredirecttowevote" component={FacebookRedirectToWeVote} />
+                  {/*<Route path="/more/facebooklandingprocess" component={FacebookLandingProcess} />*/}
+                  {/*<Route path="/more/facebookredirecttowevote" component={FacebookRedirectToWeVote} />*/}
                   <Route path="/more/faq" component={FAQ} />
                   <Route path="/more/howwevotehelps" component={HowWeVoteHelps} />
                   <Route path="/more/jump" component={SignInJumpProcess} />

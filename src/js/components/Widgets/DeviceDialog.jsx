@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import { getAndroidSize, getCordovaBuildVersion, getDeviceDiagonalValue, getDeviceName, getIOSSizeString, hasCordovaNotch, isIOS, isSimulator } from '../../common/utils/cordovaUtils';
+import { getCordovaBuildVersion, getDeviceDiagonalValue, getDeviceName, getIOSSizeString, hasCordovaNotch, isIOS, isSimulator } from '../../common/utils/cordovaUtils';
 import historyPush from '../../common/utils/historyPush';
 import { getTabletSize } from '../../common/utils/isMobileScreenSize';
 import { renderLog } from '../../common/utils/logging';
@@ -15,28 +15,6 @@ import { TermsAndPrivacyText } from '../Style/pageLayoutStyles';
 
 
 class DeviceDialog extends Component {
-  static clearAllCookies () {
-    // 11/6/21  need to reimplement for new Cookies... if it is even needed
-    // const cookies = document.cookie.split(';');
-    // const d = new Date();
-    // d.setDate(d.getDate() - 1);
-    //
-    // for (let i = 0; i < cookies.length; i++) {
-    //   const spcook =  cookies[i].split('=');
-    //
-    //   console.log('DEBUG CORDOVA delete one Cookie: ', spcook[0]);
-    //   document.cookie = `${spcook[0]}=; expires=${d}; path=/;`;
-    // }
-    //
-    // window.location = ''; // TO REFRESH THE "PAGE"
-  }
-
-  static clearLocationGuessClosedCookie () {
-    const d = new Date();
-    d.setDate(d.getDate() - 1);
-    document.cookie = `location_guess_closed=; expires=${d}; path=/;`;
-  }
-
   constructor (props) {
     super(props);
     this.handleClose = this.handleClose.bind(this);
@@ -74,7 +52,9 @@ class DeviceDialog extends Component {
           <div className="text-center"><TermsAndPrivacyText>Device Information</TermsAndPrivacyText></div>
         </DialogTitle>
         <DialogContent classes={{ root: classes.dialogContent }}>
-          This dialog contains technical information about your device, that might be requested by WeVote&apos;s support engineers.
+          <div style={{ paddingBottom: '10px'}}>
+            This dialog contains technical information about your device, that might be requested by WeVote&apos;s support engineers.
+          </div>
           <Table className={classes.table}>
             <TableHead>
               <TableRow>
@@ -241,7 +221,8 @@ const DeviceFinePrint = styled('div')`
 `;
 
 const StyledTableCell = styled(TableCell)`
-  padding: 8px 16px;
+  padding: 0 4px 0 0;
+  background-color: '#F5F5F5';
 `;
 
 
