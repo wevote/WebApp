@@ -484,6 +484,8 @@ const FooterContainer = styled('div')`
   ${!isAndroid() ? 'padding-bottom: env(safe-area-inset-bottom)' : ''};
 `;
 
+// The icons should take up, at most, 3 columns on mobile
+
 const Overlay = styled.div`
   align-items: stretch;
   background: ${DesignTokenColors.whiteUI};
@@ -499,6 +501,11 @@ const Overlay = styled.div`
   right: 8px;
   transition: opacity .2s ease;
   z-index: 9999;
+
+  @media (320px <= width <= 480px) {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+  }
 `;
 
 const MenuItem = styled.div`
