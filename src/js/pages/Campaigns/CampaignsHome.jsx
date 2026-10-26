@@ -716,7 +716,7 @@ class CampaignsHome extends Component {
 
   searchFunction = (searchText) => {
     // console.log('CampaignsHome searchFunction searchText:', searchText);
-    const { listModeShown, searchText: previousSearchText, stateCode: currentStateCode } = this.state;
+    const { listModeShown, searchText: previousSearchText } = this.state;
     let searchingJustStarted = false;
     if (previousSearchText.length === 0 && searchText.length > 0) {
       searchingJustStarted = true;
@@ -726,7 +726,6 @@ class CampaignsHome extends Component {
       isSearching,
       listModeShown: searchingJustStarted ? '' : listModeShown,
       searchText,
-      stateCode: searchingJustStarted ? '' : currentStateCode,
     }, () => this.updateActiveFilters());
   };
 
@@ -1012,7 +1011,7 @@ class CampaignsHome extends Component {
         </Suspense>
         {/* */}
         <Suspense fallback={<></>}>
-          <FirstPoliticianListController searchText={searchText} stateCode={stateCode} />
+          <FirstPoliticianListController combineSearchAndState searchText={searchText} stateCode={stateCode} />
         </Suspense>
       </CampaignsHomeWrapper>
     );

@@ -19,10 +19,18 @@ class FirstPoliticianListController extends Component {
   }
 
   componentDidUpdate (prevProps) {
-    if (this.props.searchText !== prevProps.searchText) {
+    const searchChanged = this.props.searchText !== prevProps.searchText;
+    const stateChanged = this.props.stateCode !== prevProps.stateCode;
+    if (this.props.combineSearchAndState) {
+      if (searchChanged || stateChanged) {
+        this.PoliticiansForStateRetrieve();
+      }
+      return;
+    }
+    if (searchChanged) {
       this.PoliticianSearchRetrieve();
     }
-    if (this.props.stateCode !== prevProps.stateCode) {
+    if (stateChanged) {
       this.PoliticiansForStateRetrieve();
     }
   }
@@ -42,7 +50,8 @@ class FirstPoliticianListController extends Component {
   };
 
   PoliticiansForStateRetrieve = () => {
-    const { stateCode } = this.props;
+    const { combineSearchAndState, stateCode } = this.props;
+    const searchText = combineSearchAndState ? (this.props.searchText || '') : '';
     initializejQuery(() => {
       // Retrieve most liked politicians for this state
       // console.log(`politiciansQuery-${stateCode}-${thisYearInteger}`);
@@ -51,8 +60,13 @@ class FirstPoliticianListController extends Component {
         filteredStateCode = stateCode.toLowerCase().replace('all', '');
         filteredStateCode = filteredStateCode.toLowerCase().replace('na', '');
       }
-      if (apiCalming(`politiciansQuery-${stateCode}`, 180000)) {
-        PoliticianActions.politiciansQuery([], filteredStateCode);
+      const queryKey = combineSearchAndState ? `politiciansQuery-${filteredStateCode}-${searchText}` : `politiciansQuery-${stateCode}`;
+      if (apiCalming(queryKey, 180000)) {
+        if (combineSearchAndState) {
+          PoliticianActions.politiciansQuery([], filteredStateCode, searchText);
+        } else {
+          PoliticianActions.politiciansQuery([], filteredStateCode);
+        }
       }
     });
   };
@@ -65,6 +79,7 @@ class FirstPoliticianListController extends Component {
   }
 }
 FirstPoliticianListController.propTypes = {
+  combineSearchAndState: PropTypes.bool,
   searchText: PropTypes.string,
   stateCode: PropTypes.string,
 };
