@@ -288,7 +288,8 @@ class CandidateListRoot extends Component {
               // oneEntry.candidate_state_name.toLowerCase().includes(oneSearchWordLowerCase) ||
               // oneEntry.twitter_description.toLowerCase().includes(oneSearchWordLowerCase) ||
               // oneEntry.twitter_handle.toLowerCase().includes(oneSearchWordLowerCase) ||
-              oneEntry.contest_office_name.toLowerCase().includes(oneSearchWordLowerCase)
+              oneEntry.contest_office_name.toLowerCase().includes(oneSearchWordLowerCase) ||
+              (oneEntry.party || '').toLowerCase().includes(oneSearchWordLowerCase)
             );
             if (isFirstWord) {
               foundInThisEntry = thisWordFound;

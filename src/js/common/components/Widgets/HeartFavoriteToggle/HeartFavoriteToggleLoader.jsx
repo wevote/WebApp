@@ -19,7 +19,7 @@ function HeartFavoriteToggleLoader ({ campaignXWeVoteId, organizationWeVoteId, s
       // Check to see if the campaign is in CampaignStore. If not, then fetch it.
       // We need to do this because the HeartFavoriteToggle component needs the campaign data to determine if the voter has already supported or opposed the campaign.
       const campaignX = CampaignStore.getCampaignXByWeVoteId(campaignXWeVoteId);
-      if (!campaignX || !campaignX.we_vote_id) {
+      if (!campaignX || !campaignX.campaignx_we_vote_id) {
         if (apiCalming(`campaignRetrieve-${campaignXWeVoteId}`, 2000)) {
           CampaignActions.campaignRetrieve(campaignXWeVoteId);
         }
