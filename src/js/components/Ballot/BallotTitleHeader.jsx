@@ -9,6 +9,7 @@ import TagManager from 'react-gtm-module';
 import styled from 'styled-components';
 import DesignTokenColors from '../../common/components/Style/DesignTokenColors';
 import AppObservableStore from '../../common/stores/AppObservableStore';
+import { convertStateCodeToStateText } from '../../common/utils/addressFunctions';
 import { isAndroidSizeWide, isIPad } from '../../common/utils/cordovaUtils';
 import { formatDateToMonthDayYear } from '../../common/utils/dateFormat';
 import daysUntil from '../../common/utils/daysUntil';
@@ -18,6 +19,7 @@ import isMobileScreenSize from '../../common/utils/isMobileScreenSize';
 import { renderLog } from '../../common/utils/logging';
 import stringContains from '../../common/utils/stringContains';
 import BallotStore from '../../stores/BallotStore';
+import ElectionStore from '../../stores/ElectionStore';
 import VoterStore from '../../stores/VoterStore';
 import { getPageDetails } from '../../utils/lookupPageNameAndPageTypeDict';
 import { AddressSpanLimited, BallotAddress, BallotAddressWrapper, ClickBlockWrapper, ContentWrapper, ElectionDateBelow, ElectionDateRight, ElectionNameBlock, ElectionNameH1, ElectionNameScrollContent, ElectionStateLabel, OverflowContainer, OverflowContent, VoteByBelowLabel, VoteByBelowWrapper, VoteByRightLabel, VoteByRightWrapper } from '../Style/BallotTitleHeaderStyles';
@@ -73,19 +75,55 @@ class BallotTitleHeader extends Component {
   componentDidMount () {
     this._mounted = true;
     this.onBallotStoreChange();
+    this.onElectionStoreChange();
     this.onVoterStoreChange();
     this.ballotStoreListener = BallotStore.addListener(this.onBallotStoreChange.bind(this));
+    this.electionStoreListener = ElectionStore.addListener(this.onElectionStoreChange.bind(this));
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
+  }
+
+  componentDidUpdate (prevProps) {
+    const { electionDayText, electionId, electionName } = this.props;
+    if (prevProps.electionDayText !== electionDayText || prevProps.electionId !== electionId || prevProps.electionName !== electionName) {
+      this.onElectionStoreChange();
+    }
   }
 
   componentWillUnmount () {
     this._mounted = false;
     this.ballotStoreListener.remove();
+    this.electionStoreListener.remove();
     this.voterStoreListener.remove();
   }
 
   onBallotStoreChange () {
-    const electionDayText = BallotStore.currentBallotElectionDate;
+    this.onElectionStoreChange();
+  }
+
+  onElectionStoreChange () {
+    // Props override the voter's current ballot election (e.g., the Office page passes the office's own election)
+    const { electionDayText: electionDayTextFromProps, electionId, electionName: electionNameFromProps } = this.props;
+    let ballotCaveat = '';
+    let electionDayText = '';
+    let electionName = '';
+    let originalTextAddress = '';
+    let originalTextState = '';
+    let substitutedAddress = '';
+    let substitutedState = '';
+    if (electionId) {
+      const election = ElectionStore.getElectionByGoogleCivicElectionId(electionId);
+      electionDayText = election.election_day_text;
+      electionName = election.election_name;
+      originalTextState = convertStateCodeToStateText(election.state_code);
+    } else {
+      ballotCaveat = BallotStore.getBallotCaveat();
+      electionDayText = electionDayTextFromProps || BallotStore.currentBallotElectionDate;
+      electionName = electionNameFromProps || BallotStore.currentBallotElectionName || '';
+      originalTextAddress = BallotStore.getOriginalTextAddress();
+      originalTextState = BallotStore.getOriginalTextState();
+      substitutedAddress = BallotStore.getSubstitutedAddress();
+      substitutedState = BallotStore.getSubstitutedState();
+    }
     const electionDayTextFormatted = electionDayText && window.moment ? window.moment(electionDayText).format('MMM Do, YYYY') : '';
     const electionDayTextObject = electionDayText && window.moment ? <span>{electionDayTextFormatted}</span> : null;
     const nextNationalElectionDayText = `${BallotStore.nextNationalElectionDayText || '2026-11-03'}`;
@@ -104,14 +142,14 @@ class BallotTitleHeader extends Component {
       }
     });
     this.setState({
-      ballotCaveat: BallotStore.getBallotCaveat(),
+      ballotCaveat,
       daysUntilElection: daysUntil(electionDayText),
       electionDayTextObject,
-      electionName: BallotStore.currentBallotElectionName || '',
-      originalTextAddress: BallotStore.getOriginalTextAddress(),
-      originalTextState: BallotStore.getOriginalTextState(),
-      substitutedAddress: BallotStore.getSubstitutedAddress(),
-      substitutedState: BallotStore.getSubstitutedState(),
+      electionName,
+      originalTextAddress,
+      originalTextState,
+      substitutedAddress,
+      substitutedState,
     });
   }
 
@@ -418,6 +456,9 @@ class BallotTitleHeader extends Component {
 BallotTitleHeader.propTypes = {
   allowTextWrap: PropTypes.bool,
   centerText: PropTypes.bool,
+  electionId: PropTypes.number,
+  electionDayText: PropTypes.string,
+  electionName: PropTypes.string,
   linksOff: PropTypes.bool,
   shareButtonText: PropTypes.string,
   showBallotCaveat: PropTypes.bool,

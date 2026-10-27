@@ -261,7 +261,7 @@ class HeaderBar extends Component {
       case 'no-candidates-claimed':
         return 4;
       default:
-        return 0;
+        return false; // MUI Tabs uses false for "no tab selected"
     }
   };
 
