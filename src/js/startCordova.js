@@ -144,15 +144,15 @@ function initializeCordovaPluginAppRate () {
       }
     },
     customLocale: {
-      title: 'Would you mind rating %@?',
-      message: 'It won’t take more than a minute and helps to promote our app. Thanks for your support!',
-      cancelButtonLabel: 'Not Now',
-      laterButtonLabel: 'Maybe Later',
-      rateButtonLabel: 'Rate It Now',
+      title: 'Would you rate WeVote?',
+      message: 'Your rating helps voters discover We Vote, and it only takes a moment. Thanks for your support!',
+      cancelButtonLabel: 'No Thanks',
+      laterButtonLabel: 'Remind Me Later',
+      rateButtonLabel: 'Rate WeVote Now',
       yesButtonLabel: 'Yes!',
       noButtonLabel: 'No',
-      appRatePromptTitle: 'Enjoying %@? \nYour feedback helps us grow!',
-      feedbackPromptTitle: 'Would you consider giving us some feedback?',   // on why you don't like the app
+      appRatePromptTitle: 'Enjoying WeVote? \nYour feedback helps us grow!',
+      feedbackPromptTitle: 'Would you consider giving us some feedback?',
     },
     callbacks: {
       handleNegativeFeedback: () => {
