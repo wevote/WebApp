@@ -159,7 +159,7 @@ Right Click 'config-template.js' and select copy, then  right click again and pa
 
 There are configurable "secrets" in that file, that have been left blank, for example the keys for Google Maps API -- If you need them, ask your team lead or Dale.
 
-#### 3. Build and start the services
+#### 4. Build and start the services
 
 ```sh
 docker compose up --build
@@ -172,8 +172,48 @@ after any changes to package.json -- it rebuilds the Docker Container that are u
 
 The local copy of the WebApp will now be available at https://wevotedeveloper.com:3000
 
+#### 5. Troubleshooting: `node_modules` not found during Docker build
 
-#### 4. Editing source files & Live code reloading
+**Issue encountered**
+
+During the initial `docker compose up --build`, the `npm install` step failed because my Mac did not have enough disk space to download Puppeteer's browser dependency.
+
+After freeing up disk space, I retried the installation and Puppeteer's dependency downloaded successfully. However, the Docker build continued to fail with the following error:
+
+```text
+COPY --from=builder /app/node_modules ./node_modules
+failed to calculate checksum ... "/app/node_modules": not found
+```
+
+**Why did this happen?**
+
+The Dockerfile uses a multi-stage build:
+
+- **Builder stage:** Runs `npm install` to install project dependencies and create `/app/node_modules`.
+- **Runtime stage:** Copies `/app/node_modules` from the builder stage into the runtime image.
+
+The runtime stage could not find `/app/node_modules` because the directory was not available in the builder stage when Docker attempted to copy it.
+
+The build logs also showed Docker reusing a cached `npm install` step. The exact root cause of the missing directory could not be confirmed.
+
+**How I resolved it**
+
+I cleared the Docker build cache and rebuilt the image without using cached layers.
+
+Run these commands:
+
+```bash
+docker builder prune -a
+docker compose build --no-cache
+docker compose up
+```
+
+After rebuilding, the Docker build completed successfully, the dependencies were installed, and the WebApp container started successfully.
+
+**Note:** If you encounter the same issue, check whether `npm install` completes successfully in the builder stage and whether `/app/node_modules` is created before it is copied into the runtime stage. Clearing the build cache and rebuilding without cache resolved this particular incident.
+
+
+#### 6. Editing source files & Live code reloading
 
 The source directory is mounted into the container at /app, so edits you make in WebStorm are reflected within a few seconds in the running WebApp. A program called Webpac watches for changes and restarts the server automatically.
 
@@ -206,7 +246,7 @@ docker compose build --no-cache
 docker compose up
 ```
 
-#### 5. Debugging
+#### 7. Debugging
 
 Almost all debugging of the WebApp is done with the Chrome DevTools within the browser.  So no special setup is needed in WebStorm.
 
