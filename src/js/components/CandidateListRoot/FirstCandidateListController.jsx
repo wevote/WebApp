@@ -19,17 +19,22 @@ class FirstCandidateListController extends Component {
     // console.log('FirstCandidateListController componentDidMount');
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
     this.BallotItemsFirstRetrieve();
-    this.CandidatesForStateRetrieve();
+    if (this.props.searchText) {
+      this.CandidateSearchRetrieve();
+    } else {
+      this.CandidatesForStateRetrieve();
+    }
   }
 
   componentDidUpdate (prevProps) {
-    if (this.props.searchText !== prevProps.searchText) {
-      this.CandidateSearchRetrieve();
+    if (this.props.searchText !== prevProps.searchText || this.props.stateCode !== prevProps.stateCode) {
+      if (this.props.searchText) {
+        this.CandidateSearchRetrieve();
+      } else {
+        this.CandidatesForStateRetrieve();
+      }
     }
-    if (this.props.stateCode !== prevProps.stateCode) {
-      this.CandidatesForStateRetrieve();
-    }
-    if (this.props.year !== prevProps.year) {
+    if (!this.props.searchText && this.props.year !== prevProps.year) {
       this.CandidatesForYearRetrieve();
     }
   }
@@ -65,11 +70,11 @@ class FirstCandidateListController extends Component {
   };
 
   CandidateSearchRetrieve = () => {
-    const { searchText } = this.props;
+    const { searchText, stateCode } = this.props;
+    const filteredStateCode = (stateCode || '').toLowerCase().replace('all', '').replace('na', '');
     initializejQuery(() => {
-      // console.log(`candidatesQuery-${searchText}`);
-      if (apiCalming(`candidatesQuery-${searchText}`, 180000)) {
-        CandidateActions.candidatesQuery('', [], '', searchText);
+      if (apiCalming(`candidatesQuery-search-${filteredStateCode}-${searchText}`, 180000)) {
+        CandidateActions.candidatesQuery('', [], filteredStateCode, searchText);
       }
     });
   };

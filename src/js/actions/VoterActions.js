@@ -174,8 +174,10 @@ export default {
 
   updateReviewedAppFields (
     appReviewState,
+    addressStateCode,
     appReviewVersion,
     appReviewPlatform,
+    appReviewPathname,
     appReviewBodyNegativeBypass,
     appReviewEmail,
   ) {
@@ -183,8 +185,10 @@ export default {
       'voterReviewedApp',
       {
         app_review_state: appReviewState,
+        address_state_code: addressStateCode,
         app_review_version: appReviewVersion,
         app_review_platform: appReviewPlatform,
+        app_review_pathname: appReviewPathname,
         app_review_body_negative_bypass: appReviewBodyNegativeBypass,  // not a database field
         app_review_email: appReviewEmail,                             // not a database field
       },

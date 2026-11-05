@@ -673,8 +673,7 @@ class BallotStore extends ReduceStore {
         // Exit if we don't have a successful response
         if (!action.res || !action.res.success) return state;
 
-        if (action.res.count === 0) return state;
-
+        // Mark as retrieved even when count is 0, so callers don't keep re-requesting an empty list
         state.positionListHasBeenRetrievedOnceByBallotItem[action.res.ballot_item_we_vote_id] = true;
 
         return {
@@ -687,8 +686,7 @@ class BallotStore extends ReduceStore {
         // Exit if we don't have a successful response
         if (!action.res || !action.res.success) return state;
 
-        if (action.res.count === 0) return state;
-
+        // Mark as retrieved even when count is 0, so callers don't keep re-requesting an empty list
         state.positionListFromFriendsHasBeenRetrievedOnceByBallotItem[action.res.ballot_item_we_vote_id] = true;
 
         return {

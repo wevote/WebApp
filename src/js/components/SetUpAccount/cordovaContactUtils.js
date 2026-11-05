@@ -2,6 +2,9 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
 import ContactsX from 'cordova-plugin-contacts-x';
 
+// October 2026  might need to upgrade again to @herdwatch/cordova-plugin-contacts
+// https://github.com/herdwatch-apps/cordova-plugin-contacts
+
 
 const getDeviceContacts = async (callBack) => {
   ContactsX.find((deviceContactList) => {

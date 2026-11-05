@@ -43,7 +43,7 @@ function checkForAppReview (source) {
 }
 
 const platforms = ['iOS', 'Android'];
-function handleNegativeAppReview (appReviewVersion, appReviewPlatform, appReviewBodyNegativeBypass, appReviewEmail) {
+function handleNegativeAppReview (appReviewVersion, appReviewPlatform, appReviewPathname, appReviewBodyNegativeBypass, appReviewEmail) {
   if (!platforms.includes(appReviewPlatform)) {
     throw new Error(`handleNegativeAppReview received invalid appReviewPlatform ${appReviewPlatform}`);
   }
@@ -54,10 +54,16 @@ function handleNegativeAppReview (appReviewVersion, appReviewPlatform, appReview
     throw new Error(`handleNegativeAppReview received invalid reviewEmail ${appReviewEmail}`);
   }
   AppObservableStore.setAskedVoterToReviewApp(true);   // So we only ask once peer session
+
+  const appReviewState = 'Negative';
+  const addressStateCode =  VoterStore.getTextForMapSearch() || 'error';
+
   VoterActions.updateReviewedAppFields(
-    'Negative',
+    appReviewState,
+    addressStateCode,
     appReviewVersion,
     appReviewPlatform,
+    appReviewPathname,
     appReviewBodyNegativeBypass,
     appReviewEmail,
   );

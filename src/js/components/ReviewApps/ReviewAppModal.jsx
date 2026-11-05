@@ -11,9 +11,9 @@ import * as React from 'react';
 import { useEffect, useRef, useState } from 'react';
 import AppObservableStore from '../../common/stores/AppObservableStore';
 import { isIOS } from '../../common/utils/cordovaUtils';
+import { isAndroid } from '../../common/utils/isCordovaOrWebApp';
 import { renderLog } from '../../common/utils/logging';
 import { handleNegativeAppReview } from '../../utils/appReviewFunctions';
-import { isAndroid } from '../../common/utils/isCordovaOrWebApp';
 
 /* global $ */
 
@@ -55,8 +55,9 @@ export default function ReviewAppModal (props) {
     const appReviewBodyNegativeBypass = bodyInputRef.current.value;
     const okToSend = checkBoxInputRef.current.checked;
     const appReviewEmail = okToSend ?  emailInputRef.current : '';
+    const appReviewPathname = window.location.hash;
     handleClose();
-    handleNegativeAppReview(appReviewVersion, appReviewPlatform, appReviewBodyNegativeBypass, appReviewEmail);
+    handleNegativeAppReview(appReviewVersion, appReviewPlatform, appReviewPathname, appReviewBodyNegativeBypass, appReviewEmail);
   };
 
   renderLog('ReviewAppModal');  // Set LOG_RENDER_EVENTS to log all renders
