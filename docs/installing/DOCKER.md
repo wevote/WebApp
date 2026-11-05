@@ -155,7 +155,7 @@ Navigate in the Project pane to src/js/config-template.js
 
 <img src="../images/CopyConfig-template.png" alt="WebStorm Copy config-template.js" width="700" style="padding-left: 1%">
 
-Right Click 'config-template.js' and select copy, then  right click again and paste it in as conf.js
+Right Click 'config-template.js' and select copy, then  right click again and paste it in as 'config.js'.
 
 There are configurable "secrets" in that file, that have been left blank, for example the keys for Google Maps API -- If you need them, ask your team lead or Dale.
 
