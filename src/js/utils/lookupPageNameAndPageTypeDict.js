@@ -2,6 +2,7 @@
 import { isWeVoteMarketingSite } from '../common/utils/hrefUtils';
 import { isCordova } from '../common/utils/isCordovaOrWebApp';
 import { isChallengeSEOFriendlyURL, isPoliticianSEOFriendlyURL } from '../common/utils/isSEOFriendlyURL';
+import AppObservableStore from '../common/stores/AppObservableStore';
 
 // If there is a static path for a page, enter it here. If the path includes dynamic elements,
 //  you'll need to generate the pageName and pageType dynamically in calculatePageNameAndPageTypeDict below.
@@ -178,6 +179,24 @@ export default function lookupPageNameAndPageTypeDict (path) {
     return calculatePageNameAndPageTypeDict(path);
   }
 }
+// Drawer names sent in pageDetails.drawerName and destinationDetails.destinationPageDrawerName
+export const drawerNames = {
+  headerProfileDrawer: 'HeaderProfileDrawer',
+  politicianSelfEditDrawer: 'PoliticianSelfEditDrawer',
+  organizationModal: 'OrganizationModal',
+  activityTidbitDrawer: 'ActivityTidbitDrawer',
+  positionDrawer: 'PositionDrawer',
+};
+
+// Returns the name of the drawer that is open right now, or null
+function getOpenDrawerName () {
+  if (AppObservableStore.getDrawerOpen('headerProfileDrawerOpen')) return drawerNames.headerProfileDrawer;
+  if (AppObservableStore.getDrawerOpen('politicianSelfEditDrawerOpen')) return drawerNames.politicianSelfEditDrawer;
+  if (AppObservableStore.showOrganizationModal()) return drawerNames.organizationModal;
+  if (AppObservableStore.showActivityTidbitDrawer()) return drawerNames.activityTidbitDrawer;
+  if (AppObservableStore.showPositionDrawer()) return drawerNames.positionDrawer;
+  return null;
+}
 
 export function getPageDetails (drawerName = null, stateCode = null) {
   const { location: { pathname } } = window;
@@ -190,7 +209,9 @@ export function getPageDetails (drawerName = null, stateCode = null) {
   };
 
   if (stateCode) pageDetails.stateCode = stateCode;
-  if (drawerName) pageDetails.drawerName = drawerName;
+  // use the drawer name passed in, otherwise the drawer that is open
+  const currentDrawerName = drawerName || getOpenDrawerName();
+  if (currentDrawerName) pageDetails.drawerName = currentDrawerName;
 
   return pageDetails;
 }

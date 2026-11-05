@@ -17,7 +17,7 @@ import ActivityStore from '../../stores/ActivityStore';
 import VoterStore from '../../stores/VoterStore';
 import { createDescriptionOfFriendPosts } from '../../utils/activityUtils';
 import DesignTokenColors from '../../common/components/Style/DesignTokenColors';
-import lookupPageNameAndPageTypeDict, { getPageDetails } from '../../utils/lookupPageNameAndPageTypeDict';
+import lookupPageNameAndPageTypeDict, { drawerNames, getPageDetails } from '../../utils/lookupPageNameAndPageTypeDict';
 import AppObservableStore from '../../common/stores/AppObservableStore';
 
 const ImageHandler = React.lazy(() => import(/* webpackChunkName: 'ImageHandler' */ '../ImageHandler'));
@@ -111,6 +111,7 @@ class HeaderNotificationMenu extends Component {
         destinationPageName: destinationPage.pageName,
         destinationPageType: destinationPage.pageType,
         destinationPathname,
+        destinationPageDrawerName: drawerNames.headerProfileDrawer,
       },
       userDetails: VoterStore.getAnalyticsUserDetails(),
     };

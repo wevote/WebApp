@@ -25,7 +25,7 @@ import {
 import BallotMatchIndicator from '../BallotItem/BallotMatchIndicator';
 import PositionRowListCompressed from './PositionRowListCompressed';
 import BallotMatchIndicator2024 from '../BallotItem/BallotMatchIndicator2024';
-import lookupPageNameAndPageTypeDict, { getPageDetails } from '../../utils/lookupPageNameAndPageTypeDict';
+import lookupPageNameAndPageTypeDict, { drawerNames, getPageDetails } from '../../utils/lookupPageNameAndPageTypeDict';
 import webAppConfig from '../../config';
 import BallotStore from '../../stores/BallotStore';
 
@@ -135,6 +135,7 @@ class BallotScrollingContainer extends Component {
         pageName: 'CandidateModal',
         pageType: currentPageDetails.pageType,
         pathname: currentPathname,
+        destinationPageDrawerName: drawerNames.organizationModal,
       },
       userDetails: VoterStore.getAnalyticsUserDetails(),
     };

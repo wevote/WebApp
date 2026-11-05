@@ -34,7 +34,7 @@ function UpdatePoliticianInformation ({ politicianName, politicianWeVoteId }) {
   // console.log('updatePoliticianInformation politicianName: ', politicianName, ', voterCanEditPoliticianProfile: ', voterCanEditPoliticianProfile);
   const [tooltipOpen, setTooltipOpen] = useState(false);
 
-  function sendGTMDataLayer (actionType = 'openModal', buttonId = '', destinationPageName = '') {
+  function sendGTMDataLayer (actionType = 'openModal', buttonId = '', destinationPageName = '', opensDrawer = false) {
     const { location: { pathname: currentPathname } } = window;
     const destinationPage = lookupPageNameAndPageTypeDict(currentPathname);
     const dataLayerObject = {
@@ -51,6 +51,10 @@ function UpdatePoliticianInformation ({ politicianName, politicianWeVoteId }) {
         destinationPathname: currentPathname,
       },
     };
+    // when this click opens a drawer, destinationPageName is the drawer's name
+    if (opensDrawer) {
+      dataLayerObject.destinationDetails.destinationPageDrawerName = destinationPageName;
+    }
     if (politicianWeVoteId) {
       dataLayerObject.politicianDetails = PoliticianStore.getAnalyticsPoliticianDetails(politicianWeVoteId);
     }
@@ -64,9 +68,10 @@ function UpdatePoliticianInformation ({ politicianName, politicianWeVoteId }) {
 
   const handleOpenEditProfileDrawer = (buttonId) => {
     if (VoterStore.getVoterIsSignedIn()) {
+      // send before opening, so pageDetails does not include the drawer
+      sendGTMDataLayer('openModal', buttonId, 'PoliticianSelfEditDrawer', true);
       AppObservableStore.setDrawerOpen('politicianSelfEditDrawerOpen', true);
       AppObservableStore.setPoliticianWeVoteIdBeingViewed(politicianWeVoteId);
-      sendGTMDataLayer('openModal', buttonId, 'PoliticianSelfEditDrawer');
     } else {
       AppObservableStore.setShowSignInModal(true);
       sendGTMDataLayer('openModal', buttonId, 'PoliticianSelfEditDrawer');
