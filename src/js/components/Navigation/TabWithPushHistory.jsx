@@ -53,6 +53,8 @@ export default function TabWithPushHistory (props) {
       label={label}
       icon={props.icon}
       iconPosition={props.iconPosition}
+      selected={props.selected}
+      value={value}
       tabIndex={0}
       role="tab"
       onClick={() => handleClick(to)}

@@ -33,6 +33,8 @@ import FriendsTabs from './FriendsTabs';
 import HeaderBarLogo from './HeaderBarLogo';
 import HeaderBarModals from './HeaderBarModals';
 import TabWithPushHistory from './TabWithPushHistory';
+import VolunteerActivismIcon from '@mui/icons-material/VolunteerActivism';
+import DesignTokenColors from '../../common/components/Style/DesignTokenColors';
 
 const HeaderNotificationMenu = React.lazy(() => import(/* webpackChunkName: 'HeaderNotificationMenu' */ './HeaderNotificationMenu'));
 const nextReleaseFeaturesEnabled = webAppConfig.ENABLE_NEXT_RELEASE_FEATURES === undefined ? false : webAppConfig.ENABLE_NEXT_RELEASE_FEATURES;
@@ -326,7 +328,7 @@ class HeaderBar extends Component {
       challenges.css(normal);   // Democracy Challenges
       friends.css(normal);      // Friends
       news.css(normal);         // Discuss
-      donate.css(normal);       // Donate
+      donate.css({ opacity: '', fontWeight: '', color: '' });       // Donate
       squads.css(normal);       // Squads
       more.css(normal);         // More
 
@@ -485,16 +487,6 @@ class HeaderBar extends Component {
                       label="Candidates"
                       to="/cs/"
                     />
-                    {donateVisible && (
-                      <TabWithPushHistory
-                        classes={isWebApp() ? { root: classes.tabRootDonateDesktop } : { root: classes.tabRootDonate }}
-                        value={donateValue}
-                        change={this.handleTabChange}
-                        id="donateTabHeaderBar"
-                        label="Donate"
-                        to="/donate"
-                      />
-                    )}
                     <Tab
                       tabIndex={0}
                       classes={isWebApp() ? { root: classes.tabRoot, selected: classes.tabSelected } : { root: classes.tabRootMore, selected: classes.tabSelected }}
@@ -508,19 +500,31 @@ class HeaderBar extends Component {
                       value={moreValue}
                       onClick={(event) => {
                         this.setState({ moreAnchorEl: event.currentTarget });
-                        this.handleTabChange(3); // Highlight the tab
+                        this.handleTabChange(moreValue); // Highlight the tab
                       }}
                       onKeyDown={(e) => {
                         if (e.key === 'Enter' || e.key === ' ') {
                           e.preventDefault();
                           this.setState({ moreAnchorEl: e.currentTarget });
-                          this.handleTabChange(3); // Highlight the tab
+                          this.handleTabChange(moreValue); // Highlight the tab
                         }
                       }}
                       aria-controls="more-menu"
                       aria-haspopup="true"
                       wrapped
                     />
+                    {donateVisible && (
+                      <TabWithPushHistory
+                        classes={isWebApp() ? { root: classes.tabRootDonateDesktop } : { root: classes.tabRootDonate }}
+                        icon={<VolunteerActivismIcon />}
+                        iconPosition="start"
+                        value={donateValue}
+                        change={this.handleTabChange}
+                        id="donateTabHeaderBar"
+                        label="Donate"
+                        to="/donate"
+                      />
+                    )}
                   </StyledHeaderMenuTabs>
                   <StyledMoreMenu
                     id="more-menu"
@@ -911,8 +915,31 @@ const styles = (theme) => {
     },
     tabRootDonateDesktop: {
       fontSize: 18,
-      minWidth: 70,
-      paddingTop: 17,
+      minWidth: 'auto',
+      alignSelf: 'center',
+      border: `2px solid ${DesignTokenColors.primary500}`,
+      borderRadius: 4,
+      color: DesignTokenColors.primary500,
+      marginLeft: 8,
+      opacity: 1,
+      '&.MuiTab-root': {
+        minHeight: 36,
+        padding: '6px 6px',
+      },
+      '&:hover': {
+        backgroundColor: DesignTokenColors.primary500,
+        color: '#fff',
+        textDecoration: 'none',
+      },
+      '&.Mui-selected, &.Mui-selected:hover': {
+        backgroundColor: 'transparent',
+        borderColor: 'transparent',
+        color: '#2e3c5d',
+        fontWeight: 600,
+        minHeight: 48,
+        padding: '12px 16px',
+        textDecoration: 'none',
+      },
     },
     tabRootFriends: {
       minWidth: 90,
