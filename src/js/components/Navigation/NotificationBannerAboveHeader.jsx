@@ -38,7 +38,7 @@ export default function NotificationBannerAboveHeader () {
     TagManager.dataLayer({ dataLayer: dataLayerObject });
   };
 
-  function sendGTMDataLayer (actionType = 'openModal', buttonId = '', destinationPageName = '') {
+  function sendGTMDataLayer (actionType = 'openModal', buttonId = '', destinationPageName = '', opensDrawer = false) {
     const { location: { pathname: currentPathname } } = window;
     const destinationPage = lookupPageNameAndPageTypeDict(currentPathname);
     const dataLayerObject = {
@@ -55,6 +55,10 @@ export default function NotificationBannerAboveHeader () {
         destinationPathname: currentPathname,
       },
     };
+    // when this click opens a drawer, destinationPageName is the drawer's name
+    if (opensDrawer) {
+      dataLayerObject.destinationDetails.destinationPageDrawerName = destinationPageName;
+    }
     if (politicianWeVoteId) {
       dataLayerObject.politicianDetails = PoliticianStore.getAnalyticsPoliticianDetails(politicianWeVoteId);
     }
@@ -68,8 +72,9 @@ export default function NotificationBannerAboveHeader () {
 
   const handleOpenEditProfileDrawer = (buttonId) => {
     if (VoterStore.getVoterIsSignedIn()) {
+      // send before opening, so pageDetails does not include the drawer
+      sendGTMDataLayer('openModal', buttonId, 'PoliticianSelfEditDrawer', true);
       AppObservableStore.setDrawerOpen('politicianSelfEditDrawerOpen', true);
-      sendGTMDataLayer('openModal', buttonId, 'PoliticianSelfEditDrawer');
     } else {
       AppObservableStore.setShowSignInModal(true);
       sendGTMDataLayer('openModal', buttonId, 'PoliticianSelfEditDrawer');
