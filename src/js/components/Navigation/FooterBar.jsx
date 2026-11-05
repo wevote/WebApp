@@ -1,4 +1,4 @@
-import { Article, CalendarMonth, Groups, Home, HowToVote, Info, MoreHoriz, People, QuestionAnswer, Support, VerifiedUser } from '@mui/icons-material';
+import { Article, CalendarMonth, Groups, Home, HowToVote, Info, MoreHoriz, People, QuestionAnswer, Support, VolunteerActivism } from '@mui/icons-material';
 import { Badge, BottomNavigation, BottomNavigationAction, ClickAwayListener } from '@mui/material';
 import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
@@ -411,7 +411,7 @@ class FooterBar extends React.Component {
                 id="donateTabFooterBar"
                 label="Donate"
                 showLabel
-                icon={<VerifiedUser />}
+                icon={<VolunteerActivism />}
                 sx={donateIconStyles}
               />
             )}
