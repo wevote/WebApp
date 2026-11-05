@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import TagManager from 'react-gtm-module';
 import CandidateStore from '../../../stores/CandidateStore';
 import VoterStore from '../../../stores/VoterStore';
-import lookupPageNameAndPageTypeDict from '../../../utils/lookupPageNameAndPageTypeDict';
+import lookupPageNameAndPageTypeDict, { getPageDetails } from '../../../utils/lookupPageNameAndPageTypeDict';
 import lookupPageNameAndPageTypeDictForExternalUrls from '../../../utils/lookupPageNameAndPageTypeDictForExternalUrls';
 import PoliticianStore from '../../stores/PoliticianStore';
 import { cordovaOpenSafariView, isIOS } from '../../utils/cordovaUtils';
@@ -42,6 +42,9 @@ export default class OpenExternalWebSite extends Component {
         },
         userDetails: VoterStore.getAnalyticsUserDetails(),
       };
+      // add the name of the open drawer, if any
+      const { drawerName } = getPageDetails();
+      if (drawerName) dataLayerObject.pageDetails.drawerName = drawerName;
       if (candidateWeVoteId) {
         dataLayerObject.candidateDetails = CandidateStore.getAnalyticsCandidateDetails(candidateWeVoteId);
       }
