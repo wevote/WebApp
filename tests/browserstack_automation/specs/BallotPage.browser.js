@@ -53,6 +53,16 @@ describe('Ballot PageBrowser', async () => {
     await verifyAddressModal();
   });
 
+  it('verifyBallotAddressModalClosesOnCancel', async () => {
+    await BallotPage.getBallotTopElement.click();
+    await expect(browser).toHaveUrl(expect.stringContaining('/ballot'));
+    await BallotPage.getBallotAddressElement.click();
+    await expect(BallotPage.getBallotModalTitleElement).toHaveText('Enter Your Address');
+
+    await BallotPage.getBallotModalCancelElement.click();
+    await expect(BallotPage.getBallotModalElement).not.toBeDisplayed();
+  });
+
   it('validateBallotModalUIComponents', async () => {
     await BallotPage.getBallotAddressElement.click();
 

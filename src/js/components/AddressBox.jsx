@@ -120,9 +120,7 @@ class AddressBox extends Component {
     // console.log('dataLayerObject:', dataLayerObject);
     TagManager.dataLayer({ dataLayer: dataLayerObject });
 
-    if (this.props.toggleEditingAddress) {
-      this.props.toggleEditingAddress();
-    }
+    this.incomingToggleSelectAddressModal();
   };
 
   voterAddressSaveSubmit = (event, buttonId) => {
