@@ -28,6 +28,10 @@ class BallotBrowser extends PageBrowser {
     return $('#SelectBallotModalTitleId');
   }
 
+  get getBallotModalElement () {
+    return $('#SelectBallotModalId');
+  }
+
   get getBallotModalCloseElement () {
     return $('#profileCloseSelectBallotModal');
   }
