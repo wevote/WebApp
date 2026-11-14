@@ -110,3 +110,40 @@ export function formatDateMMMDoYYYY (date) {
     return window.moment(date).format('MMM Do, YYYY');
   }
 }
+
+const getNextUpcomingElectionDate = (upcomingElectionDates) => {
+  const processDates = () => {
+    const today = window.moment().startOf('day'); // Get today's date as midnight
+    const futureDates = upcomingElectionDates.filter((date) => window.moment(date, 'YYYY-MM-DD').isSameOrAfter(today));
+    return futureDates.length > 0 ?
+      futureDates.sort((a, b) => window.moment(a, 'YYYY-MM-DD') - window.moment(b, 'YYYY-MM-DD'))[0] :
+      null;
+  };
+
+  if (typeof window.moment === 'undefined') {
+    // Initialize when `moment` is not loaded
+    return initializeMoment(processDates);
+  } else {
+    // If `moment` is already available
+    return processDates();
+  }
+};
+
+export function nextNationalElectionYYYYMMDDText () {
+  // We could of course calculate this date so it is evergreen
+  // (The rule is "the Tuesday after the first Monday of November")
+  // but there is value in having a date that is searchable in the code...
+  const upcomingElectionDates = [
+    '2028-11-07',
+    '2030-11-05',
+    '2032-11-02',
+    '2034-11-07',
+    '2036-11-04',
+    '2038-11-02',
+    '2040-11-06',
+    '2042-11-04',
+    '2044-11-08',
+    '2046-11-06',
+  ];
+  return getNextUpcomingElectionDate(upcomingElectionDates);
+}
