@@ -18,7 +18,7 @@ function NoCandidateClaimed () {
   const listModeFiltersTimeStampOfChange = 0;
   const [stateCode, setStateCode] = useState(VoterStore.getStateCode() || VoterStore.getStateCodeFromIPAddress());
 
-  const subtitleText = 'Are you part of a candidate\'s team or managing your own campaign?\nHere\'s what you can do to help them win:';
+  const subtitleText = 'Are you part of a candidate\'s team or managing your own campaign?';
 
   useEffect(() => {
     const onPoliticianStoreChange = () => {
@@ -68,20 +68,15 @@ function NoCandidateClaimed () {
     <Container>
       <PageKicker>for candidate staff:</PageKicker>
       <Header>
-        <Title>Improve your candidate&apos;s presence on WeVote & build support</Title>
+        <Title>Increase your chances of winning</Title>
         <Subtitle>
           {subtitleText}
         </Subtitle>
         <List>
-          <li>Improve and edit your candidate&apos;s presence and rally support</li>
-          <li>Import your supporters and potential voters to build your base</li>
-          <li>Ask people to publicly support your candidate on WeVote</li>
-          <li>Encourage people to share opinions and personal stories about your candidate</li>
-          <li>Help supporters spread the word by inviting their friends</li>
+          <li>Improve your candidate&apos;s presence and rally support</li>
+          <li>Invite your supporters and potential voters to build your base</li>
+          <li>Ask supporters to endorse you and spread the word to their friends</li>
         </List>
-        <p>
-          Together, we can build momentum and get your candidate elected.
-        </p>
       </Header>
 
       <SearchBox>

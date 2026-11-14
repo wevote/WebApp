@@ -10,7 +10,7 @@ import IssueActions from '../../actions/IssueActions';
 import OfficeActions from '../../actions/OfficeActions';
 import LoadingWheel from '../../common/components/Widgets/LoadingWheel';
 import toTitleCase from '../../common/utils/toTitleCase';
-import { DualHeaderContainer, getTopOffsetDueToHeadroomWrapper, HeaderContentContainer, HeaderContentOuterContainer, PageContentContainer } from '../../components/Style/pageLayoutStyles';
+import { BallotHeaderGroup, DualHeaderContainer, getTopOffsetDueToHeadroomWrapper, HeaderContentContainer, HeaderContentOuterContainer, PageContentContainer } from '../../components/Style/pageLayoutStyles';
 import AppObservableStore, { messageService } from '../../common/stores/AppObservableStore';
 import BallotStore from '../../stores/BallotStore';
 import CandidateStore from '../../stores/CandidateStore';
@@ -280,7 +280,7 @@ function Office () {
         <HeaderContentOuterContainer>
           <HeaderContentContainer>
             <div className="col-md-12">
-              <header className="ballot__header__group">
+              <BallotHeaderGroup>
                 <BallotTitleHeaderContainer>
                   <BallotTitleHeader
                     showShareButton={false}
@@ -293,11 +293,11 @@ function Office () {
                     onViewBallotClick={handleViewBallotClick}
                   />
                 </BallotTitleHeaderContainer>
-              </header>
+              </BallotHeaderGroup>
             </div>
           </HeaderContentContainer>
         </HeaderContentOuterContainer>
-        <hr className="office-header-divider" />
+        <OfficeHeaderDivider />
       </DualHeaderContainer>
       <PageContentContainer>
         <div className="container-fluid">
@@ -331,6 +331,18 @@ Office.propTypes = {
   // match: PropTypes.object.isRequired,
 };
 
+const BallotTitleHeaderContainer = styled('div')`
+  margin-top: 50px;
+  transition: ${isWebApp() ? 'all 150ms ease-in' : ''};
+`;
+
+const OfficeHeaderDivider = styled('hr')`
+  margin: 0;
+  width: 200%;
+  left: -300px;
+  position: absolute
+`;
+
 const OfficeWrapper = styled('div')(({ theme }) => (`
   padding-top: 100px;
   margin: 0 15px;
@@ -338,11 +350,6 @@ const OfficeWrapper = styled('div')(({ theme }) => (`
     padding-top: 160px;
   }
 `));
-
-const BallotTitleHeaderContainer = styled('div')`
-  margin-top: 50px;
-  transition: ${isWebApp() ? 'all 150ms ease-in' : ''};
-`;
 
 export default Office;
 

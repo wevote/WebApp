@@ -16,7 +16,10 @@ import historyPush from '../common/utils/historyPush';
 import { isWebApp } from '../common/utils/isCordovaOrWebApp';
 import Cookies from '../common/utils/js-cookie/Cookies';
 import { renderLog } from '../common/utils/logging';
-import { DualHeaderContainer, PageContentContainer } from '../components/Style/pageLayoutStyles';
+import {
+  BallotFilterContainer, BallotHeaderGroup, DualHeaderContainer,
+  PageContentContainer,
+} from '../components/Style/pageLayoutStyles';
 import BallotItemReadyToVote from '../components/Vote/BallotItemReadyToVote';
 import FindPollingLocation from '../components/Vote/FindPollingLocation';
 import ReturnOfficialBallot from '../components/Vote/ReturnOfficialBallot';
@@ -421,10 +424,10 @@ class Vote extends Component {
               <div className="row">
                 <div className="col-md-12">
                   <Helmet title="Vote - WeVote" />
-                  <header className="ballot__header__group">
+                  <BallotHeaderGroup>
                     <BallotTitleHeader />
-                  </header>
-                  <div className="ballot__filter__container">
+                  </BallotHeaderGroup>
+                  <BallotFilterContainer>
                     <BallotFilterRow>
                       <div className="ballot__item-filter-tabs">
                         { ballotWithItemsFromCompletionFilterType && ballotWithItemsFromCompletionFilterType.length ? (
@@ -440,7 +443,7 @@ class Vote extends Component {
                         ) : null}
                       </div>
                     </BallotFilterRow>
-                  </div>
+                  </BallotFilterContainer>
                 </div>
               </div>
             </div>

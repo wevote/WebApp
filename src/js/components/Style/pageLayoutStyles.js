@@ -1,4 +1,4 @@
-import { AppBar } from '@mui/material';
+import { AppBar, Chip } from '@mui/material';
 import styled from 'styled-components';
 import standardBoxShadow from '../../common/components/Style/standardBoxShadow';
 import AppObservableStore from '../../common/stores/AppObservableStore';
@@ -14,6 +14,53 @@ import { pageEnumeration } from '../../utils/cordovaUtilsPageEnumeration';
 import scrollablePaneTopPaddingWebApp from '../../utils/scrollablePaneTopPaddingWebApp';
 
 /* global $ */
+
+// Here to replace 'ballot__filter' from main.css
+export const BallotDecisionsWrapper = styled('div')`
+  white-space: nowrap;
+  overflow-x: hidden;
+  overflow-y: hidden;
+`;
+
+// Here to replace 'btn_ballot_filter' from main.css
+export const BallotFilterChip = styled(Chip)(({ theme }) => (`
+  width: 120px;
+  margin-bottom: 8px!important;
+  outline: none!important;
+  padding: 0 12px!important;
+  ${theme.breakpoints.down('sm')} {
+    font-size: 10px!important;
+    padding: 0 0 0 12px !important;
+    width: fit-content!important;
+    line-height: 1.2rem;
+  }
+`));
+
+// Here to replace 'ballot_filter_btns' from main.css
+export const BallotFilterChips = styled('div')(({ theme }) => (`
+  margin-right: 16px;
+  ${theme.breakpoints.down('sm')} {
+    margin-right: 4px;
+  }
+`));
+
+// Here to replace 'ballot__header__group' from main.css
+export const BallotFilterContainer = styled('div')`
+  overflow: hidden;
+`;
+
+// If we want to turn off filter tabs navigation bar:  {({ showFilterTabs }) => !showFilterTabs && 'height: 0;'}
+export const BallotFilterRow = styled('div')`
+  // TODO: 10/4/21 Steve, this is temporary and needs to be more responsive
+  // margin-left: {() => (isWebApp() && !isMobileScreenSize() ? 'calc((100vw - 975px)/2)' : '')};
+`;
+
+// Here to replace 'ballot__header__group' from main.css
+export const BallotHeaderGroup = styled('header')`
+  display: block;
+  /* margin-bottom:40px; WV-427 add spacing between header and tabs*/
+  border-bottom: 0 solid #000
+`;
 
 export const CordovaTopOfScreenSpacer = styled('div')`
   height: ${() => heightOfCordovaSpacer(true)};
@@ -279,6 +326,9 @@ export const AppBarForBackTo = styled(AppBar)(({ theme }) => (`
 export const OfficeShareWrapper = styled('div')`
   margin-bottom: 12px;
   margin-right: ${(isIPad() || isIOSAppOnMac()) ? '19px' : ''};
+`;
+
+export const OneBallotFilterWrapper = styled('div')`
 `;
 
 export const FirstRowPhoneOrEmail = styled('div')`
