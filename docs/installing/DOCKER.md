@@ -16,20 +16,18 @@ WebStorm for Windows.  (If you have an existing PyCharm setup you can use that t
 
 Navigate to https://www.jetbrains.com/webstorm/download/?section=mac and download the IDE
 
-### Download the WebApp code
-1) In WebStorm, on the File menu | New | Project from Version Control
-2) Enter the URL  https://github.com/wevote/WebApp.git
-3) Press the Clone button
-
-You now have the latest code for the WebApp on your computer
-
 ### Setup a GIT account if you don't already have one
 
 Start at https://github.com/
 
 After creating your account, an example might be:  https://github.com/SailingSteve/WebApp.git
 
-### Clone the WebApp code into your account.
+### Fork from https://github.com/wevote/WebApp.git to your Github account
+
+You do not need to do the 'Fork' and 'Clone' steps if you have already been working with the WebApp.
+
+In a moment you will configure 'upstream' and 'origin'. WeVote uses the 'upstream' label for the link to the project's main repository (i.e. https://github.com/wevote/WebApp).
+[This diagram](https://docs.google.com/drawings/d/1ED4X3Gpy_UruGDSiO8FjjxQeGOmQqIApguodHDo6-ok/edit) provides more context.
 
 On GitHub, login to your account (create one if you don't have one) (For example https://github.com/SailingSteve)
 
@@ -41,14 +39,19 @@ Leave 'Copy the develop branch only' checkbox checked
 
 Press the "Create Fork" button.
 
-**You're done!**, you now have a copy of the latest code in your GitHub account.
+### Clone the WebApp code to your local machine
+1) In WebStorm, on the File menu | New | Project from Version Control
+2) Enter the URL (replacing 'YOUR-GITHUB-NAME' with your Github username) https://github.com/YOUR-GITHUB-NAME/WebApp.git
+3) Press the Clone button
+
+**You're done!**, you have a forked copy of the latest code in your GitHub account, and the code also on your computer.
 
 
 ### Setup your GIT remotes
 
-For historical reasons, WeVote uses the 'upstream' label for the link to the project's main repository, but most other projects use the 'origin' tag for that repository location.   
-
-So while working on WeVote repositories 'upstream' is the repository you cloned to your private 'origin' repository.
+WeVote uses the 'upstream' label for the link to the project's main repository (i.e. https://github.com/wevote/WebApp).
+You forked from 'upstream' to create your private 'origin' repository within your github account.
+You then cloned to your local machine from the fork on your github account. [This diagram](https://docs.google.com/drawings/d/1ED4X3Gpy_UruGDSiO8FjjxQeGOmQqIApguodHDo6-ok/edit) provides more context.
 
 In WebStorm navigate to Git | Manage Remotes...
 
@@ -172,7 +175,7 @@ after any changes to package.json -- it rebuilds the Docker Container that are u
 
 The local copy of the WebApp will now be available at https://wevotedeveloper.com:3000
 
-#### 5. Troubleshooting: `node_modules` not found during Docker build
+#### 5a. Troubleshooting: `node_modules` not found during Docker build
 
 **Issue encountered**
 
@@ -215,7 +218,7 @@ After rebuilding, the Docker build completed successfully, the dependencies were
 
 #### 6. Editing source files & Live code reloading
 
-The source directory is mounted into the container at /app, so edits you make in WebStorm are reflected within a few seconds in the running WebApp. A program called Webpac watches for changes and restarts the server automatically.
+The source directory is mounted into the container at /app, so edits you make in WebStorm are reflected within a few seconds in the running WebApp. A program called Webpack watches for changes and restarts the server automatically.
 
 Changes that you make to source files in WebStorm should automatically load, and force an update of the instance in your browser that has been loaded from https://wevotedeveloper.com:3000
 
