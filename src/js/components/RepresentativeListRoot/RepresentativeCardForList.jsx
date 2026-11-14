@@ -3,8 +3,10 @@ import React, { Component, Suspense } from 'react';
 import CardForListBodyPlaceholder from '../../common/components/CardForListBodyPlaceholder';
 import { getTodayAsInteger } from '../../common/utils/dateFormat';
 import { renderLog } from '../../common/utils/logging';
+import PoliticianStore from '../../common/stores/PoliticianStore';
 import RepresentativeStore from '../../stores/RepresentativeStore';
 import keepHelpingDestination from '../../common/utils/keepHelpingDestination';
+import AppObservableStore from '../../common/stores/AppObservableStore';
 
 const CardForListBody = React.lazy(() => import('../../common/components/CardForListBody'));
 // const nextReleaseFeaturesEnabled = webAppConfig.ENABLE_NEXT_RELEASE_FEATURES === undefined ? false : webAppConfig.ENABLE_NEXT_RELEASE_FEATURES;
@@ -14,6 +16,7 @@ class RepresentativeCardForList extends Component {
     super(props);
     this.state = {
       // linkedCampaignXWeVoteId: '',
+      politicianWeVoteId: '',
       representative: {},
     };
     this.getCampaignXBasePath = this.getCampaignXBasePath.bind(this);
@@ -59,10 +62,36 @@ class RepresentativeCardForList extends Component {
   onRepresentativeStoreChange () {
     const { representativeWeVoteId } = this.props;
     const representative = RepresentativeStore.getRepresentativeByWeVoteId(representativeWeVoteId);
+    if (!representative) {
+      return;
+    }
+    let politicianWeVoteId = '';
+    if (representative && representative.politician_we_vote_id) {
+      politicianWeVoteId = representative.politician_we_vote_id;
+    }
     this.setState({
+      politicianWeVoteId,
       representative,
     });
   }
+
+  onPoliticianNameClick = () => {
+    const { politicianWeVoteId } = this.state;
+    if (!politicianWeVoteId) {
+      console.error('politicianWeVoteId is not set in state.');
+      return;
+    }
+    // Prefer the politician's current candidate record when known; otherwise fall back to the politician
+    // we_vote_id itself so the drawer always opens instead of navigating to the full page.
+    const ballotItemWeVoteId = politicianWeVoteId;
+    if (!ballotItemWeVoteId) {
+      return;
+    }
+    AppObservableStore.setOrganizationModalBallotItemWeVoteId(ballotItemWeVoteId);
+    AppObservableStore.setHideOrganizationModalBallotItemInfo(false);
+    AppObservableStore.setHideOrganizationModalPositions(false);
+    AppObservableStore.setShowOrganizationModal(true);
+  };
 
   getCampaignXBasePath () {
     const { representative } = this.state;
@@ -163,8 +192,6 @@ class RepresentativeCardForList extends Component {
       // is_supporters_count_minimum_exceeded: isSupportersCountMinimumExceeded,
       political_party: politicalParty,
       politician_we_vote_id: politicianWeVoteId,
-      profile_image_background_color: profileImageBackgroundColor,
-      representative_photo_url_large: representativePhotoLargeUrl,
       representative_ultimate_election_date: representativeUltimateElectionDate,
       // seo_friendly_path: politicianSEOFriendlyPath,
       state_code: stateCode,
@@ -174,9 +201,24 @@ class RepresentativeCardForList extends Component {
       // visible_on_this_site: visibleOnThisSite,
       we_vote_id: representativeWeVoteId,
     } = representative;
+    let {
+      profile_image_background_color: profileImageBackgroundColor,
+      representative_photo_url_large: representativePhotoLargeUrl,
+    } = representative;
     // console.log('representative:', representative);
     if (!representativeWeVoteId) {
       return null;
+    }
+    if (!profileImageBackgroundColor || !representativePhotoLargeUrl) {
+      const tempPolitician = PoliticianStore.getPoliticianByWeVoteId(politicianWeVoteId);
+      if (tempPolitician) {
+        if (!profileImageBackgroundColor) {
+          profileImageBackgroundColor = tempPolitician.profile_image_background_color;
+        }
+        if (!representativePhotoLargeUrl) {
+          representativePhotoLargeUrl = tempPolitician.we_vote_hosted_profile_image_url_large;
+        }
+      }
     }
     const todayAsInteger = getTodayAsInteger();
     const finalElectionDateInPast = representativeUltimateElectionDate && (representativeUltimateElectionDate <= todayAsInteger);
@@ -207,6 +249,7 @@ class RepresentativeCardForList extends Component {
           limitCardWidth={limitCardWidth}
           linkedCampaignXWeVoteId={linkedCampaignXWeVoteId}
           officeName={officeHeldName}
+          onDisplayNameClick={politicianWeVoteId ? this.onPoliticianNameClick : undefined}
           pathToUseToKeepHelping={pathToUseToKeepHelping}
           photoLargeUrl={representativePhotoLargeUrl}
           politicalParty={politicalParty}

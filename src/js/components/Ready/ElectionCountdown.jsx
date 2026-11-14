@@ -6,7 +6,7 @@ import BallotActions from '../../actions/BallotActions';
 import isMobileScreenSize from '../../common/utils/isMobileScreenSize';
 import BallotTitleHeader from '../Ballot/BallotTitleHeader';
 import BallotTitleHeaderNationalPlaceholder from '../Ballot/BallotTitleHeaderNationalPlaceholder';
-import { formatDateToMonthDayYear } from '../../common/utils/dateFormat';
+import { formatDateToMonthDayYear, nextNationalElectionYYYYMMDDText } from '../../common/utils/dateFormat';
 import apiCalming from '../../common/utils/apiCalming';
 import daysUntil from '../../common/utils/daysUntil';
 import getBooleanValue from '../../common/utils/getBooleanValue';
@@ -76,7 +76,8 @@ class ElectionCountdown extends React.Component {
         }, delay);
       }
     }
-    const nextNationalElectionDayText = `${BallotStore.nextNationalElectionDayText || '2026-11-03'}`;
+    const nextNationalElectionYYYYMMDDTextFallback = nextNationalElectionYYYYMMDDText();  // '2028-11-07', '2030-11-05'
+    const nextNationalElectionDayText = `${BallotStore.nextNationalElectionDayText || nextNationalElectionYYYYMMDDTextFallback}`;
     // console.log('nextNationalElectionDayText:', nextNationalElectionDayText);
     initializeMoment(() => {
       const { moment } = window;

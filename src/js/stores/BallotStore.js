@@ -12,6 +12,7 @@ import toTitleCase from '../common/utils/toTitleCase';
 import convertVoterGuideToElection from '../utils/voterGuideFunctions';
 import SupportStore from './SupportStore'; // eslint-disable-line import/no-cycle
 import VoterStore from './VoterStore';
+import { nextNationalElectionYYYYMMDDText } from '../common/utils/dateFormat';
 
 // December 2018:  We want to work toward being airbnb style compliant, but for now these are disabled in this file to minimize massive changes
 /* eslint no-param-reassign: 0 */
@@ -157,7 +158,8 @@ class BallotStore extends ReduceStore {
   }
 
   get nextNationalElectionDayText () {
-    return this.getState().nextNationalElectionDayText || '2026-11-03';
+    const nextNationalElectionYYYYMMDDTextFallback = nextNationalElectionYYYYMMDDText();  // '2028-11-07', '2030-11-05'
+    return this.getState().nextNationalElectionDayText || nextNationalElectionYYYYMMDDTextFallback;
   }
 
   get currentBallotGoogleCivicElectionId () {

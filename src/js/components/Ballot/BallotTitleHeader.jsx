@@ -11,7 +11,7 @@ import DesignTokenColors from '../../common/components/Style/DesignTokenColors';
 import AppObservableStore from '../../common/stores/AppObservableStore';
 import { convertStateCodeToStateText } from '../../common/utils/addressFunctions';
 import { isAndroidSizeWide, isIPad } from '../../common/utils/cordovaUtils';
-import { formatDateToMonthDayYear } from '../../common/utils/dateFormat';
+import { formatDateToMonthDayYear, nextNationalElectionYYYYMMDDText } from '../../common/utils/dateFormat';
 import daysUntil from '../../common/utils/daysUntil';
 import initializeMoment from '../../common/utils/initializeMoment';
 import { isAndroid } from '../../common/utils/isCordovaOrWebApp';
@@ -126,7 +126,8 @@ class BallotTitleHeader extends Component {
     }
     const electionDayTextFormatted = electionDayText && window.moment ? window.moment(electionDayText).format('MMM Do, YYYY') : '';
     const electionDayTextObject = electionDayText && window.moment ? <span>{electionDayTextFormatted}</span> : null;
-    const nextNationalElectionDayText = `${BallotStore.nextNationalElectionDayText || '2026-11-03'}`;
+    const nextNationalElectionYYYYMMDDTextFallback = nextNationalElectionYYYYMMDDText();  // '2028-11-07', '2030-11-05'
+    const nextNationalElectionDayText = `${BallotStore.nextNationalElectionDayText || nextNationalElectionYYYYMMDDTextFallback}`;
     // console.log('nextNationalElectionDayText:', nextNationalElectionDayText);
     initializeMoment(() => {
       const { moment } = window;
