@@ -33,7 +33,7 @@ function BallotOfficeHeader ({
 }) {
   return (
     <InlineOfficeHeader>
-      <span>
+      <div>
         <span className="u-show-mobile">
           Ballot Section for
         </span>
@@ -46,7 +46,7 @@ function BallotOfficeHeader ({
         <strong style={{ fontWeight: 500 }}>
           {officeName}
         </strong>
-      </span>
+      </div>
 
       <ViewBallotButton onClick={onViewBallotClick}>
         View full ballot
@@ -501,7 +501,8 @@ const ViewBallotButton = styled.button`
   border: 1px solid #ddd;
   border-radius: 20px;
   cursor: pointer;
-  padding: 6px 6px;
+  // padding: 6px 6px;
+  padding: 1px 6px; // 2026-11-15 Temporarily reducing the vertical padding because of a spacing issue on Office page, where the bottom of the "View full ballot" button is getting cropped on the bottom.
   font-weight: 400;
   &:hover {
     background: ${DesignTokenColors.primary800};
