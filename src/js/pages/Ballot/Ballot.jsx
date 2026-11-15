@@ -1613,6 +1613,12 @@ const BallotListInternalWrapper = styled('div')`
   }
 `;
 
+const BallotListInternalWrapper = styled('div')`
+  @media print {
+    column-count: 1;
+  }
+`;
+
 const BallotListWrapper = styled('div')`
   padding-bottom: 40px;
 `;
