@@ -55,11 +55,53 @@ export const BallotFilterRow = styled('div')`
   // margin-left: {() => (isWebApp() && !isMobileScreenSize() ? 'calc((100vw - 975px)/2)' : '')};
 `;
 
+export const BallotFilterTabs = styled('div')`
+  display: flex;
+  overflow-y: hidden;
+  overflow-x: auto;
+  justify-content: flex-start;
+  margin-top: 8px;
+  /* Make the scrollbar not be visible */
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+  ::-webkit-scrollbar {  /* Chrome, Safari and Opera */
+    display: none;
+  }
+`;
+
+/* eslint-disable arrow-body-style, no-nested-ternary */
+export const BallotHeaderBottomWrapper = styled('div', {
+  shouldForwardProp: (prop) => !['scrolledDown'].includes(prop),
+})(({ scrolledDown, theme }) => {
+  return (`
+    ${isCordova() && isMobileScreenSize() ? 'margin-top: 0 !important;' : 'margin-top: 12px'}
+    transition: all 150ms ease-in;
+    width: 100%;
+    ${theme.breakpoints.down('sm') && isWebApp()} {
+      ${isWebApp() ? (scrolledDown ? 'margin-top: 10px;' : 'margin-top: 20px;') : ''}
+    }
+    ${(isCordova() && pageEnumeration() === CordovaPageConstants.ballotSmHdrWild) ? 'padding-top: 20px' : ''}
+  `);
+});
+// Removed Jul 29, 2026  ${scrolledDown || showBallotDecisionsTabs() ? 'margin-top: 12px;' : 'margin-top: 38px;'}
+
+export const BallotHeaderDivider = styled('hr')`
+  margin: 0;
+  width: 200%;
+  left: -300px;
+  position: absolute
+`;
+
 // Here to replace 'ballot__header__group' from main.css
 export const BallotHeaderGroup = styled('header')`
   display: block;
   /* margin-bottom:40px; WV-427 add spacing between header and tabs*/
   border-bottom: 0 solid #000
+`;
+
+export const BallotTitleHeaderContainer = styled('div')`
+  margin-top: 50px;
+  transition: ${isWebApp() ? 'all 150ms ease-in' : ''};
 `;
 
 export const CordovaTopOfScreenSpacer = styled('div')`

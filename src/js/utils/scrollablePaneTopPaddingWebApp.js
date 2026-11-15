@@ -13,7 +13,7 @@ export default function scrollablePaneTopPaddingWebApp (pageEnumerationOverride 
   // WebApp desktop mode
   cordovaOffsetLog(`scrollablePaneTopPaddingWebApp: WebApp desktop, page: ${page}`);
   switch (page) {
-    // First number is with "Choices / Decided" showing
+    // First number is with "Choices / Chosen" showing
     case CordovaPageConstants.ballotLgHdrWild:       return showBallotDecisionsTabs() ? '180px' : '64px'; // 32/0: Added ~80px
     // Without showBallotDecisionsTabs
     case CordovaPageConstants.ballotSmHdrWild:       return '96px';

@@ -10,7 +10,7 @@ import { pageEnumeration } from './cordovaUtilsPageEnumeration';
 /* global $ */
 
 //  <PageContentContainer>
-// This determines where the top of the "All", "Choices" and "Decided" tabs should start.
+// This determines where the top of the "All", "Choices" and "Chosen" tabs should start.
 export function cordovaBallotFilterTopMargin () {
   if (isWebApp()) {
     if (isMobileScreenSize()) {

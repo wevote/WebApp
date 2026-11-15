@@ -135,7 +135,7 @@ function Office () {
       currentOfficeWeVoteId = params.office_we_vote_id;
     }
     const currentOffice = OfficeStore.getOffice(currentOfficeWeVoteId);
-    console.log('Office.jsx onOfficeStoreChange:', currentOfficeWeVoteId, ', office:', currentOffice);
+    // console.log('Office.jsx onOfficeStoreChange:', currentOfficeWeVoteId, ', office:', currentOffice);
     let newCandidate;
     const newCandidateList = [];
     if (currentOffice && currentOffice.ballot_item_display_name) {
