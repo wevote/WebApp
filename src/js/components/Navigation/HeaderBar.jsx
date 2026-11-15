@@ -260,6 +260,7 @@ class HeaderBar extends Component {
       case 'more':
       case 'more/faq':
       case 'managecandidates':
+      case 'my-elected-officials':
       case 'no-candidates-claimed':
         return 4;
       default:
@@ -349,6 +350,7 @@ class HeaderBar extends Component {
         case 'more/faq':
         case 'friends':
         case 'managecandidates':
+        case 'my-elected-officials':
         case 'no-candidates-claimed':
         case 'more':
         case 'news':
@@ -484,7 +486,7 @@ class HeaderBar extends Component {
                       value={2}
                       change={this.handleTabChange}
                       id="candidatesTabHeaderBar"
-                      label="Candidates"
+                      label="Politicians"
                       to="/cs/"
                     />
                     <Tab
@@ -581,7 +583,7 @@ class HeaderBar extends Component {
                         to="/no-candidates-claimed"
                         disableRipple
                       >
-                        Candidates I&apos;m managing
+                        Candidate campaign tools
                       </StyledMoreMenuItem>
                     )}
 
@@ -598,6 +600,22 @@ class HeaderBar extends Component {
                     >
                       Election finder
                     </StyledMoreMenuItem>
+
+                    {nextReleaseFeaturesEnabled && (
+                      <StyledMoreMenuItem
+                        id="HeaderBarElectedOfficials"
+                        component={Link}
+                        onClick={() => {
+                          this.setState({ moreAnchorEl: null });
+                          this.handleTabChange(4);
+                        }}
+                        selected={['my-elected-officials'].includes(normalizedHrefPage())}
+                        to="/my-elected-officials"
+                        disableRipple
+                      >
+                        Elected officials
+                      </StyledMoreMenuItem>
+                    )}
 
                     <StyledMoreMenuItem
                       id="HeaderBarFriends"

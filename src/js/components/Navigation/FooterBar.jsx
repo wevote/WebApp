@@ -83,14 +83,14 @@ function MoreMenuOverlay ({ anchorRef, classes, friendInvitationsSentToMeCount, 
               src={isManage ? '/img/global/svg-icons/capital-building-selected.svg' : '/img/global/svg-icons/capital-building.svg'}
               style={{ width: 40, height: 40, marginBottom: 6 }}
             />
-            Candidates
+            Candidate
             <br />
-            I&apos;m managing
+            campaign tools
           </MenuItem>
         )}
         <MenuItem id="FooterBarElectionFinder" $active={isElectionFinder} onClick={() => { onClose(); historyPush('/election-finder'); }}>
           <CalendarMonth />
-          Election Finder
+          Election finder
         </MenuItem>
         <MenuItem id="FooterBarFriends" $active={isFriends} onClick={() => { onClose(); historyPush('/friends'); }}>
           {friendInvitationsSentToMeCount > 0 ? (
@@ -398,7 +398,7 @@ class FooterBar extends React.Component {
                   height={36}
                 />
               )}
-              label="Candidates"
+              label="Politicians"
               style={{
                 marginLeft: '-4px',
               }}

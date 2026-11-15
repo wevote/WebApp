@@ -1,5 +1,5 @@
 // Be aware that this "Link" is the Material UI Component, and not the react-router-dom router
-import { Badge, Chip, CircularProgress, Link } from '@mui/material';
+import { Badge, CircularProgress, Link } from '@mui/material';
 import withStyles from '@mui/styles/withStyles';
 import withTheme from '@mui/styles/withTheme';
 import PropTypes from 'prop-types';
@@ -34,7 +34,13 @@ import BallotTitleHeader from '../../components/Ballot/BallotTitleHeader';
 import BallotDecisionsTabs from '../../components/Navigation/BallotDecisionsTabs';
 import BallotShowAllItemsFooter from '../../components/Navigation/BallotShowAllItemsFooter';
 import { ballotWrapperBodyStyles } from '../../components/Style/BallotTitleHeaderStyles';
-import { DualHeaderContainer, getTopOffsetDueToHeadroomWrapper, HeaderContentContainer, HeaderContentOuterContainer, PageContentContainer } from '../../components/Style/pageLayoutStyles';
+import {
+  BallotDecisionsWrapper, BallotFilterChip, BallotFilterChips,
+  BallotFilterContainer, BallotFilterRow, BallotHeaderGroup,
+  DualHeaderContainer, getTopOffsetDueToHeadroomWrapper,
+  HeaderContentContainer, HeaderContentOuterContainer, OneBallotFilterWrapper,
+  PageContentContainer,
+} from '../../components/Style/pageLayoutStyles';
 import webAppConfig from '../../config';
 import CordovaPageConstants from '../../constants/CordovaPageConstants';
 import VoterConstants from '../../constants/VoterConstants';
@@ -1203,7 +1209,7 @@ class Ballot extends Component {
         <Suspense fallback={<></>}>
           <DelayedLoad showLoadingText waitBeforeShow={2000}>
             <div className="ballot container-fluid well u-stack--md u-inset--md" style={{ marginBottom: `${isIPhone6p1in() ? '800px' : '625px'}` }}>
-              <div className="ballot__header" style={{ marginTop: `${isCordova() ? '100px' : 'undefined'}` }}>
+              <div style={{ marginTop: `${isCordova() ? '100px' : 'undefined'}` }}>
                 <BallotLoadingWrapper>
                   If your ballot does not appear momentarily,
                   {' '}
@@ -1233,59 +1239,6 @@ class Ballot extends Component {
     const sourcePollingLocationWeVoteId = BallotStore.currentBallotPollingLocationSource;
     const ballotReturnedAdminEditUrl = `${webAppConfig.WE_VOTE_SERVER_ROOT_URL}b/${sourcePollingLocationWeVoteId}/list_edit_by_polling_location/?google_civic_election_id=${VoterStore.electionId()}&state_code=`;
     // console.log('electionName: ', electionName, ', electionDayText: ', electionDayText);
-
-    // const emptyBallotButton = completionLevelFilterType !== 'none' && !voterAddressMissing ? (
-    //   <EmptyBallotNotice>
-    //     <BallotEmptyTitle>
-    //       Ballot Not Released Yet
-    //     </BallotEmptyTitle>
-    //     <BallotEmptyExplanation>
-    //       Your next ballot isn&apos;t ready yet. Ballot data is usually available 45 days before each election.
-    //       You can also
-    //       {' '}
-    //       <span
-    //         className="u-cursor--pointer u-link-color u-link-color-on-hover"
-    //         onClick={() => AppObservableStore.setShowSelectBallotModalOnly(true)}
-    //       >
-    //         see what is on the ballot in other states
-    //       </span>
-    //       .
-    //       {!VoterStore.getVoterIsSignedIn() && (
-    //         <>
-    //           {' '}
-    //           Please sign in so we can notify you when your election data is available.
-    //         </>
-    //       )}
-    //       <br />
-    //       <br />
-    //       WeVote uses ballot data aggregated from government, nonpartisan, and partisan sources. WeVote strives to provide a balanced selection of clearly identified voting guides from newspapers and media. Partisan voter guides are also provided from a diversity of sources and points-of-view.
-    //       <br />
-    //       <br />
-    //       While you are waiting, connect with your friends who are already using WeVote.
-    //     </BallotEmptyExplanation>
-    //     <FindYourFriendsWrapper>
-    //       <Suspense fallback={<></>}>
-    //         <ViewUpcomingBallotButton onlyOfferViewYourBallot />
-    //       </Suspense>
-    //     </FindYourFriendsWrapper>
-    //   </EmptyBallotNotice>
-    // ) : (
-    //   <div className="container-fluid well u-stack--md u-inset--md">
-    //     <Helmet title="Enter Your Address - WeVote" />
-    //     <div>
-    //       <AddressBox
-    //         introductionHtml={(
-    //           <h3 className="h3 row">
-    //             Enter address where you are registered to vote
-    //           </h3>
-    //         )}
-    //         // classes={this.props.classes}
-    //         saveUrl={ballotBaseUrl}
-    //       />
-    //     </div>
-    //   </div>
-    // );
-
     // console.log('ballotWithItemsFromCompletionFilterType: ', ballotWithItemsFromCompletionFilterType);
 
     const inRemainingDecisionsMode = completionLevelFilterType === 'filterRemaining';
@@ -1349,28 +1302,28 @@ class Ballot extends Component {
                           </>
                         )}
                       </Helmet>
-                      <header className="ballot__header__group">
+                      <BallotHeaderGroup>
                         <BallotTitleHeaderContainer>
                           <BallotTitleHeader
                             showShareButton
                             toggleSelectBallotModal={this.toggleSelectBallotModal}
                           />
                         </BallotTitleHeaderContainer>
-                      </header>
+                      </BallotHeaderGroup>
                       <BallotBottomWrapper scrolledDown={scrolledDown}>
                         { textForMapSearch || ballotWithItemsFromCompletionFilterType.length > 0 ? (
-                          <div className="ballot__filter__container">
+                          <BallotFilterContainer>
                             { showBallotDecisionsTabs() && (
                               <>
-                                <div className="ballot__filter d-print-none">
+                                <BallotDecisionsWrapper className="d-print-none">
                                   <BallotDecisionsTabs
                                     completionLevelFilterType={BallotStore.cleanCompletionLevelFilterType(completionLevelFilterType)}
                                     ballotLength={BallotStore.ballotLength}
                                     ballotLengthRemaining={BallotStore.ballotRemainingChoicesLength}
                                     setBallotItemFilterTypeToAll={this.setBallotItemFilterTypeToAll}
                                   />
-                                </div>
-                                <hr className="ballot-header-divider" />
+                                </BallotDecisionsWrapper>
+                                <BallotHeaderDivider />
                               </>
                             )}
                             <BallotFilterRow id="BallotFilterRow"/* showFilterTabs={showFilterTabs} */>
@@ -1387,20 +1340,16 @@ class Ballot extends Component {
                                       />
                                     </Suspense>
                                     { showFilterTabs && (
-                                      <div
-                                        className="ballot_filter_btns"
-                                        key="filterTypeAll"
-                                      >
-                                        <Chip variant="outlined"
+                                      <BallotFilterChips key="filterTypeAll">
+                                        <BallotFilterChip variant="outlined"
                                           color={(raceLevelFilterType === 'All' && !isSearching) ? 'primary' : 'default'}
-                                          className="btn_ballot_filter"
                                           classes={{ root: classes.chipRootAll, label: classes.chipLabel, outlinedPrimary: (raceLevelFilterType === 'All' && !isSearching) ? classes.chipOutlined : null }}
                                           id="ballotBadgeMobileAndDesktop-All"
                                           label="All"
                                           style={widthOverride}
                                           onClick={() => this.setBallotItemFilterType('All', ballotWithItemsFromCompletionFilterType.length)}
                                         />
-                                      </div>
+                                      </BallotFilterChips>
                                     )}
                                     { showFilterTabs && (
                                       BALLOT_ITEM_FILTER_TYPES.map((oneTypeOfBallotItem) => {
@@ -1420,9 +1369,8 @@ class Ballot extends Component {
                                             }
                                           });
                                           const ballotChip = (
-                                            <Chip variant="outlined"
+                                            <BallotFilterChip variant="outlined"
                                               color={(oneTypeOfBallotItem === raceLevelFilterType && !isSearching) ? 'primary' : 'default'}
-                                              className="btn_ballot_filter"
                                               classes={{ root: classes.chipRoot, label: classes.chipLabel, outlinedPrimary: (oneTypeOfBallotItem === raceLevelFilterType && !isSearching) ? classes.chipOutlined : null }}
                                               id={chipLabelText(oneTypeOfBallotItem)}
                                               label={chipLabelText(oneTypeOfBallotItem)}
@@ -1432,17 +1380,14 @@ class Ballot extends Component {
                                             />
                                           );
                                           return (
-                                            <div id={`BallotButtonOuterWrapper-${window.performance.now()}`} key={oneTypeOfBallotItem + window.performance.now()}>
+                                            <OneBallotFilterWrapper id={`BallotButtonOuterWrapper-${window.performance.now()}`} key={oneTypeOfBallotItem + window.performance.now()}>
                                               <div className="u-show-mobile">
-                                                <div
-                                                  className="ballot_filter_btns"
-                                                  id={`ballotBadgeMobile-${oneTypeOfBallotItem}`}
-                                                >
+                                                <BallotFilterChips id={`ballotBadgeMobile-${oneTypeOfBallotItem}`}>
                                                   {ballotChip}
-                                                </div>
+                                                </BallotFilterChips>
                                               </div>
                                               <div className="u-show-desktop-tablet">
-                                                <div className="ballot_filter_btns">
+                                                <BallotFilterChips>
                                                   <Badge
                                                     badgeContent={ballotItemsByFilterType.length}
                                                     classes={{
@@ -1462,9 +1407,9 @@ class Ballot extends Component {
                                                   >
                                                     {ballotChip}
                                                   </Badge>
-                                                </div>
+                                                </BallotFilterChips>
                                               </div>
-                                            </div>
+                                            </OneBallotFilterWrapper>
                                           );
                                         } else {
                                           return null;
@@ -1475,12 +1420,15 @@ class Ballot extends Component {
                                 ) : null}
                               </BallotFilterTabs>
                             </BallotFilterRow>
-                          </div>
+                          </BallotFilterContainer>
                         ) : null}
                       </BallotBottomWrapper>
                     </div>
+                    {/* ABOVE: div className="col-md-12" */}
                   </div>
+                  {/* ABOVE: div className="row" */}
                 </div>
+                {/* ABOVE: div className="container-fluid" */}
               </HeaderContentContainer>
             </HeaderContentOuterContainer>
             <div id="cordovaHeaderBottomDatum" />
@@ -1519,7 +1467,7 @@ class Ballot extends Component {
                     )}
                     <BallotListWrapper>
                       {/* The rest of the ballot items */}
-                      <div className="BallotList" id="BallotListId">
+                      <BallotListInternalWrapper id="BallotListId">
                         {(isSearching && ballotSearchResults && ballotSearchResults.length === 0) && (
                           <SearchResultsEmpty>
                             Please enter new search terms to find results.
@@ -1626,7 +1574,7 @@ class Ballot extends Component {
                             setActiveRaceItem={this.showAllBallotItems}
                           />
                         )}
-                      </div>
+                      </BallotListInternalWrapper>
                     </BallotListWrapper>
                     {/* Show links to this candidate in the admin tools */}
                     { (!twoColumnDisplay) && (this.state.voter && sourcePollingLocationWeVoteId) && (this.state.voter.is_admin || this.state.voter.is_verified_volunteer) ? (
@@ -1652,8 +1600,10 @@ class Ballot extends Component {
                 </BallotWrapperBody>
               </BallotWrapper>
             </div>
+            {/* ABOVE: div className="container-fluid" */}
           </PageContentContainer>
         </Suspense>
+        {/* BELOW: div className="ballot_root" */}
       </div>
     );
   }
@@ -1755,6 +1705,12 @@ const BallotBottomWrapper = styled('div', {
 });
 // Removed Jul 29, 2026  ${scrolledDown || showBallotDecisionsTabs() ? 'margin-top: 12px;' : 'margin-top: 38px;'}
 
+const BallotHeaderDivider = styled('hr')`
+  margin: 0;
+  width: 200%;
+  left: -300px;
+  position: absolute
+`;
 
 const BallotOverflowWrapper = styled('div')`
   overflow-x: hidden;
@@ -1770,6 +1726,12 @@ const BallotOverflowWrapper = styled('div')`
 // const BallotEmptyTitle = styled('h3')`
 //   font-size: 24px;
 // `;
+
+const BallotListInternalWrapper = styled('div')`
+  @media print {
+    column-count: 1;
+  }
+`;
 
 const BallotListWrapper = styled('div')`
   padding-bottom: 40px;
@@ -1795,12 +1757,6 @@ const BallotFilterTabs = styled('div')`
   ::-webkit-scrollbar {  /* Chrome, Safari and Opera */
     display: none;
   }
-`;
-
-// If we want to turn off filter tabs navigation bar:  {({ showFilterTabs }) => !showFilterTabs && 'height: 0;'}
-const BallotFilterRow = styled('div')`
-  // TODO: 10/4/21 Steve, this is temporary and needs to be more responsive
-  // margin-left: {() => (isWebApp() && !isMobileScreenSize() ? 'calc((100vw - 975px)/2)' : '')};
 `;
 
 const BallotTitleHeaderContainer = styled('div')`
