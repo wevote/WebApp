@@ -737,6 +737,7 @@ export function blurTextFieldAndroid () {
 }
 
 export function chipLabelText (fullLabel) {
+  // console.log('chipLabelText window.innerWidth:', window.innerWidth, ', isIOS:', isIOS(), ', getIOSDiagonalValue():', getIOSDiagonalValue());
   if (isWebApp() && window.innerWidth < 350) { // iPhone SE/SE2/5 in Web Browser
     if (fullLabel === 'Federal') {
       return 'Fed';
@@ -747,7 +748,7 @@ export function chipLabelText (fullLabel) {
     } else if (fullLabel === 'Local') {
       return 'Loc';
     }
-  } else if (window.innerWidth < 400 || getIOSDiagonalValue() <= 6.3) { // iPhone 6/7/8 in Web Browser AND any iPhone smaller than or equal to 6.3" in Cordova
+  } else if (window.innerWidth < 400 || (isIOS() && getIOSDiagonalValue() <= 6.3)) { // iPhone 6/7/8 in Web Browser AND any iPhone smaller than or equal to 6.3" in Cordova
     if (fullLabel === 'Federal') {
       return 'Fed';
     } else if (fullLabel === 'Measure') {

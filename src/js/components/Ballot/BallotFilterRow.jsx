@@ -23,7 +23,7 @@ function BallotFilterRow ({
   isSearching,
   onFilterBaseSearch,
   raceLevelFilterType,
-  setBallotItemFilterType,
+  setRaceLevelFilterType,
   showFilterTabs,
 }) {
   let widthOverride = {};
@@ -63,51 +63,51 @@ function BallotFilterRow ({
                   id="ballotBadgeMobileAndDesktop-All"
                   label="All"
                   style={widthOverride}
-                  onClick={() => setBallotItemFilterType('All', ballotWithItemsFromCompletionFilterType.length)}
+                  onClick={() => setRaceLevelFilterType('All', ballotWithItemsFromCompletionFilterType.length)}
                 />
               </BallotFilterChips>
             )}
             {showFilterTabs && (
-              ballotItemFilterTypes.map((oneTypeOfBallotItem) => {
+              ballotItemFilterTypes.map((raceLevelFilterTypeForThisChip) => {
                 const allBallotItemsByFilterType = ballotWithAllItems.filter((item) => {
-                  if (oneTypeOfBallotItem === 'Measure') {
+                  if (raceLevelFilterTypeForThisChip === 'Measure') {
                     return item.kind_of_ballot_item === 'MEASURE';
                   } else {
-                    return oneTypeOfBallotItem === item.race_office_level;
+                    return raceLevelFilterTypeForThisChip === item.race_office_level;
                   }
                 });
                 if (allBallotItemsByFilterType.length) {
                   const ballotItemsByFilterType = ballotWithItemsFromCompletionFilterType.filter((item) => {
-                    if (oneTypeOfBallotItem === 'Measure') {
+                    if (raceLevelFilterTypeForThisChip === 'Measure') {
                       return item.kind_of_ballot_item === 'MEASURE';
                     } else {
-                      return oneTypeOfBallotItem === item.race_office_level;
+                      return raceLevelFilterTypeForThisChip === item.race_office_level;
                     }
                   });
                   const ballotChip = (
                     <BallotFilterChip
                       variant="outlined"
-                      color={(oneTypeOfBallotItem === raceLevelFilterType && !isSearching) ? 'primary' : 'default'}
+                      color={(raceLevelFilterTypeForThisChip === raceLevelFilterType && !isSearching) ? 'primary' : 'default'}
                       classes={{
                         root: classes.chipRoot,
                         label: classes.chipLabel,
-                        outlinedPrimary: (oneTypeOfBallotItem === raceLevelFilterType && !isSearching) ? classes.chipOutlined : null,
+                        outlinedPrimary: (raceLevelFilterTypeForThisChip === raceLevelFilterType && !isSearching) ? classes.chipOutlined : null,
                       }}
-                      id={chipLabelText(oneTypeOfBallotItem)}
-                      label={chipLabelText(oneTypeOfBallotItem)}
+                      id={chipLabelText(raceLevelFilterTypeForThisChip)}
+                      label={chipLabelText(raceLevelFilterTypeForThisChip)}
                       style={widthOverride}
-                      key={chipLabelText(oneTypeOfBallotItem)}
-                      onClick={() => setBallotItemFilterType(oneTypeOfBallotItem, ballotItemsByFilterType.length)}
+                      key={chipLabelText(raceLevelFilterTypeForThisChip)}
+                      onClick={() => setRaceLevelFilterType(raceLevelFilterTypeForThisChip, ballotItemsByFilterType.length)}
                     />
                   );
                   return (
                     <OneBallotFilterWrapper
                       id={`BallotButtonOuterWrapper-${window.performance.now()}`}
-                      key={oneTypeOfBallotItem + window.performance.now()}
+                      key={raceLevelFilterTypeForThisChip + window.performance.now()}
                     >
                       <div className="u-show-mobile">
                         <BallotFilterChips
-                          id={`ballotBadgeMobile-${oneTypeOfBallotItem}`}
+                          id={`ballotBadgeMobile-${raceLevelFilterTypeForThisChip}`}
                         >
                           {ballotChip}
                         </BallotFilterChips>
@@ -121,8 +121,8 @@ function BallotFilterRow ({
                               colorPrimary: classes.badgeColorPrimary,
                               root: classes.badgeRoot,
                             }}
-                            color={(oneTypeOfBallotItem === raceLevelFilterType && !isSearching) ? 'primary' : 'default'}
-                            id={`ballotBadgeDesktop-${oneTypeOfBallotItem}`}
+                            color={(raceLevelFilterTypeForThisChip === raceLevelFilterType && !isSearching) ? 'primary' : 'default'}
+                            id={`ballotBadgeDesktop-${raceLevelFilterTypeForThisChip}`}
                             invisible={ballotItemsByFilterType.length === 0}
                             onFocus={(e) => {
                               e.currentTarget.classList.add(classes.badgeFocused);
@@ -158,7 +158,7 @@ BallotFilterRow.propTypes = {
   isSearching: PropTypes.bool.isRequired,
   onFilterBaseSearch: PropTypes.func.isRequired,
   raceLevelFilterType: PropTypes.string.isRequired,
-  setBallotItemFilterType: PropTypes.func.isRequired,
+  setRaceLevelFilterType: PropTypes.func.isRequired,
   showFilterTabs: PropTypes.bool.isRequired,
 };
 
