@@ -849,17 +849,20 @@ class Ballot extends Component {
     console.log('---------------------- onVoterAddressSave');
   }
 
-  setBallotItemFilterTypeToAll = () => {
-    const { ballotWithItemsFromCompletionFilterType } = this.state;
-    const ballotWithItemsFromCompletionFilterTypeLength = (ballotWithItemsFromCompletionFilterType) ? ballotWithItemsFromCompletionFilterType.length : 0;
-    this.setBallotItemFilterType('All', ballotWithItemsFromCompletionFilterTypeLength);
-  };
+  // This was being used by BallotDecisionsTabs to always reset the raceLevelFilterType to "All" instead of leaving it as is (i.e., Federal, State, Measure)
+  // setRaceLevelFilterTypeToAll = () => {
+  //   console.log('Ballot setRaceLevelFilterTypeToAll');
+  //   const { ballotWithItemsFromCompletionFilterType } = this.state;
+  //   const ballotWithItemsFromCompletionFilterTypeLength = (ballotWithItemsFromCompletionFilterType) ? ballotWithItemsFromCompletionFilterType.length : 0;
+  //   this.setRaceLevelFilterType('All', ballotWithItemsFromCompletionFilterTypeLength);
+  // };
 
-  setBallotItemFilterType = (raceLevelFilterType, doubleFilteredBallotItemsLength) => {
+  setRaceLevelFilterType = (raceLevelFilterType, doubleFilteredBallotItemsLength) => {
     window.scrollTo(0, 0);
     BallotActions.raceLevelFilterTypeSave(raceLevelFilterType);
     // Calculate totalNumberOfBallotItems given filters set
     const completionLevelFilterType = BallotStore.getCompletionLevelFilterTypeSaved() || '';
+    // console.log('raceLevelFilterType:', raceLevelFilterType, ', completionLevelFilterType:', completionLevelFilterType);
     const ballotWithItemsFromCompletionFilterType = BallotStore.getBallotByCompletionLevelFilterType(completionLevelFilterType);
     let totalNumberOfBallotItems;
     if (ballotWithItemsFromCompletionFilterType && ballotWithItemsFromCompletionFilterType.length) {
@@ -874,7 +877,7 @@ class Ballot extends Component {
         totalNumberOfBallotItems = BallotStore.ballotLength;
       }
     }
-    // console.log('setBallotItemFilterType totalNumberOfBallotItems:', totalNumberOfBallotItems);
+    // console.log('setRaceLevelFilterType totalNumberOfBallotItems:', totalNumberOfBallotItems);
     this.setState({
       doubleFilteredBallotItemsLength,
       isSearching: false,
@@ -1310,7 +1313,6 @@ class Ballot extends Component {
                                     completionLevelFilterType={BallotStore.cleanCompletionLevelFilterType(completionLevelFilterType)}
                                     ballotLength={BallotStore.ballotLength}
                                     ballotLengthRemaining={BallotStore.ballotRemainingChoicesLength}
-                                    setBallotItemFilterTypeToAll={this.setBallotItemFilterTypeToAll}
                                   />
                                 </BallotDecisionsWrapper>
                                 <BallotHeaderDivider />
@@ -1325,7 +1327,7 @@ class Ballot extends Component {
                               isSearching={isSearching}
                               onFilterBaseSearch={this.onFilterBaseSearch}
                               raceLevelFilterType={raceLevelFilterType}
-                              setBallotItemFilterType={this.setBallotItemFilterType}
+                              setRaceLevelFilterType={this.setRaceLevelFilterType}
                               showFilterTabs={showFilterTabs}
                             />
                           </BallotFilterContainer>
@@ -1605,12 +1607,6 @@ const BallotItemWrapper = styled('div')`
 
 const BallotOverflowWrapper = styled('div')`
   overflow-x: hidden;
-`;
-
-const BallotListInternalWrapper = styled('div')`
-  @media print {
-    column-count: 1;
-  }
 `;
 
 const BallotListInternalWrapper = styled('div')`

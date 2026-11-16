@@ -53,9 +53,10 @@ class BallotDecisionsTabs extends Component {
   };
 
   goToDifferentCompletionLevelTab (completionLevelFilterType = '') {
-    if (this.props.setBallotItemFilterTypeToAll) {
-      this.props.setBallotItemFilterTypeToAll();
-    }
+    // This was always resetting to "All" instead of leaving it as is (i.e., Federal, State, Measure)
+    // if (this.props.setRaceLevelFilterTypeToAll) {
+    //   this.props.setRaceLevelFilterTypeToAll();
+    // }
     BallotActions.completionLevelFilterTypeSave(completionLevelFilterType);
   }
 
@@ -168,7 +169,6 @@ BallotDecisionsTabs.propTypes = {
   ballotLengthRemaining: PropTypes.number,
   classes: PropTypes.object,
   completionLevelFilterType: PropTypes.string,
-  setBallotItemFilterTypeToAll: PropTypes.func,
 };
 
 // mobile transition: sm
