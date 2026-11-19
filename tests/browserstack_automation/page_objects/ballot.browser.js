@@ -21,7 +21,11 @@ class BallotBrowser extends PageBrowser {
   }
 
   get getBallotAddressElement () {
-    return $('  #ballotTitleBallotAddress span');
+    return $('#ballotTitleBallotAddress span');
+  }
+
+  get getBallotElectionNameElement () {
+    return $('#ballotTitleHeaderElectionName, #ballotTitleHeaderNationalElectionName');
   }
 
   get getBallotModalTitleElement () {
@@ -40,16 +44,16 @@ class BallotBrowser extends PageBrowser {
     return $('#entryBox');
   }
 
+  get getBallotModalChangeAddressElement () {
+    return $('#editAddressInPlaceModalEditButton');
+  }
+
   get getBallotModalSaveElement () {
     return $('#addressBoxModalSaveButton');
   }
 
   get getBallotModalCancelElement () {
     return $('#addressBoxModalCancelButton');
-  }
-
-  get getBallotTitleAddress () {
-    return $('#ballotTitleBallotAddress span');
   }
 
   get getAutoCompleteAddressElements () {

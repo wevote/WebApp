@@ -36,13 +36,19 @@ export default class WeVoteRouter extends BrowserRouter {
     if (webAppConfig.LOG_ROUTING) {
       console.log('Router:  initial history is: ', JSON.stringify(this.history, null, 2));
     }
+    let previousPathname = this.history.location.pathname;
     this.history.listen((location, action) => {
+      const currentPathname = location.pathname || '';
+      const pathnameChanged = currentPathname !== previousPathname;
+      previousPathname = currentPathname;
+      if (pathnameChanged && AppObservableStore.showSelectBallotModal()) {
+        AppObservableStore.setShowSelectBallotModal(false);
+      }
       // TODO: Why is this passed twice?
       if (AppObservableStore.getGoogleAnalyticsEnabled()) {
         ReactGA.send({ hitType: 'pageview', page: normalizedHrefPage() ? `/${normalizedHrefPage()}` : '/readyLight' });
       }
       AppObservableStore.incrementObservableUpdateCounter();   // Encourage an update of Header.jsx on each push
-      const currentPathname = location.pathname || '';
       AppObservableStore.setCurrentPathname(currentPathname);
       if (AppObservableStore.getGoogleAnalyticsEnabled()) {
         ReactGA.send({ hitType: 'pageview', page: normalizedHrefPage() ? `/${normalizedHrefPage()}` : '/readyLight' });
