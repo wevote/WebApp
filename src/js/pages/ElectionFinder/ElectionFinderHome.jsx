@@ -267,9 +267,12 @@ function ElectionFinderHome () {
                 <ElectionRow>
                   <ElectionRowText to={getElectionUrl(election)}>
                     <ElectionLink>
-                      {election.state_code && election.state_code !== 'NA' ?
-                        `${convertStateCodeToStateText(election.state_code)} – ${election.election_name || ''}` :
-                        (election.election_name || '')}
+                      {highlightMatch(
+                        election.state_code && election.state_code !== 'NA' ?
+                          `${convertStateCodeToStateText(election.state_code)} – ${election.election_name || ''}` :
+                          (election.election_name || ''),
+                        searchText,
+                      )}
                       {election.office_count ? (
                         <ElectionCountForLink>{` (${election.office_count.toLocaleString()} ${election.office_count === 1 ? 'office' : 'offices'})`}</ElectionCountForLink>
                       ) : (

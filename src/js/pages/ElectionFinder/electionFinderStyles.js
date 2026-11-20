@@ -58,6 +58,7 @@ export const CandidateActions = styled('div')`
 export const CandidateCount = styled('span')`
   font-weight: 200;
   color: ${DesignTokenColors.neutralUI700};
+  white-space: nowrap;
 `;
 
 export const CandidateInfo = styled('div')`
@@ -122,6 +123,8 @@ export const DarkTooltip = styled(({ className, ...props }) => (
 `;
 
 export const DetailTitle = styled('h2')`
+  flex: 1;
+  min-width: 0;
   font-size: 22px;
   font-weight: 500;
   color: ${DesignTokenColors.neutral800};

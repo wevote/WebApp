@@ -346,7 +346,7 @@ function ElectionFinderForState () {
                 <ElectionRow>
                   <ElectionRowText to={getElectionUrl(election)}>
                     <ElectionLink>
-                      {election.election_name || ''}
+                      {highlightMatch(election.election_name || '', searchText)}
                       {election.office_count ? (
                         <ElectionCountForLink>{` (${election.office_count.toLocaleString()} ${election.office_count === 1 ? 'office' : 'offices'})`}</ElectionCountForLink>
                       ) : (
