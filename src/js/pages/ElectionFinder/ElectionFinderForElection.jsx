@@ -28,6 +28,7 @@ import copyAndToast from './copyAndToast';
 import formatDateLong from './dateHelpers';
 import ElectionFinderHeader from './ElectionFinderHeader';
 import highlightMatch from './highlightMatch';
+import matchesStateCode from './matchesStateCode';
 import RowKebabMenu from './RowKebabMenu';
 import {
   ActionDivider, DarkTooltip,
@@ -69,9 +70,7 @@ function ElectionFinderForElection () {
   const electionDayText = ElectionStore.getElectionDayText(googleCivicElectionId);
   const isUpcoming = ElectionStore.isElectionUpcoming(googleCivicElectionId);
   const electionList = ElectionStore.getElectionList();
-  const stateElections = electionList.filter(
-    (el) => (el.state_code || '').toUpperCase() === selectedStateCode,
-  );
+  const stateElections = electionList.filter((el) => matchesStateCode(el, selectedStateCode));
   const upcomingCount = stateElections.filter((el) => el.election_is_upcoming).length;
   const pastCount = stateElections.filter((el) => !el.election_is_upcoming).length;
 
@@ -204,7 +203,7 @@ function ElectionFinderForElection () {
         <ElectionFinderHeader
           breadcrumbs={[
             { label: '\u2190 Election Finder Home', href: '/election-finder' },
-            { label: `${isUpcoming ? 'Upcoming' : 'Past'} Elections - ${stateName} (${isUpcoming ? upcomingCount : pastCount})`, href: `/election-finder/${selectedStateCode.toLowerCase()}` },
+            { label: `${isUpcoming ? 'Upcoming' : 'Past'} Elections - ${stateName} (${isUpcoming ? upcomingCount : pastCount})`, href: `/election-finder/${selectedStateCode.toLowerCase()}?tab=${isUpcoming ? 'upcoming' : 'past'}` },
             { label: `${electionName}${electionDayText ? ` - ${formatDateLong(electionDayText)}` : ''} (${officeCount} ${officeCount === 1 ? 'office' : 'offices'})` },
           ]}
           stateLabel={stateName}

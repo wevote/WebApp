@@ -8,7 +8,7 @@ import React, {
   useState,
 } from 'react';
 import { Helmet } from 'react-helmet-async';
-import { useParams } from 'react-router-dom';
+import { useLocation, useParams } from 'react-router-dom';
 import CandidateActions from '../../actions/CandidateActions';
 import ElectionActions from '../../actions/ElectionActions';
 import { renderLog } from '../../common/utils/logging';
@@ -25,6 +25,7 @@ import copyAndToast from './copyAndToast';
 import formatDateLong from './dateHelpers';
 import ElectionFinderHeader from './ElectionFinderHeader';
 import highlightMatch from './highlightMatch';
+import matchesStateCode from './matchesStateCode';
 import RowKebabMenu from './RowKebabMenu';
 import {
   ActionDivider,
@@ -71,17 +72,6 @@ function sortByDateAsc (a, b) {
   return (a.election_day_text || '').localeCompare(b.election_day_text || '');
 }
 
-// 'NA' must be matched explicitly: an empty state_code_list does not imply national,
-// since some state-level elections come back without state_code_list populated.
-function matchesStateCode (election, stateCode) {
-  const stateCodeUpper = (stateCode || '').toUpperCase();
-  const electionState = (election.state_code || '').toUpperCase();
-  if (stateCodeUpper === 'NA') {
-    return electionState === 'NA' || (election.state_code_list && election.state_code_list.includes('NA'));
-  }
-  return electionState === stateCodeUpper;
-}
-
 function getBreadcrumbTabLabel (filterTab) {
   if (filterTab === 'all') return 'All';
   if (filterTab === 'past') return 'Past';
@@ -94,14 +84,22 @@ function getBreadcrumbTabCount (filterTab, upcomingCount, pastCount) {
   return upcomingCount;
 }
 
+function tabFromSearch (search) {
+  const tab = new URLSearchParams(search || '').get('tab');
+  if (tab === 'all' || tab === 'upcoming' || tab === 'past') return tab;
+  return '';
+}
+
 function ElectionFinderForState () {
   renderLog('ElectionFinderForState');
   const params = useParams();
+  const location = useLocation();
   const selectedStateCode = (params.stateCode || '').toUpperCase();
   const stateName = convertStateCodeToStateText(selectedStateCode);
+  const tabFromUrl = tabFromSearch(location.search);
 
   const [electionList, setElectionList] = useState([]);
-  const [filterTab, setFilterTab] = useState('upcoming');
+  const [filterTab, setFilterTab] = useState(tabFromUrl || 'upcoming');
   const [visibleCount, setVisibleCount] = useState(50);
   const [searchOpen, setSearchOpen] = useState(false);
   const [searchText, setSearchText] = useState('');
@@ -135,8 +133,16 @@ function ElectionFinderForState () {
     };
   }, []);
 
-  // Auto-switch from "upcoming" to "all" when there are no upcoming elections for this state
+  // The election-page crumb links back with ?tab=past or ?tab=upcoming. Apply that
+  // after the first render too, so a later query change selects the named tab.
   useEffect(() => {
+    if (tabFromUrl) setFilterTab(tabFromUrl);
+  }, [tabFromUrl]);
+
+  // Auto-switch from "upcoming" to "all" when there are no upcoming elections for this state.
+  // An explicit past or all tab from the URL stays selected.
+  useEffect(() => {
+    if (tabFromUrl === 'past' || tabFromUrl === 'all') return;
     if (electionList.length > 0 && filterTab === 'upcoming') {
       const stateElections = electionList.filter((el) => matchesStateCode(el, selectedStateCode));
       const hasUpcoming = stateElections.some((el) => el.election_is_upcoming);
@@ -145,7 +151,7 @@ function ElectionFinderForState () {
         setFilterTab('all');
       }
     }
-  }, [electionList, selectedStateCode, filterTab]);
+  }, [electionList, filterTab, selectedStateCode, tabFromUrl]);
 
   const onStateChange = useCallback((e) => {
     const stateCode = e.target.value;
@@ -164,14 +170,15 @@ function ElectionFinderForState () {
   const onFilterTabChange = useCallback((tab) => {
     setFilterTab(tab);
     setVisibleCount(50);
-  }, []);
+    const nextUrl = `/election-finder/${selectedStateCode.toLowerCase()}?tab=${tab}`;
+    if (`${location.pathname}${location.search}` !== nextUrl) {
+      historyPush(nextUrl);
+    }
+  }, [location.pathname, location.search, selectedStateCode]);
 
-  const getElectionUrl = useCallback((election) => {
-    const stateCode = (election.state_code) ?
-      election.state_code.toLowerCase() :
-      'na';
-    return `/election-finder/${stateCode}/${election.google_civic_election_id}`;
-  }, []);
+  const getElectionUrl = useCallback((election) => (
+    `/election-finder/${selectedStateCode.toLowerCase()}/${election.google_civic_election_id}`
+  ), [selectedStateCode]);
 
   const onElectionSelect = useCallback((googleCivicElectionId) => {
     historyPush(`/election-finder/${selectedStateCode.toLowerCase()}/${googleCivicElectionId}`);
