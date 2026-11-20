@@ -63,6 +63,21 @@ describe('Ballot PageBrowser', async () => {
     await expect(BallotPage.getBallotModalElement).not.toBeDisplayed();
   });
 
+  it('verifyBallotAddressModalClosesOnBack', async () => {
+    await expect(browser).toHaveUrl(expect.stringContaining('/ready'));
+    await BallotPage.getBallotTopElement.click();
+    await expect(browser).toHaveUrl(expect.stringContaining('/ballot'));
+
+    await BallotPage.getBallotElectionNameElement.click();
+    await BallotPage.getBallotModalChangeAddressElement.click();
+    await expect(BallotPage.getBallotModalTitleElement).toHaveText('Enter Your Address');
+    await expect(BallotPage.getBallotModalInputElement).toBeDisplayed();
+
+    await browser.back();
+    await expect(browser).toHaveUrl(expect.stringContaining('/ready'));
+    await expect(BallotPage.getBallotModalElement).not.toBeDisplayed();
+  });
+
   it('validateBallotModalUIComponents', async () => {
     await BallotPage.getBallotAddressElement.click();
 
@@ -191,12 +206,12 @@ describe('Ballot PageBrowser', async () => {
     const inputValue = await BallotPage.getBallotModalInputElement.getValue();
     await browser.pause(3000);
     await BallotPage.getBallotModalSaveElement.click();
-    await BallotPage.getBallotTitleAddress.waitForDisplayed({
+    await BallotPage.getBallotAddressElement.waitForDisplayed({
       timeout: 10000,
       timeoutMsg: 'Ballot title did not appear after save',
     });
     await browser.pause(6000);
-    const selectedAddress = await BallotPage.getBallotTitleAddress.getText();
+    const selectedAddress = await BallotPage.getBallotAddressElement.getText();
     await expect(selectedAddress.slice(0, 12)).toEqual(inputValue.slice(0, 12));
   });
 
