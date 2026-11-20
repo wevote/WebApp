@@ -163,7 +163,7 @@ class FilterBaseSearch extends Component {
       return {
         ...item,
         ...searchResults,
-        candidate_list: filteredCandidates,
+        candidate_list: ballotItemNameMatch ? candidateList : filteredCandidates,
         candidateMatchFound,
         foundInSearchWords: candidateMatchFound || ballotItemNameMatch,
       };

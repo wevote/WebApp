@@ -20,6 +20,14 @@ class BallotBrowser extends PageBrowser {
     return $('#ballotTabHeaderBar');
   }
 
+  get getBallotSearchIconElement () {
+    return $('#searchIcon');
+  }
+
+  get getBallotSearchInputElement () {
+    return $('#searchInput');
+  }
+
   get getBallotAddressElement () {
     return $('#ballotTitleBallotAddress span');
   }
