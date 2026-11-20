@@ -59,6 +59,7 @@ body {
   font-weight:normal;
   letter-spacing:.15px;
   line-height: 1.4;
+  margin: 0;
   text-align:left
 }
 
@@ -176,7 +177,8 @@ select {
 }
 
 button,[type="button"],[type="reset"],[type="submit"] {
-  -webkit-appearance:button
+  -webkit-appearance: button;
+  appearance: button;
 }
 
 button:not(:disabled),[type="button"]:not(:disabled),[type="reset"]:not(:disabled),[type="submit"]:not(:disabled) {
@@ -1478,8 +1480,9 @@ button,select {
 }
 
 button,html input[type="button"],input[type="reset"],input[type="submit"] {
-  -webkit-appearance:button;
-  cursor:pointer
+  -webkit-appearance: button;
+  appearance: button;
+  cursor: pointer;
 }
 
 button[disabled],html input[disabled] {
@@ -4092,6 +4095,7 @@ a {
 
 .textarea-clipboard {
   -webkit-appearance:none;
+  appearance: none;
   background-color:#fff;
   border:1px solid #333;
   border-radius:0;
