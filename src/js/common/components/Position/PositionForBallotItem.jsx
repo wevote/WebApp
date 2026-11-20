@@ -1,9 +1,9 @@
 import PropTypes from 'prop-types';
 import React, { Suspense, useState } from 'react';
 import styled from 'styled-components';
-import { Launch, MoreHoriz } from '@mui/icons-material';
+import { Launch, MoreHoriz, VideoLibraryOutlined } from '@mui/icons-material';
 import Popover from '@mui/material/Popover';
-import { Avatar, Typography } from '@mui/material';
+import { Avatar, IconButton, Typography } from '@mui/material';
 import { withStyles } from '@mui/styles';
 import HeartFavoriteToggleLoader from '../Widgets/HeartFavoriteToggle/HeartFavoriteToggleLoader';
 import ThumbsUpDownToggle from '../Widgets/ThumbsUpDownToggle/ThumbsUpDownToggle';
@@ -14,6 +14,8 @@ import SpeakerEndorsedOrOpposedSnippet from './SpeakerEndorsedOrOpposedSnippet';
 import AppObservableStore from '../../stores/AppObservableStore';
 import stringContains from '../../utils/stringContains';
 import lookupPageNameAndPageTypeDict from '../../../utils/lookupPageNameAndPageTypeDict';
+import getVideoIds from '../../utils/getVideoIds';
+import LiteVideoEmbedList from '../../../components/Widgets/LiteVideoEmbedList';
 
 const EndorsementDetailModal = React.lazy(() => import(/* webpackChunkName: 'EndorsementDetailModal' */ '../../../components/Ballot/EndorsementDetailModal'));
 
@@ -127,6 +129,7 @@ function PositionForBallotItem ({ classes, compactMode, linksOpenExternalWebsite
             <CompactStatementText>{statementText}</CompactStatementText>
           </CompactStatementClickable>
         )}
+        {(getVideoIds(statementText).length > 0 && !compactMode) && (<LiteVideoEmbedList text={statementText} />)}
         {statementText && !compactMode && (
           <SpeakerStatementWrapper>
             <SpeakerStatement>
@@ -142,6 +145,7 @@ function PositionForBallotItem ({ classes, compactMode, linksOpenExternalWebsite
         {compactMode && (
           <CompactSpeakerRow>
             <CompactSpeakerName>{speakerDisplayName}</CompactSpeakerName>
+            {getVideoIds(statementText).length > 0 && <IconButton aria-label="See Full Comment With Video Preivew"><VideoLibraryOutlined sx={{ color: DesignTokenColors.neutralUI500, fontSize: 24 }} onClick={() => setDetailModalOpen(true)} /></IconButton>}
             {(campaignXWeVoteId || organizationWeVoteId) && (
               <CompactHeartWrapper>
                 <HeartFavoriteToggleLoader campaignXWeVoteId={campaignXWeVoteId} organizationWeVoteId={organizationWeVoteId} />
