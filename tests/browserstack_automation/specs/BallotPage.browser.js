@@ -231,4 +231,83 @@ describe('Ballot PageBrowser', async () => {
       await expect(isVisible).toBe(true);
     }
   });
+
+  describe('Ballot Search', () => {
+    const searchBallot = {
+      success: true,
+      google_civic_election_id: 2999999,
+      ballot_item_list: [
+        {
+          kind_of_ballot_item: 'OFFICE',
+          we_vote_id: 'wv01attorney',
+          ballot_item_display_name: 'Attorney General',
+          candidate_list: [
+            { we_vote_id: 'wv01candbrown01', ballot_item_display_name: 'Alex Brown' },
+            { we_vote_id: 'wv01candgreen01', ballot_item_display_name: 'Blair Green' },
+          ],
+        },
+        {
+          kind_of_ballot_item: 'OFFICE',
+          we_vote_id: 'wv01governor',
+          ballot_item_display_name: 'Governor',
+          candidate_list: [
+            { we_vote_id: 'wv01candattorney01', ballot_item_display_name: 'Glen Attorney' },
+            { we_vote_id: 'wv01candhunter01', ballot_item_display_name: 'Henry Hunter' },
+          ],
+        },
+      ],
+    };
+    const candidateNames = searchBallot.ballot_item_list.flatMap((office) => (
+      office.candidate_list.map((candidate) => candidate.ballot_item_display_name)
+    ));
+
+    const mockBallotResponse = async (ballotResponse) => {
+      await browser.execute((ballot) => {
+        window.$.ajaxTransport('+*', (options) => {
+          if (!options.url.includes('/voterBallotItemsRetrieve/')) return undefined;
+          let responseTimer;
+          return {
+            send: (headers, complete) => {
+              responseTimer = setTimeout(() => complete(200, 'OK', { json: ballot }), 0);
+            },
+            abort: () => clearTimeout(responseTimer),
+          };
+        });
+      }, ballotResponse);
+    };
+
+    beforeEach(async () => {
+      await mockBallotResponse(searchBallot);
+      await BallotPage.getBallotTopElement.click();
+      await Promise.all(candidateNames.map(async (name) => (
+        expect(await BallotPage.getCandidateByText(name)).toBeDisplayed()
+      )));
+    });
+
+    // Helper function
+    const verifySearchResults = async (query, expectedCandidates) => {
+      await BallotPage.getBallotSearchIconElement.click();
+      await BallotPage.getBallotSearchInputElement.setValue(query);
+      await browser.keys('Enter');
+
+      await Promise.all(candidateNames.filter((candidate) => !expectedCandidates.includes(candidate)).map(async (candidate) => (
+        expect(await BallotPage.getCandidateByText(candidate)).not.toBeDisplayed()
+      )));
+      await Promise.all(expectedCandidates.map(async (candidate) => (
+        expect(await BallotPage.getCandidateByText(candidate)).toBeDisplayed()
+      )));
+    };
+
+    it('verifyBallotSearchWithOfficeAndCandidateMatches', async () => {
+      await verifySearchResults('Attorney', ['Alex Brown', 'Blair Green', 'Glen Attorney']);
+    });
+
+     it('verifyBallotSearchByOfficeName', async () => {
+      await verifySearchResults('Attorney General', ['Alex Brown', 'Blair Green']);
+    });
+
+    it('verifyBallotSearchByCandidateName', async () => {
+      await verifySearchResults('Glen Attorney', ['Glen Attorney']);
+    });
+  });
 });
