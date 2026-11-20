@@ -33,6 +33,7 @@ export const SpeakerInfoWrapper = styled('div')`
   display: flex;
   margin-bottom: 6px;
   margin-left: 15px;
+  gap: 10px;
   flex-direction: column;
   // width: 500px;
 `;

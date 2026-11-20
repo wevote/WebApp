@@ -133,6 +133,7 @@ module.exports = (env, argv) => {
             to: 'img/',
             globOptions: { ignore: ['**/DO-NOT-BUNDLE/**']},
           },
+          { from: 'node_modules/lite-youtube-embed/src/lite-yt-embed.css', to: 'css/' },
           ...(isProduction ? [
             { from: 'node/STORYBOOK-README.TXT', to: './storybook-static/STORYBOOK-README.TXT' },
             { from: 'storybook-static', to: './storybook-static' },

@@ -11,6 +11,8 @@ import speakerDisplayNameToInitials from '../../common/utils/speakerDisplayNameT
 import lookupPageNameAndPageTypeDict from '../../utils/lookupPageNameAndPageTypeDict';
 import ModalDisplayTemplateB from '../Widgets/ModalDisplayTemplateB';
 import { resolveOrganizationWeVoteId } from './opinionsHelpers';
+import getVideoIds from '../../common/utils/getVideoIds';
+import LiteVideoEmbedList from '../Widgets/LiteVideoEmbedList';
 
 const MODAL_ID = 'endorsementDetail';
 
@@ -50,6 +52,7 @@ export default function EndorsementDetailModal ({ isOpen, onClose, position }) {
             </HeartFavoriteToggleWrapper>
           )}
         </SpeakerInfoNameFavoritesWrapper>
+        {getVideoIds(statementText).length > 0 && <LiteVideoEmbedList text={statementText} />}
         {statementText && (
           <SpeakerStatementWrapper>
             <StatementWithNewlines>{statementText}</StatementWithNewlines>

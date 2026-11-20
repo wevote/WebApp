@@ -35,6 +35,7 @@ import VisibilityToggleBar from '../Settings/VisibilityToggleBar';
 import ModalDisplayTemplateB, { CommentContainer, InputBox, templateBStyles, TextFieldForm, TextFieldWrapper, UserInfoText, UserName } from '../Widgets/ModalDisplayTemplateB';
 import VoterPositionEditNameAndPhotoModal from './VoterPositionEditNameAndPhotoModal';
 import webAppConfig from '../../config';
+import LiteVideoEmbedList from '../Widgets/LiteVideoEmbedList';
 
 /* global $ */
 
@@ -103,6 +104,7 @@ function VoterPositionBlockComponent ({
               {voterName}
             </SpeakerName>
             <SpeakerStatementWrapper>
+              <LiteVideoEmbedList text={statementText} />
               <SpeakerStatement>
                 <Suspense fallback={<></>}>
                   <ReadMore
@@ -175,6 +177,9 @@ VoterPositionBlockComponent.propTypes = {
   voterPhotoUrlMedium: PropTypes.string,
 };
 
+
+
+
 function VoterPositionEntryAndDisplay ({ ballotItemWeVoteId, classes, compactMode, externalUniqueId, noBottomMargin, onModalClose, openEditModalOnLoad, politicianWeVoteId }) {
   const isMeasure = stringContains('meas', ballotItemWeVoteId);
   const effectiveWeVoteId = ballotItemWeVoteId || politicianWeVoteId;
@@ -202,6 +207,7 @@ function VoterPositionEntryAndDisplay ({ ballotItemWeVoteId, classes, compactMod
   const [voterLastName, setVoterLastName] = useState('');
   const [voterName, setVoterName] = useState('');
   const [voterPhotoUrlMedium, setVoterPhotoUrlMedium] = useState('');
+
 
   const handleEditProfileModalOpen = () => {
     if (VoterStore.getVoterIsSignedIn()) {
@@ -528,6 +534,7 @@ function VoterPositionEntryAndDisplay ({ ballotItemWeVoteId, classes, compactMod
   const statementPlaceholderText = 'What\'s on your mind?';
   const rowsToShow = isAndroid() ? 3 : 4;
 
+
   const editPositionModalJSX = (
     <TextFieldWrapper>
       <TextFieldForm
@@ -553,19 +560,22 @@ function VoterPositionEntryAndDisplay ({ ballotItemWeVoteId, classes, compactMod
           <>
             {/* Your opinion text area */}
             <OpinionSectionLabel>Your opinion:</OpinionSectionLabel>
-            <OpinionTextFieldDiv>
-              <InputBase
-                classes={{ root: classes.inputStyles, inputMultiline: classes.inputMultiline }}
-                id={`activityPostModalStatementText-${effectiveWeVoteId}-${externalUniqueId}`}
-                inputRef={activityPostInputRef}
-                multiline
-                name="statementText"
-                onChange={updateStatementTextToBeSaved}
-                placeholder={statementPlaceholderText}
-                rows={rowsToShow}
-                value={draftStatementText || ''}
-              />
-            </OpinionTextFieldDiv>
+            <OpinionTextFieldVideoWrapper>
+              <LiteVideoEmbedList text={draftStatementText} />
+              <OpinionTextFieldDiv>
+                <InputBase
+                  classes={{ root: classes.inputStyles, inputMultiline: classes.inputMultiline }}
+                  id={`activityPostModalStatementText-${effectiveWeVoteId}-${externalUniqueId}`}
+                  inputRef={activityPostInputRef}
+                  multiline
+                  name="statementText"
+                  onChange={updateStatementTextToBeSaved}
+                  placeholder={statementPlaceholderText}
+                  rows={rowsToShow}
+                  value={draftStatementText || ''}
+                />
+              </OpinionTextFieldDiv>
+            </OpinionTextFieldVideoWrapper>
 
             {/* Choose / Oppose / Undecided toggle buttons */}
             <OpinionSectionLabel>
@@ -1037,5 +1047,16 @@ const VisibilityHintFade = styled('div')`
 const VisibilityHintWrapper = styled('div')`
   display: grid;
 `;
+
+const OpinionTextFieldVideoWrapper = styled('div')`
+  display: flex;
+  flex-direction: column;
+  align-content: space-around;
+  gap: 5px;
+`;
+
+
+
+
 
 export default withStyles(templateBStyles)(VoterPositionEntryAndDisplay);
