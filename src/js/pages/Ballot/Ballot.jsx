@@ -40,8 +40,8 @@ import {
   BallotFilterContainer, BallotHeaderBottomWrapper, BallotHeaderDivider,
   BallotHeaderGroup, BallotTitleHeaderContainer,
   DualHeaderContainer, getTopOffsetDueToHeadroomWrapper,
-  HeaderContentContainer, HeaderContentOuterContainer,
-  PageContentContainer,
+  HeaderContentContainer, HeaderContentOuterContainer, LoadingItemsWheel,
+  PageContentContainer, SearchResultsFoundInExplanation,
 } from '../../components/Style/pageLayoutStyles';
 import webAppConfig from '../../config';
 import BallotConstants from '../../constants/BallotConstants';
@@ -897,11 +897,6 @@ class Ballot extends Component {
   //   }
   // }
 
-  // setRaceLevelFilterType (raceLevelFilterType) {
-  //   BallotActions.raceLevelFilterTypeSave(raceLevelFilterType);
-  //   this.setState({ raceLevelFilterType });
-  // }
-
   showAllBallotItems = () => {
     BallotActions.completionLevelFilterTypeSave('filterAllBallotItems');
     BallotActions.raceLevelFilterTypeSave('All');
@@ -1643,21 +1638,8 @@ const CompleteYourProfileWrapper = styled('div')`
   margin-bottom: 45px;
 `;
 
-const LoadingItemsWheel = styled('div')`
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`;
-
 const SearchResultsEmpty = styled('div')`
   font-size: 20px;
-`;
-
-const SearchResultsFoundInExplanation = styled('div')`
-  background-color: #C2DCE8;
-  color: #0E759F;
-  padding: 12px !important;
 `;
 
 const ShowMoreItemsWrapper = styled('div')`

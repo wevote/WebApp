@@ -94,6 +94,7 @@ const IntroNetwork = React.lazy(() => import(/* webpackChunkName: 'IntroNetwork'
 const Location = React.lazy(() => import(/* webpackChunkName: 'Location' */ './js/pages/Settings/Location'));
 const ManageMyCandidatesLanding = React.lazy(() => import(/* webpackChunkName: 'ManageMyCandidatesLanding' */ './js/pages/ManageMyCandidates/ManageMyCandidatesLanding'));
 const Measure = React.lazy(() => import(/* webpackChunkName: 'Measure' */ './js/pages/Ballot/Measure'));
+const MyElectedOfficials = React.lazy(() => import(/* webpackChunkName: 'MyElectedOfficials' */ './js/pages/ElectedOfficials/MyElectedOfficials'));
 const News = React.lazy(() => import(/* webpackChunkName: 'News' */ './js/pages/Activity/News'));
 const NoCandidatesClaimed = React.lazy(() => import(/* webpackChunkName: 'NoClaimedCandidates' */ './js/pages/ManageMyCandidates/NoCandidatesClaimed'));
 const Office = React.lazy(() => import(/* webpackChunkName: 'Office' */ './js/pages/Ballot/Office'));
@@ -625,9 +626,11 @@ class App extends Component {
                   <Route path="/more/search_page" exact component={SearchPage} />
                   <Route path="/more/terms" component={TermsOfService} />
                   <Route path="/more/verify" component={VerifyRegistration} />
+                  <Route path="/my-elected-officials" component={MyElectedOfficials} />
                   <Route path="/news" exact component={News} />
                   <Route path="/news/a/" exact component={News} />
                   <Route path="/news/a/:activity_tidbit_we_vote_id" exact component={News} />
+                  <Route path="/no-candidates-claimed" component={NoCandidatesClaimed} />
                   <Route path="/office/:office_we_vote_id/b/:back_to_variable" exact component={Office} />
                   <Route path="/office/:office_we_vote_id/b/:back_to_variable/" exact component={Office} />
                   <Route path="/office/:office_we_vote_id/b/:back_to_variable/modal/:modal_to_show" component={Office} />
@@ -755,7 +758,6 @@ class App extends Component {
                   <Route path="/wevoteintro/network" component={IntroNetwork} />
                   <Route path="/wevoteintro/newfriend/:invitationSecretKey" component={FriendIntroLanding} />
                   <Route path="/yourpage" component={YourPage} />
-                  <Route path="/no-candidates-claimed" component={NoCandidatesClaimed} />
                   <Route path="/:twitter_handle/ballot/election/:google_civic_election_id" component={TwitterHandleLanding} />
                   <Route path="/:twitter_handle/ballot/election/:google_civic_election_id/:view_mode" component={TwitterHandleLanding} />
                   <Route path="/:twitter_handle/ballot/empty" component={TwitterHandleLanding} />
