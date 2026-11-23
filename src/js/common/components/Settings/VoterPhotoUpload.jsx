@@ -189,7 +189,7 @@ class VoterPhotoUpload extends Component {
       thumbnail.src = '';
     }
     const cordovaDropZone = document.querySelector('#cordovaDropZoneReplica');
-    if(cordovaDropZone) {
+    if (cordovaDropZone) {
       cordovaDropZone.style.display = 'inline-block';
     }
   };
@@ -253,7 +253,7 @@ class VoterPhotoUpload extends Component {
     this.setState({
       politicianProfileUploadedImageUrlLarge: '',
       voterProfileUploadedImageUrlLarge: '',
-    })
+    });
     this.clearThumbnail();
   };
 
@@ -275,7 +275,7 @@ class VoterPhotoUpload extends Component {
     }, (err) => {
       console.log('cameraCallback', err.message);
       console.error('camera resolveLocalFileSystemURL error', err);
-    })
+    });
   }
 
   render () {

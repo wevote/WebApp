@@ -10,7 +10,7 @@ import styled from 'styled-components';
 import DesignTokenColors from '../../common/components/Style/DesignTokenColors';
 import AppObservableStore from '../../common/stores/AppObservableStore';
 import { convertStateCodeToStateText } from '../../common/utils/addressFunctions';
-import { isAndroidSizeWide, isIPad } from '../../common/utils/cordovaUtils';
+import { isAndroidSizeWide, isIPad, isIPhoneDuo } from '../../common/utils/cordovaUtils';
 import { formatDateToMonthDayYear, nextNationalElectionYYYYMMDDText } from '../../common/utils/dateFormat';
 import daysUntil from '../../common/utils/daysUntil';
 import initializeMoment from '../../common/utils/initializeMoment';
@@ -492,6 +492,7 @@ const BallotShareWrapper = styled('div')`
 
 const BallotTitleHeaderWrapper = styled('div')`
   min-height: ${isAndroid() ? '110px' : '90px'};
+  ${isIPhoneDuo() ? 'min-height: 0' : ''}
   height: auto;
 `;
 

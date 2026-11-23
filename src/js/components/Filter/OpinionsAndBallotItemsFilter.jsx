@@ -158,6 +158,11 @@ class OpinionsAndBallotItemsFilter extends Component {
     }
   }
 
+  static getDerivedStateFromError (error) {
+    console.error(`${__filename} error derived state: ${error}`);
+    return { hasError: true };
+  }
+
   componentDidCatch (error, info) {
     // We should get this information to Splunk!
     console.error('OpinionsAndBallotItemsFilter caught error: ', `${error} with info: `, info);

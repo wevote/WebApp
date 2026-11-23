@@ -49,6 +49,11 @@ class HeaderNotificationMenu extends Component {
     }, 3000);
   }
 
+  static getDerivedStateFromError (error) {
+    console.error(`${__filename} error derived state: ${error}`);
+    return { hasError: true };
+  }
+
   componentDidCatch (error, info) {
     // We should get this information to Splunk!
     console.error('HeaderNotificationMenu caught error: ', `${error} with info: `, info);

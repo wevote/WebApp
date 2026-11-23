@@ -1,10 +1,10 @@
 import VoterActions from './actions/VoterActions';
 import AppObservableStore from './common/stores/AppObservableStore';
-import { getCordovaScreenHeight, isIOS, isIOSAppOnMac, isIPad, isSimulator, prepareForCordovaKeyboard, restoreStylesAfterCordovaKeyboard } from './common/utils/cordovaUtils';
+import { getCordovaScreenHeight, isIOS, isIOSAppOnMac, isIPad, isIPhoneDuo, isSimulator, prepareForCordovaKeyboard, restoreStylesAfterCordovaKeyboard } from './common/utils/cordovaUtils';
 import initializejQuery from './common/utils/initializejQuery';
 import { isAndroid, isCordova } from './common/utils/isCordovaOrWebApp';
 import Cookies from './common/utils/js-cookie/Cookies';
-import { httpLog } from './common/utils/logging';
+import { cordovaOffsetLog, httpLog } from './common/utils/logging';
 import TwitterSignIn from './components/Twitter/TwitterSignIn';
 import webAppConfig from './config';
 import VoterStore from './stores/VoterStore';
@@ -131,7 +131,7 @@ function initializeCordovaPluginAppRate () {
             url,
             barColor: '#0000ff',          // on iOS 10+ you can change the background color as well
             controlTintColor: '#00ffff',  // on iOS 10+ you can override the default tintColor
-            tintColor: '#00ffff',         // should be set to same value as controlTintColor and will be a fallback on older ios
+            tintColor: '#00ffff',         // should be set to same value as controlTintColor and will be a fallback on older iOS
           },
           // this success handler will be invoked for the lifecycle events 'opened', 'loaded' and 'closed'
           (result) => {
@@ -193,12 +193,38 @@ export function initializationForCordova (startReact) {
     console.log('Cordova:   Startup sequence 2: Wait for pbakondy screensize');
     if (isIPad()) {
       document.querySelector('body').style.height = getCordovaScreenHeight();
-      console.log('Cordova:   Initial "body" height for iPad = calculation disabled '); // , result.height / result.scale);
+      console.log('Cordova:   Initial "body" height for iPad = calculation disabled '); // , result.height / result.scale;
     }
-    if (isAndroid()) {
-      // July 2025, Android "backbutton" is not handled since pushHistory is only keeping the previous location, so pressing "backbutton" twice would be a mess
-      // Also it was originally noted as a bug in the How it Works dialog, which would be a special case that would not use pushHistory
-      document.addEventListener('backbutton', () => {}, false);
+    window.IPhoneDuoFolded = false;
+    if (isIPhoneDuo()) {
+      console.log('Cordova:   Special container padding overrides for iPhoneDuo have been set');
+      const containers = document.querySelectorAll('.container');
+
+      let i = 0;
+      containers.forEach((container) => {
+        console.log('Cordova:   Special container ', ++i);
+        // Override specific CSS properties
+        container.style.paddingLeft = 'env(safe-area-inset-left)';
+        container.style.paddingRight = 'env(safe-area-inset-right)';
+      });
+
+      // November 2026:  Hide the status bar for the duo, that looks like a WI-FI symbol surrounded by a solid and dotted at bottom circle
+      // since it hangs over the content, and to do it "right" would require moving out bottom menu to the right side (and left for lefties?)
+      console.log('Cordova:   Hiding the iPhoneDuo status icon');
+      window.statusbar.setBackgroundColor('#000000');
+      window.statusbar.visible = false;
+
+      if (window.visualViewport) {
+        window.visualViewport.addEventListener('resize', () => {
+          cordovaOffsetLog('Cordova:   iPhoneDuo new visual width: ', window.visualViewport.width);
+          window.IPhoneDuoFolded = window.visualViewport.width < 500;       // Original duo is 382 folded and 951 unfolded
+        });
+      }
+      if (isAndroid()) {
+        // July 2025, Android "backbutton" is not handled since pushHistory is only keeping the previous location, so pressing "backbutton" twice would be a mess
+        // Also it was originally noted as a bug in the How it Works dialog, which would be a special case that would not use pushHistory
+        document.addEventListener('backbutton', () => {}, false);
+      }
     }
     initializejQuery(() => {
       const { $ } = window;

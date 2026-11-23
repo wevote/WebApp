@@ -369,6 +369,42 @@
     "modelId": "iPhone18,3"
   },
   {
+    "class": "iPhone6p1in",
+    "size": 6.3,
+    "iOSSpacer": 52,
+    "type": "phone",
+    "marketingNumber": "17",
+    "name": "iPhone 17e",
+    "modelId": "iPhone18,2"
+  },
+  {
+    "class": "iPhone6p5in",
+    "size": 6.3,
+    "iOSSpacer": 52,
+    "type": "phone",
+    "marketingNumber": "18",
+    "name": "iPhone 18 Pro",
+    "modelId": "iPhone19,2"
+  },
+  {
+    "class": "iPhone6p1in",
+    "size": 6.3,
+    "iOSSpacer": 52,
+    "type": "phone",
+    "marketingNumber": "18",
+    "name": "iPhone 18 Pro",
+    "modelId": "iPhone19,7"
+  },
+  {
+    "class": "iPhone7p6in",
+    "size": 7.6,
+    "iOSSpacer": 0,
+    "type": "phone",
+    "marketingNumber": "Duo",
+    "name": "iPhone Duo",
+    "modelId": "iPhone19,4"
+  },
+  {
     "class": "iPhone6p5in",
     "size": 6.5,
     "iOSSpacer": 36,
@@ -493,6 +529,24 @@
     "marketingNumber": "17",
     "name": "iPhone 17 Pro Max",
     "modelId": "iPhone18,2"
+  },
+  {
+    "class": "iPhone6p5in",
+    "size": 6.9,
+    "iOSSpacer": 52,
+    "type": "phone",
+    "marketingNumber": "18",
+    "name": "iPhone 18 Pro Max",
+    "modelId": "iPhone19,3"
+  },
+  {
+    "class": "iPhone6p5in",
+    "size": 6.9,
+    "iOSSpacer": 52,
+    "type": "phone",
+    "marketingNumber": "18",
+    "name": "iPhone 18 Pro Max",
+    "modelId": "iPhone19,7"
   },
   {
     "class": "iPad11in",

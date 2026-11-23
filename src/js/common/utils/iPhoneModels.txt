@@ -46,6 +46,11 @@ iPhone6p1in;6.1;52;phone;16E;iPhone 16e;iPhone17,5
 iPhone6p1in;6.3;52;phone;16;iPhone 16 Pro;iPhone17,1
 iPhone6p1in;6.3;52;phone;17;iPhone 17 Pro;iPhone18,1
 iPhone6p1in;6.3;52;phone;17;iPhone 17;iPhone18,3
+iPhone6p1in;6.3;52;phone;17;iPhone 17e;iPhone18,2
+iPhone6p5in;6.3;52;phone;18;iPhone 18 Pro;iPhone19,2
+iPhone6p1in;6.3;52;phone;18;iPhone 18 Pro;iPhone19,7
+
+iPhone7p6in;7.6;0;phone;Duo;iPhone Duo;iPhone19,4
 
 iPhone6p5in;6.5;36;phone;11;iPhone 11 Pro Max;iPhone12,5
 iPhone6p5in;6.5;36;phone;13;iPhone 13 Pro Max;iPhone14,3
@@ -61,6 +66,9 @@ iPhone6p5in;6.7;50;phone;15;iPhone 15 Pro Max;iPhone16,2
 iPhone6p5in;6.7;52;phone;16;iPhone 16 Plus;iPhone17,4
 iPhone6p5in;6.9;52;phone;16;iPhone 16 Pro Max;iPhone17,2
 iPhone6p5in;6.9;52;phone;17;iPhone 17 Pro Max;iPhone18,2
+iPhone6p5in;6.9;52;phone;18;iPhone 18 Pro Max;iPhone19,3
+iPhone6p5in;6.9;52;phone;18;iPhone 18 Pro Max;iPhone19,7
+
 
 iPad11in;9.7;26;ipad;1;iPad Air 1st Gen;iPad4,1
 iPad11in;9.7;26;ipad;1;iPad Air 1st Gen;iPad4,2

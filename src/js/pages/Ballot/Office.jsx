@@ -1,30 +1,31 @@
-import React, { useState, useEffect, Suspense, useCallback, useRef } from 'react';
+import React, { Suspense, useCallback, useEffect, useRef, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useHistory, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import ActivityActions from '../../actions/ActivityActions';
 import AnalyticsActions from '../../actions/AnalyticsActions';
+import BallotActions from '../../actions/BallotActions';
 import CandidateActions from '../../actions/CandidateActions';
 import ElectionActions from '../../actions/ElectionActions';
 import IssueActions from '../../actions/IssueActions';
 import OfficeActions from '../../actions/OfficeActions';
 import LoadingWheel from '../../common/components/Widgets/LoadingWheel';
-import toTitleCase from '../../common/utils/toTitleCase';
-import { BallotHeaderGroup, DualHeaderContainer, getTopOffsetDueToHeadroomWrapper, HeaderContentContainer, HeaderContentOuterContainer, PageContentContainer } from '../../components/Style/pageLayoutStyles';
 import AppObservableStore, { messageService } from '../../common/stores/AppObservableStore';
+import apiCalming from '../../common/utils/apiCalming';
+import { isIPhoneDuo } from '../../common/utils/cordovaUtils';
+import { isWebApp } from '../../common/utils/isCordovaOrWebApp';
+import { renderLog } from '../../common/utils/logging';
+import toTitleCase from '../../common/utils/toTitleCase';
+import BallotItemCompressed from '../../components/Ballot/BallotItemCompressed';
+import BallotTitleHeader from '../../components/Ballot/BallotTitleHeader';
+import { BallotHeaderGroup, DualHeaderContainer, getTopOffsetDueToHeadroomWrapper, HeaderContentContainer, HeaderContentOuterContainer, PageContentContainer } from '../../components/Style/pageLayoutStyles';
 import BallotStore from '../../stores/BallotStore';
 import CandidateStore from '../../stores/CandidateStore';
 import ElectionStore from '../../stores/ElectionStore';
 import IssueStore from '../../stores/IssueStore';
 import OfficeStore from '../../stores/OfficeStore';
 import VoterStore from '../../stores/VoterStore';
-import { renderLog } from '../../common/utils/logging';
-import apiCalming from '../../common/utils/apiCalming';
 import { sortCandidateList } from '../../utils/positionFunctions';
-import BallotItemCompressed from '../../components/Ballot/BallotItemCompressed';
-import BallotTitleHeader from '../../components/Ballot/BallotTitleHeader';
-import { isWebApp } from '../../common/utils/isCordovaOrWebApp';
-import BallotActions from '../../actions/BallotActions';
 
 
 // This is related to pages/VoterGuide/OrganizationVoterGuideOffice
@@ -332,7 +333,7 @@ Office.propTypes = {
 };
 
 const BallotTitleHeaderContainer = styled('div')`
-  margin-top: 50px;
+  margin-top: ${isIPhoneDuo() ? '46px' : '50px'};
   transition: ${isWebApp() ? 'all 150ms ease-in' : ''};
 `;
 

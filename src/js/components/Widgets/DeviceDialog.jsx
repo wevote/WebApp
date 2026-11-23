@@ -41,7 +41,7 @@ class DeviceDialog extends Component {
     }
     const diameter = getDeviceDiagonalValue();
     const version = getCordovaBuildVersion();
-    const deviceModelName = getDeviceName()
+    const deviceModelName = getDeviceName();
 
     return (
       <Dialog
@@ -52,7 +52,7 @@ class DeviceDialog extends Component {
           <div className="text-center"><TermsAndPrivacyText>Device Information</TermsAndPrivacyText></div>
         </DialogTitle>
         <DialogContent classes={{ root: classes.dialogContent }}>
-          <div style={{ paddingBottom: '10px'}}>
+          <div style={{ paddingBottom: '10px' }}>
             This dialog contains technical information about your device, that might be requested by WeVote&apos;s support engineers.
           </div>
           <Table className={classes.table}>

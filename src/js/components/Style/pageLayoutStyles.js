@@ -2,7 +2,7 @@ import { AppBar, Chip } from '@mui/material';
 import styled from 'styled-components';
 import standardBoxShadow from '../../common/components/Style/standardBoxShadow';
 import AppObservableStore from '../../common/stores/AppObservableStore';
-import { heightOfCordovaSpacer, isAndroidSizeMD, isAndroidSizeWide, isAndroidSizeXL, isIOS, isIOSAppOnMac, isIPad } from '../../common/utils/cordovaUtils';
+import { heightOfCordovaSpacer, isAndroidSizeMD, isAndroidSizeWide, isAndroidSizeXL, isIOS, isIOSAppOnMac, isIPad, isIPhone4p7in, isIPhoneDuo, isIPhoneDuoFolded } from '../../common/utils/cordovaUtils';
 import { normalizedHrefPage } from '../../common/utils/hrefUtils';
 import { isAndroid, isCordova, isWebApp } from '../../common/utils/isCordovaOrWebApp';
 import isMobileScreenSize, { isTablet } from '../../common/utils/isMobileScreenSize';
@@ -50,10 +50,10 @@ export const BallotFilterContainer = styled('div')`
 `;
 
 // If we want to turn off filter tabs navigation bar:  {({ showFilterTabs }) => !showFilterTabs && 'height: 0;'}
-export const BallotFilterRow = styled('div')`
-  // TODO: 10/4/21 Steve, this is temporary and needs to be more responsive
-  // margin-left: {() => (isWebApp() && !isMobileScreenSize() ? 'calc((100vw - 975px)/2)' : '')};
-`;
+// export const BallotFilterRow = styled('div')`
+//   // TODO: 10/4/21 Steve, this is temporary and needs to be more responsive
+//   // margin-left: {() => (isWebApp() && !isMobileScreenSize() ? 'calc((100vw - 975px)/2)' : '')};
+// `;
 
 export const BallotFilterTabs = styled('div')`
   display: flex;
@@ -164,8 +164,15 @@ function getOuterContainerMargins () {
     if (dualHeaderContainer.length > 0) {        // If it has rendered yet for the ballot page
       outerContainerHeight = dualHeaderContainer.outerHeight() + dualHeaderContainer.position().top;
     }
+    if (isIPhone4p7in()) {
+      outerContainerHeight = 16;
+    }
   } else if (isAndroid() && window.androidNotchCutout) {
     outerContainerHeight = window.androidNotchInset;
+  }
+
+  if (page === 'donate' && isIPhone4p7in()) {
+    outerContainerHeight = 30;
   }
 
   if (page === 'challenges') {
@@ -187,6 +194,9 @@ export const PageContentContainer = styled('div')(({ theme }) => (`
   ${theme.breakpoints.down('sm')} {
     min-height: ${isWebApp() ? '10px' : `${window.innerHeight}px`};
     margin: ${getOuterContainerMargins()};
+  }
+  ${isIPhone4p7in ()} {
+    margin-top: ${getOuterContainerMargins()};
   }
 `));
 
@@ -275,6 +285,7 @@ export const TopRowOneMiddleContainer = styled('div')`
 export const TopRowOneRightContainer = styled('div')`
   padding-right: ${() => {
     if (isAndroidSizeMD() || isAndroidSizeXL() || isAndroidSizeWide() || isTablet()) return '15px';
+    if (isIPhoneDuoFolded()) return '60px';
     return '0px';
   }};
   display: flex;

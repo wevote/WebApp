@@ -18,9 +18,9 @@ import VoterStore from '../../stores/VoterStore';
 import NextStepButtons from '../FriendIntro/NextStepButtons';
 import SuggestedContactListWithController from '../Friends/SuggestedContactListWithController';
 import Reassurance from '../SetUpAccount/Reassurance';
-import { DesktopNextButtonsInnerWrapper, DesktopNextButtonsOuterWrapperUShowDesktopTablet, } from '../Style/NextButtonStyles';
+import { DesktopNextButtonsInnerWrapper, DesktopNextButtonsOuterWrapperUShowDesktopTablet } from '../Style/NextButtonStyles';
 import { RemindContactsImportText, RemindMainImageImg } from '../Style/RemindStyles';
-import { SetUpAccountContactsTextWrapper, SetUpAccountTitle, } from '../Style/SetUpAccountStyles';
+import { SetUpAccountContactsTextWrapper, SetUpAccountTitle } from '../Style/SetUpAccountStyles';
 import DownloadAppsButtons from './DownloadAppsButtons';
 import { reassuranceTextRemindContacts } from './reassuranceTextRemindContacts';
 import WhyVoteQuote from './WhyVoteQuote';
@@ -217,14 +217,14 @@ class RemindContactsStart extends Component {
                     <DesktopNextButtonsOuterWrapperUShowDesktopTablet breakValue={desktopInlineButtonsOnBreakValue}>
                       <DesktopNextButtonsInnerWrapper>
                         <Button
-                          classes={isAndroid() ? {root: classes.addContactsManuallyLinkAndroid} : {root: classes.addContactsManuallyLink }}
+                          classes={isAndroid() ? { root: classes.addContactsManuallyLinkAndroid } : { root: classes.addContactsManuallyLink }}
                           onClick={this.goToEditMessage}
                           id="RemindContactsStartCopy"
                         >
                           {!isAndroid ? (
-                            "Or add contacts manually"
-                            ) : (
-                            "Invite some friends"
+                            'Or add contacts manually'
+                          ) : (
+                            'Invite some friends'
                             )
                           }
                         </Button>
@@ -258,18 +258,18 @@ class RemindContactsStart extends Component {
                 {isCordova() && (
                   <MobileInviteSomeFriends>
                     <Button
-                      classes={isAndroid() ? {root: classes.addContactsManuallyLinkAndroid} : {root: classes.addContactsManuallyLink }}
+                      classes={isAndroid() ? { root: classes.addContactsManuallyLinkAndroid } : { root: classes.addContactsManuallyLink }}
                       onClick={this.goToEditMessage}
                       id="RemindContactsStartCopy"
                     >
                       {!isAndroid ? (
-                        "Or add contacts manually"
+                        'Or add contacts manually'
                       ) : (
-                        "Invite some friends"
+                        'Invite some friends'
                       )
                       }
                     </Button>
-                    </MobileInviteSomeFriends>
+                  </MobileInviteSomeFriends>
                 )}
               </RemindContactsStartWrapper>
             )}

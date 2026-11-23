@@ -86,6 +86,11 @@ class OfficeItemForAddPositions extends Component {
     return false;
   }
 
+  static getDerivedStateFromError (error) {
+    console.error(`${__filename} error derived state: ${error}`);
+    return { hasError: true };
+  }
+
   componentDidCatch (error, info) {
     // We should get this information to Splunk!
     console.error('OfficeItemForAddPositions caught error: ', `${error} with info: `, info);
@@ -93,12 +98,6 @@ class OfficeItemForAddPositions extends Component {
 
   componentWillUnmount () {
     this.candidateStoreListener.remove();
-  }
-
-  // See https://reactjs.org/docs/error-boundaries.html
-  static getDerivedStateFromError (error) { // eslint-disable-line no-unused-vars
-    // Update state so the next render will show the fallback UI, We should have a "Oh snap" page
-    return { hasError: true };
   }
 
   onCandidateStoreChange () {

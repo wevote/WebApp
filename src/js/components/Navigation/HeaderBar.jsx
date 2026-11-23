@@ -14,6 +14,7 @@ import standardBoxShadow from '../../common/components/Style/standardBoxShadow';
 import signInModalGlobalState from '../../common/components/Widgets/signInModalGlobalState';
 import AppObservableStore, { messageService } from '../../common/stores/AppObservableStore';
 import apiCalming from '../../common/utils/apiCalming';
+import { isIPhoneDuo } from '../../common/utils/cordovaUtils';
 // import { historyPush } from '../../common/utils/cordovaUtils';
 import { normalizedHrefPage } from '../../common/utils/hrefUtils';
 import { isCordova, isWebApp } from '../../common/utils/isCordovaOrWebApp';
@@ -149,6 +150,11 @@ class HeaderBar extends Component {
     if (page !== normalizedHrefPage()) {
       this.syncTabsToRoute();
     }
+  }
+
+  static getDerivedStateFromError (error) {
+    console.error(`${__filename} error derived state: ${error}`);
+    return { hasError: true };
   }
 
   componentDidCatch (error, info) {
@@ -417,14 +423,14 @@ class HeaderBar extends Component {
     const isFriends = normalizedHrefPage() === 'friends';  // The URL '/friends/request' yields 'friends'
     let avatarStyle = {};
     if (isCordova()) {
-      avatarStyle = { marginBottom: 2 };
+      avatarStyle = { marginBottom: 2, paddingTop: 3 };
     }
     if (isSmallTablet()) {
       avatarStyle = { ...avatarStyle, paddingRight: 10 };
     }
     // console.log('HeaderBar hasNotch, scrolledDown, hasSubmenu', hasCordovaNotch(), scrolledDown, displayTopMenuShadow());
-    const displayMenu = !isMobileScreenSize() || isTablet();
-    // console.log('HeaderBar isMobileScreenSize(), isTablet()', isMobileScreenSize(), isTablet());
+    const displayMenu = (!isMobileScreenSize() || isTablet()) && !isIPhoneDuo();
+    // console.log('HeaderBar isMobileScreenSize(), isTablet()', isMobileScreenSize(), isTablet(), isIPhoneDuo());
     let donateValue;
     let donateVisible;
     let moreValue;
@@ -446,14 +452,6 @@ class HeaderBar extends Component {
         hasSubmenu={displayTopMenuShadow()}
       >
         <TopOfPageHeader>
-          {/* <AppBar position="relative" */}
-          {/*        id="headerBarAppBar" */}
-          {/*        color="default" */}
-          {/*        className={`${appBarCname} ${showingBallot || showingFriendsTabs ? ' page-header__ballot' : ''}`} */}
-          {/*        style={pageLayoutStyles()} */}
-          {/*        elevation={0} */}
-          {/* > */}
-          {/* <Toolbar style={headerToolbarStyles()} disableGutters elevation={0}> */}
           <TopRowOneLeftContainer>
             {(showWeVoteLogo || chosenSiteLogoUrl) && (
               <HeaderBarLogo
@@ -684,16 +682,6 @@ class HeaderBar extends Component {
           <TopRowOneRightContainer className="u-cursor--pointer">
             {voterIsSignedIn && voterPhotoUrlMedium ? (
               <>
-                {/*
-                <div>
-                  {showEditAddressButton && editAddressButtonHtml}
-                </div>
-                */}
-                {/*
-                <div>
-                  {searchButtonHtml}
-                </div>
-                */}
                 <Suspense fallback={<></>}>
                   <HeaderNotificationMenu />
                 </Suspense>
@@ -1019,16 +1007,18 @@ const styles = (theme) => {
 
 const HeaderBarWrapper = styled.div.attrs({
   className: 'HeaderBarWrapper', // div.attrs and className all added to achieve drop-shadow on Donate page
-  shouldForwardProp: (prop) => !['scrolledDown', 'hasSubmenu'].includes(prop),
-})(({ scrolledDown, hasSubmenu }) => (`
+  shouldForwardProp: (prop) => !['scrolledDown', 'hasSubmenu', 'isIPhoneDuoFolded'].includes(prop),
+})(({ scrolledDown, hasSubmenu, isIPhoneDuoFolded }) => (`
   box-shadow: ${(!scrolledDown || !hasSubmenu) ? '' : standardBoxShadow('wide')};
   border-bottom: ${(!scrolledDown || !hasSubmenu) ? '' : '1px solid #aaa'};
   padding-left: calc(100vw - 100%);
+  height: ${(isIPhoneDuoFolded ? 'height: 70px' : null)};
 `));
 
 const StyledHeaderMenuTabs = styled(Tabs)`
   // {() => (isIOSAppOnMac() ? '' : displayNoneIfSmallerThanDesktop())};
 `;
+
 const StyledMoreMenu = styled(Menu)`
   .MuiPaper-root {
     border-radius: 8px;

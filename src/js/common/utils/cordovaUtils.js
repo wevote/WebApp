@@ -352,6 +352,33 @@ export function isIPhone6p5in () {
   return false;
 }
 
+export function isIPhoneDuo () {
+if (isIOS()) {
+  if (getIOSNameString() === 'iPhone Duo') {
+    logMatch('isIPhoneDuo: isIPhoneDuo,', true);
+    return true;
+  }
+}
+return false;
+}
+
+export function isIPhoneDuoFolded () {
+  if (isIPhoneDuo() && window.IPhoneDuoFolded) {
+    logMatch('isIPhoneDuo is folded: ,', window.IPhoneDuoFolded);
+    return true;
+  }
+  return false;
+}
+
+export function isIPhoneDuoUnFolded () {
+  if (isIPhoneDuo() && !window.IPhoneDuoFolded) {
+    logMatch('isIPhoneDuo is NOT folded');
+    return true;
+  }
+  return false;
+}
+
+
 // iPhone Air
 export function isIPhoneAir () {
   if (isIOS()) {

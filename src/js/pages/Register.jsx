@@ -57,6 +57,11 @@ class Register extends Component {
     return this.state.majorStep !== nextState.majorStep;
   }
 
+  static getDerivedStateFromError (error) {
+    console.error(`${__filename} error derived state: ${error}`);
+    return { hasError: true };
+  }
+
   componentDidCatch (error, info) {
     console.log('Register.jsx caught: ', error, info.componentStack);
   }

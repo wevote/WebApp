@@ -1,4 +1,4 @@
-import { isCordovaPhone } from './cordovaUtils';
+import { isCordovaPhone, isIPhoneDuo } from './cordovaUtils';
 import { isAndroidTablet, isWebApp } from './isCordovaOrWebApp';
 
 function isCordova () {
@@ -90,6 +90,11 @@ export function displayNoneIfSmallerThanDesktop () {
 
 export function handleResize (componentName) {
   const { priorHeaderWidth, priorHeaderBarWidth, priorFooterWidth, innerWidth: current, muiThemeGlobal: { breakpoints: { values: { tabMin: threshold } } } } = window;
+
+  if (isIPhoneDuo()) {
+    console.log(`handleResize for iPhoneDuo ${componentName} FORCE RENDER `);
+    return true;
+  }
 
   let prior = '';
   if (componentName === 'Footer') {
