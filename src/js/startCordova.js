@@ -204,6 +204,7 @@ export function initializationForCordova (startReact) {
       containers.forEach((container) => {
         console.log('Cordova:   Special container ', ++i);
         // Override specific CSS properties
+        /* eslint no-param-reassign: 0 */
         container.style.paddingLeft = 'env(safe-area-inset-left)';
         container.style.paddingRight = 'env(safe-area-inset-right)';
       });

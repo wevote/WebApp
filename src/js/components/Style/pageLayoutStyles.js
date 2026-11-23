@@ -2,7 +2,7 @@ import { AppBar, Chip } from '@mui/material';
 import styled from 'styled-components';
 import standardBoxShadow from '../../common/components/Style/standardBoxShadow';
 import AppObservableStore from '../../common/stores/AppObservableStore';
-import { heightOfCordovaSpacer, isAndroidSizeMD, isAndroidSizeWide, isAndroidSizeXL, isIOS, isIOSAppOnMac, isIPad, isIPhone4p7in, isIPhoneDuo, isIPhoneDuoFolded } from '../../common/utils/cordovaUtils';
+import { heightOfCordovaSpacer, isAndroidSizeMD, isAndroidSizeWide, isAndroidSizeXL, isIOS, isIOSAppOnMac, isIPad, isIPhone4p7in, isIPhoneDuoFolded } from '../../common/utils/cordovaUtils';
 import { normalizedHrefPage } from '../../common/utils/hrefUtils';
 import { isAndroid, isCordova, isWebApp } from '../../common/utils/isCordovaOrWebApp';
 import isMobileScreenSize, { isTablet } from '../../common/utils/isMobileScreenSize';
@@ -195,7 +195,7 @@ export const PageContentContainer = styled('div')(({ theme }) => (`
     min-height: ${isWebApp() ? '10px' : `${window.innerHeight}px`};
     margin: ${getOuterContainerMargins()};
   }
-  ${isIPhone4p7in ()} {
+  ${isIPhone4p7in()} {
     margin-top: ${getOuterContainerMargins()};
   }
 `));

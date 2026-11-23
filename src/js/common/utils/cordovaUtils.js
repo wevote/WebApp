@@ -353,12 +353,12 @@ export function isIPhone6p5in () {
 }
 
 export function isIPhoneDuo () {
-if (isIOS()) {
-  if (getIOSNameString() === 'iPhone Duo') {
-    logMatch('isIPhoneDuo: isIPhoneDuo,', true);
-    return true;
+  if (isIOS()) {
+    if (getIOSNameString() === 'iPhone Duo') {
+      logMatch('isIPhoneDuo: isIPhoneDuo,', true);
+      return true;
+    }
   }
-}
 return false;
 }
 
