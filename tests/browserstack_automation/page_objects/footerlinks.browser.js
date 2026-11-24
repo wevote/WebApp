@@ -41,7 +41,7 @@ class FooterlinksBrowser extends PageBrowser {
   }
 
   get elementHowItWorksWindow () {
-    return $('.sc-dcJsrY');
+    return $('[role="dialog"]');
   }
 
 
