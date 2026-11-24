@@ -176,6 +176,13 @@ function getOuterContainerMargins () {
   return marginStr;    // all other Cordova pages
 }
 
+export const LoadingItemsWheel = styled('div')`
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
 export const PageContentContainer = styled('div')(({ theme }) => (`
   margin: 0 auto;
   max-width: 960px;
@@ -243,6 +250,12 @@ export const HeadroomWrapper = styled('div')`
   width: 100%;
   background: white;
   z-index: 2;
+`;
+
+export const SearchResultsFoundInExplanation = styled('div')`
+  background-color: #C2DCE8;
+  color: #0E759F;
+  padding: 12px !important;
 `;
 
 export const TopOfPageHeader = styled('div')(({ theme }) => (`

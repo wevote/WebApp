@@ -1,42 +1,37 @@
 import styled, { keyframes } from 'styled-components';
 import PropTypes from 'prop-types';
-import 'lite-youtube-embed';
-import 'lite-vimeo-embed';
+// import 'lite-youtube-embed';
+// import 'lite-vimeo-embed';
 import React, { useEffect, useState } from 'react';
 import getVideoIds from '../../common/utils/getVideoIds';
-
-// VoterAvatarBlock.propTypes = {
-//   voterPhotoUrlMedium: PropTypes.string,
-//   voterFirstName: PropTypes.string,
-//   voterLastName: PropTypes.string,
-// };
 
 function LiteVideoEmbed ({ videoId, title, type, style }) {
   if (!videoId || videoId === '') {
     return null;
   }
-  if (type === 'youtube') {
-    return (
-      <lite-youtube
-        style={style}
-        key={videoId}
-        videoId={videoId}
-        title={title}
-        playlabel={title ? `Play ${title}` : 'Play Video'}
-      />
-    );
-  }
-  if (type === 'vimeo') {
-    return (
-      <lite-vimeo
-        style={style}
-        key={videoId}
-        videoId={videoId}
-        title={title}
-        playlabel={title ? `Play ${title}` : 'Play Video'}
-      />
-    );
-  }
+  // DALE 2026-11-21 Commenting out since this crashes the whole bundle
+  // if (type === 'youtube') {
+  //   return (
+  //     <lite-youtube
+  //       style={style}
+  //       key={videoId}
+  //       videoId={videoId}
+  //       title={title}
+  //       playlabel={title ? `Play ${title}` : 'Play Video'}
+  //     />
+  //   );
+  // }
+  // if (type === 'vimeo') {
+  //   return (
+  //     <lite-vimeo
+  //       style={style}
+  //       key={videoId}
+  //       videoId={videoId}
+  //       title={title}
+  //       playlabel={title ? `Play ${title}` : 'Play Video'}
+  //     />
+  //   );
+  // }
 
   return null;
 }
@@ -49,6 +44,8 @@ LiteVideoEmbed.propTypes = {
 };
 
 export default function LiteVideoEmbedList ({ text, delay = 500 }) {
+  const [LiteVimeoEmbed, setLiteVimeoEmbed] = useState(null);
+  const [LiteYouTubeEmbed, setLiteYouTubeEmbed] = useState(null);
   const [youtubeID, setYoutubeID] = useState([]);
 
   useEffect(() => {
@@ -57,6 +54,48 @@ export default function LiteVideoEmbedList ({ text, delay = 500 }) {
     }, delay);
     return () => clearTimeout(timer);
   }, [text, delay]);
+
+  useEffect(() => {
+    const loadLiteVimeoEmbed = async () => {
+      try {
+        // Dynamically import 'lite-vimeo-embed'
+        const module = await import('lite-vimeo-embed');
+        setLiteVimeoEmbed(() => module.default || module);
+      } catch (error) {
+        console.error('Error loading lite-vimeo-embed:', error);
+        // Optionally, set an alternative or null state
+        setLiteVimeoEmbed(null);
+      }
+    };
+
+    loadLiteVimeoEmbed();
+  }, []);
+
+  useEffect(() => {
+    const loadLiteYouTubeEmbed = async () => {
+      try {
+        // Dynamically import 'lite-vimeo-embed'
+        const module = await import('lite-vimeo-embed');
+        setLiteYouTubeEmbed(() => module.default || module);
+      } catch (error) {
+        console.error('Error loading lite-vimeo-embed:', error);
+        // Optionally, set an alternative or null state
+        setLiteYouTubeEmbed(null);
+      }
+    };
+
+    loadLiteYouTubeEmbed();
+  }, []);
+
+  if (!LiteVimeoEmbed || !LiteYouTubeEmbed) {
+    if (!LiteVimeoEmbed) {
+      console.log('Problem loading LiteVimeoEmbed');
+    }
+    if (!LiteYouTubeEmbed) {
+      console.log('Problem loading LiteYouTubeEmbed');
+    }
+    return <></>;
+  }
 
   return (
     <OpinionVideoWrapper>
