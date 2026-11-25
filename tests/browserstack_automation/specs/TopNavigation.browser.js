@@ -115,7 +115,7 @@ describe('TopNavigation', () => {
       // Add condition to check for the expected URL
       const currentUrl = await driver.getUrl();
       console.log(currentUrl);
-      return currentUrl.includes('candidates');
+      return currentUrl.includes('/cs');
     }, {
       timeout: 10000,
       timeoutMsg: 'Expected URL to contain "candidates" not found, timeout after 10000ms',

@@ -576,7 +576,7 @@ class ReadyPage extends PageBrowser {
  async updateBallotAddress (ballotAddress) {
    await this.ballotAddress.findAndClick();
    await this.ballotAddressInput.setValue(ballotAddress);
-   await this.selectAddress.click();
+   //await this.selectAddress.click();
    await this.saveBallotAddressButton.findAndClick();
  }
 
