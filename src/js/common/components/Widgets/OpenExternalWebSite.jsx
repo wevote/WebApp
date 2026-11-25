@@ -72,7 +72,7 @@ export default class OpenExternalWebSite extends Component {
       this.sendExternalLinkInfoToGTM();
       window.cordova.InAppBrowser.open(externalUrl, '_blank', 'location=yes');
     }
-  }
+  };
 
   render () {
     renderLog('OpenExternalWebSite');  // Set LOG_RENDER_EVENTS to log all renders

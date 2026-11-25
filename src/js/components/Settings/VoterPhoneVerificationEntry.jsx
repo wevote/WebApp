@@ -1,30 +1,26 @@
 import { Delete, Phone } from '@mui/icons-material';
-import {
-  Button,
-  InputAdornment,
-  TextField,
-} from '@mui/material';
+import { Button, InputAdornment, TextField } from '@mui/material';
 import Alert from '@mui/material/Alert';
 import withStyles from '@mui/styles/withStyles';
 import PropTypes from 'prop-types';
 import React, { Component, Suspense } from 'react';
+import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
+import Tooltip from 'react-bootstrap/Tooltip';
+import TagManager from 'react-gtm-module';
 import { isValidPhoneNumber } from 'react-phone-number-input';
 import styled from 'styled-components';
-import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
-import TagManager from 'react-gtm-module';
-import Tooltip from 'react-bootstrap/Tooltip';
 import VoterActions from '../../actions/VoterActions';
+import SettingsVerifySecretCode from '../../common/components/Settings/SettingsVerifySecretCode';
 import LoadingWheel from '../../common/components/Widgets/LoadingWheel';
 import apiCalming from '../../common/utils/apiCalming';
-import { blurTextFieldAndroid } from '../../common/utils/cordovaUtils';
+import { blurTextFieldAndroid, isIPhoneDuo } from '../../common/utils/cordovaUtils';
 import { isCordova, isWebApp } from '../../common/utils/isCordovaOrWebApp';
 import isMobileScreenSize from '../../common/utils/isMobileScreenSize';
 import { renderLog } from '../../common/utils/logging';
 import VoterStore from '../../stores/VoterStore';
-import { FirstRowPhoneOrEmail, SecondRowPhoneOrEmail, SecondRowPhoneOrEmailDiv, AllPhoneOrEmailTypes } from '../Style/pageLayoutStyles';
-import { ButtonContainerHorizontal } from '../Welcome/sectionStyles';
-import SettingsVerifySecretCode from '../../common/components/Settings/SettingsVerifySecretCode';
 import { getPageDetails } from '../../utils/lookupPageNameAndPageTypeDict';
+import { AllPhoneOrEmailTypes, FirstRowPhoneOrEmail, SecondRowPhoneOrEmail, SecondRowPhoneOrEmailDiv } from '../Style/pageLayoutStyles';
+import { ButtonContainerHorizontal } from '../Welcome/sectionStyles';
 // import { validatePhoneOrEmail } from '../../utils/regex-checks';
 
 const OpenExternalWebSite = React.lazy(() => import(/* webpackChunkName: 'OpenExternalWebSite' */ '../../common/components/Widgets/OpenExternalWebSite'));
@@ -85,6 +81,11 @@ class VoterPhoneVerificationEntry extends Component {
     //     this.setState({ movedInitialFocus: true });
     //   }
     // }
+  }
+
+  static getDerivedStateFromError (error) {
+    console.error(`${__filename} error derived state: ${error}`);
+    return { hasError: true };
   }
 
   componentDidCatch (error, info) {
@@ -293,7 +294,7 @@ class VoterPhoneVerificationEntry extends Component {
             nextField.focus();
           }
         }
-      } else if (isCordova() || isMobileScreenSize()) {
+      } else if ((isCordova() || isMobileScreenSize()) && !isIPhoneDuo()) {
         if (this.props.showAllSignInOptions) {
           this.props.showAllSignInOptions();
           setTimeout(() => {
@@ -365,7 +366,7 @@ class VoterPhoneVerificationEntry extends Component {
   };
 
   onKeyDown = (event) => {
-    // console.log('onKeyDown, event.keyCode:', event.keyCode);
+    // console.log('onKeyDown VoterPhoneVerificationEntry, event.keyCode:', event.keyCode);
     // Consider limiting to numbers, dash and plus
     // const regex = /^[0-9]$/;
     // const digit = String.fromCharCode((event.keyCode >= 96 && event.keyCode <= 105) ? event.keyCode - 48  : event.keyCode);

@@ -212,5 +212,8 @@ module.exports = (env, argv) => {
         },
       },
     },
+    node: {
+      __filename: true,
+    }
   });
 };

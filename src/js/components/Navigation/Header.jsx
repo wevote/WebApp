@@ -98,9 +98,15 @@ export default class Header extends Component {
   }
 
   handleResizeLocal () {
-    if (handleResize('Header')) {
-      this.setState({});
-    }
+    setTimeout(() => {
+      // Delay long enough for a iPhone Duo to finish resizing
+      // (might not work on a slow open on a physical device, but the problem is mild.)
+      // console.log('Delayed/Debounced resize for header');
+      if (handleResize('Header')) {
+        this.setState({});
+      }
+    }, 100);
+
   }
 
   // eslint-disable-next-line no-unused-vars

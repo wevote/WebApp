@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import colors from '../../common/components/Style/Colors';
 import DesignTokenColors from '../../common/components/Style/DesignTokenColors';
-import { isIOs6p1OrSmaller, isIOSAppOnMac, isIPad, isIPadGiantSize, isIPhoneSmall } from '../../common/utils/cordovaUtils';
+import { isIOs6p1OrSmaller, isIOSAppOnMac, isIPad, isIPadGiantSize, isIPhoneDuo, isIPhoneDuoUnFolded, isIPhoneSmall } from '../../common/utils/cordovaUtils';
 import { isCordova, isWebApp } from '../../common/utils/isCordovaOrWebApp';
 import isMobileScreenSize from '../../common/utils/isMobileScreenSize';
 import showBallotDecisionsTabs from '../../utilsApi/showBallotDecisionsTabs'; // 2024-04-16 Upgrade to using this
@@ -68,7 +68,7 @@ export const ElectionNameH1 = styled('h1', {
 })(({ centerText, theme }) => (`
   font-size: ${electionNameH1Width()};
   padding-top: 5px;
-  padding-bottom: 18px;
+  padding-bottom: ${() => (isIPhoneDuoUnFolded()) ? '8px;' : '18px;'}
   ${theme.breakpoints.down('sm')} {
     white-space: normal;
   }
@@ -154,7 +154,7 @@ export function ballotWrapperBodyStyles () {
     flexWrap: 'wrap',
     marginRight: '-15px',
     marginLeft: '-15px',
-    marginTop: '16px',
+    marginTop: isIPhoneDuo() ? '186px' : '16px',
   };
 
   if (showBallotDecisionsTabs()) {
@@ -169,7 +169,7 @@ export function ballotWrapperBodyStyles () {
   return styles;
 }
 
-export function AddressSpanLimited({ id, className, innerComponent }) {
+export function AddressSpanLimited ({ id, className, innerComponent }) {
   if (isMobileScreenSize()) {
     return (
       <AddressSpanLimitedMobile className={className} id={id}>

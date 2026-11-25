@@ -221,9 +221,14 @@ class Vote extends Component {
     }
   }
 
+  static getDerivedStateFromError (error) {
+    console.error(`${__filename} error derived state: ${error}`);
+    return { hasError: true };
+  }
+
   componentDidCatch (error, info) {
     // We should get this information to Splunk!
-    console.error('Ballot caught error: ', `${error} with info: `, info);
+    console.error('Vote caught error: ', `${error} with info: `, info);
   }
 
   componentWillUnmount () {
@@ -237,12 +242,6 @@ class Vote extends Component {
     this.supportStoreListener.remove();
     this.voterGuideStoreListener.remove();
     this.voterStoreListener.remove();
-  }
-
-  // See https://reactjs.org/docs/error-boundaries.html
-  static getDerivedStateFromError (error) { // eslint-disable-line no-unused-vars
-    // Update state so the next render will show the fallback UI, We should have a 'Oh snap' page
-    return { hasError: true };
   }
 
   onAppObservableStoreChange () {

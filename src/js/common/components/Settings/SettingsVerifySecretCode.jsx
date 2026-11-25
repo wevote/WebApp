@@ -433,7 +433,7 @@ class SettingsVerifySecretCode extends Component {
       secretCode = e.target.value;
     } else if (e.clipboardData) {  // Paste
       // console.log('onPaste clipboard data NOT ios data: ', e.clipboardData.getData('Text'));
-      secretCode = e.clipboardData.getData('Text')
+      secretCode = e.clipboardData.getData('Text');
     }
     const charInputArray = secretCode.split('');
     // console.log('onPaste charInputArray: ', charInputArray);

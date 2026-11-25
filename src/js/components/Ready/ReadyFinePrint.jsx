@@ -3,7 +3,7 @@ import React, { useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { isAndroid } from '../../common/utils/isCordovaOrWebApp';
 import { renderLog } from '../../common/utils/logging';
-import { Dot, InnerWrapper, IntroHeader, ListMaxWidth, ListRow, ListTitleRow, ListWrapper, OuterWrapper, ShowMoreWrapper, StepNumber, StepNumberPlaceholder, StepText, StepTitle, } from '../Style/ReadyIntroductionStyles';
+import { Dot, InnerWrapper, IntroHeader, ListMaxWidth, ListRow, ListTitleRow, ListWrapper, OuterWrapper, ShowMoreWrapper, StepNumber, StepNumberPlaceholder, StepText, StepTitle } from '../Style/ReadyIntroductionStyles';
 import ShowMoreButtons from '../Widgets/ShowMoreButtons';
 
 function ReadyFinePrint ({ contentUnfurledOnLoad, showStep3WhenCompressed, titleCentered, titleLarge }) {
@@ -52,7 +52,7 @@ function ReadyFinePrint ({ contentUnfurledOnLoad, showStep3WhenCompressed, title
                       official government websites.
                     </>
                   ) : (
-                      <Link to="/election-data" className="u-link-color">official government websites</Link>
+                    <Link to="/election-data" className="u-link-color">official government websites</Link>
                   )}
                   . We work to include 100% of the items on your official ballot, but we can’t guarantee complete coverage.
                   WeVote should not be considered official government information.

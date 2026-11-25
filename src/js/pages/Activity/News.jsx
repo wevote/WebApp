@@ -127,6 +127,11 @@ class News extends Component {
     window.scrollTo(0, 0);
   }
 
+  static getDerivedStateFromError (error) {
+    console.error(`${__filename} error derived state: ${error}`);
+    return { hasError: true };
+  }
+
   componentDidCatch (error, info) {
     console.log('News.jsx caught: ', error, info.componentStack);
   }

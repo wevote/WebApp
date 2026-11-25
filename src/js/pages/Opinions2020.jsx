@@ -206,6 +206,11 @@ class Opinions2020 extends Component {
   // shouldComponentUpdate (nextProps, nextState) {
   // }
 
+  static getDerivedStateFromError (error) {
+    console.error(`${__filename} error derived state: ${error}`);
+    return { hasError: true };
+  }
+
   componentDidCatch (error, info) {
     // We should get this information to Splunk!
     console.error('Opinions2020 caught error: ', `${error} with info: `, info);
